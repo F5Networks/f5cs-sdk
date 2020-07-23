@@ -99,6 +99,11 @@
             }
         }
     },
+    "servers": [
+        {
+            "url": "https://api.cloudservices.f5.com"
+        }
+    ],
     "components": {
         "schemas": {
             "authentication_serviceCreateUserReply": {

@@ -1,6 +1,6 @@
 # \AuthenticationServiceApi
 
-All URIs are relative to *http://localhost*
+All URIs are relative to *https://api.cloudservices.f5.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------

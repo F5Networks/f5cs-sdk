@@ -3,7 +3,7 @@ info:
   title: authentication-service.proto
   version: version not set
 servers:
-- url: /
+- url: https://api.cloudservices.f5.com
 paths:
   /v1/svc-auth/login:
     post:
