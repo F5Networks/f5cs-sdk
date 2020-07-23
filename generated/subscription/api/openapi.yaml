@@ -1,0 +1,739 @@
+openapi: 3.0.0
+info:
+  description: Manages subscriptions tied to a specific service in F5 Cloud Services.
+  title: Subscription Service
+  version: 0.0.1
+servers:
+- url: https://api.cloudservices.f5.com
+security:
+- OAuth2: []
+paths:
+  /v1/svc-subscription/subscriptions:
+    get:
+      operationId: ListSubscriptions
+      parameters:
+      - description: filter by status.
+        explode: true
+        in: query
+        name: status
+        required: false
+        schema:
+          default: _allStatusFilter
+          enum:
+          - _allStatusFilter
+          - ACTIVE
+          - DISABLED
+          - RETIRED
+          - ERROR
+          - PENDING
+          - _maxStatus
+          type: string
+        style: form
+      - description: filter by account identifier.
+        explode: true
+        in: query
+        name: account_id
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: filter by service instance identifier.
+        explode: true
+        in: query
+        name: service_instance_id
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: filter by catalog identifier.
+        explode: true
+        in: query
+        name: catalog_id
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: false (default) to filter deleted subscriptions.
+        explode: true
+        in: query
+        name: deleted
+        required: false
+        schema:
+          format: boolean
+          type: boolean
+        style: form
+      - description: filter by service_type.
+        explode: true
+        in: query
+        name: service_type
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: choose whether to include configurations in response.
+        explode: true
+        in: query
+        name: omit_config
+        required: false
+        schema:
+          default: false
+          format: boolean
+          type: boolean
+        style: form
+      - description: The maximum number of items to return, capped at 500.
+        explode: true
+        in: query
+        name: page_size
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: One-indexed page number, the default of 0 means to follow the
+          page_token page.
+        explode: true
+        in: query
+        name: page_number
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: The page_token to use returned in Subscriptions.page_token.
+        explode: true
+        in: query
+        name: page_token
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1Subscriptions'
+          description: A successful response.
+        "403":
+          content:
+            application/json:
+              schema: {}
+          description: user does not have permission to access the resource
+      summary: List subscriptions in an account
+      tags:
+      - SubscriptionService
+    post:
+      operationId: CreateSubscription
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1CreateSubscriptionRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1Subscription'
+          description: A successful response.
+        "403":
+          content:
+            application/json:
+              schema: {}
+          description: user does not have permission to access the resource
+      summary: Create a subscription
+      tags:
+      - SubscriptionService
+  /v1/svc-subscription/subscriptions/batch-activate:
+    post:
+      operationId: BatchActivateSubscription
+      requestBody:
+        $ref: '#/components/requestBodies/v1BatchSubscriptionIdRequest'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1BatchSubscriptionStatusResponse'
+          description: A successful response.
+        "403":
+          content:
+            application/json:
+              schema: {}
+          description: user does not have permission to access the resource
+      summary: Activate multiple subscriptions
+      tags:
+      - SubscriptionService
+  /v1/svc-subscription/subscriptions/batch-retire:
+    post:
+      operationId: BatchRetireSubscription
+      requestBody:
+        $ref: '#/components/requestBodies/v1BatchSubscriptionIdRequest'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1BatchSubscriptionStatusResponse'
+          description: A successful response.
+        "403":
+          content:
+            application/json:
+              schema: {}
+          description: user does not have permission to access the resource
+      summary: Retire multiple subscriptions
+      tags:
+      - SubscriptionService
+  /v1/svc-subscription/subscriptions/batch-status:
+    post:
+      operationId: BatchSubscriptionStatus
+      requestBody:
+        $ref: '#/components/requestBodies/v1BatchSubscriptionIdRequest'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1BatchSubscriptionStatusResponse'
+          description: A successful response.
+        "403":
+          content:
+            application/json:
+              schema: {}
+          description: user does not have permission to access the resource
+      summary: Get the status of multiple subscriptions
+      tags:
+      - SubscriptionService
+  /v1/svc-subscription/subscriptions/batch-suspend:
+    post:
+      operationId: BatchSuspendSubscription
+      requestBody:
+        $ref: '#/components/requestBodies/v1BatchSubscriptionIdRequest'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1BatchSubscriptionStatusResponse'
+          description: A successful response.
+        "403":
+          content:
+            application/json:
+              schema: {}
+          description: user does not have permission to access the resource
+      summary: Suspend multiple subscriptions
+      tags:
+      - SubscriptionService
+  /v1/svc-subscription/subscriptions/batch-unretire:
+    post:
+      operationId: BatchUnretireSubscription
+      requestBody:
+        $ref: '#/components/requestBodies/v1BatchSubscriptionIdRequest'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1BatchSubscriptionStatusResponse'
+          description: A successful response.
+        "403":
+          content:
+            application/json:
+              schema: {}
+          description: user does not have permission to access the resource
+      summary: Un-retire multiple subscriptions
+      tags:
+      - SubscriptionService
+  /v1/svc-subscription/subscriptions/{subscription_id}:
+    get:
+      operationId: GetSubscription
+      parameters:
+      - description: subscription identifier
+        explode: false
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: omit_config
+        required: false
+        schema:
+          default: false
+          format: boolean
+          type: boolean
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1Subscription'
+          description: A successful response.
+        "403":
+          content:
+            application/json:
+              schema: {}
+          description: user does not have permission to access the resource
+      summary: Get a subscription
+      tags:
+      - SubscriptionService
+    put:
+      operationId: UpdateSubscription
+      parameters:
+      - description: subscription identifier
+        explode: false
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1UpdateSubscriptionRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1Subscription'
+          description: A successful response.
+        "403":
+          content:
+            application/json:
+              schema: {}
+          description: user does not have permission to access the resource
+      summary: Update a subscription
+      tags:
+      - SubscriptionService
+  /v1/svc-subscription/subscriptions/{subscription_id}/activate:
+    post:
+      operationId: ActivateSubscription
+      parameters:
+      - description: subscription identifier
+        explode: false
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1SubscriptionStatusResponse'
+          description: A successful response.
+        "403":
+          content:
+            application/json:
+              schema: {}
+          description: user does not have permission to access the resource
+      summary: Activate a subscription
+      tags:
+      - SubscriptionService
+  /v1/svc-subscription/subscriptions/{subscription_id}/retire:
+    post:
+      operationId: RetireSubscription
+      parameters:
+      - description: subscription identifier
+        explode: false
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1SubscriptionStatusResponse'
+          description: A successful response.
+        "403":
+          content:
+            application/json:
+              schema: {}
+          description: user does not have permission to access the resource
+      summary: Retire a subscription
+      tags:
+      - SubscriptionService
+  /v1/svc-subscription/subscriptions/{subscription_id}/status:
+    get:
+      operationId: SubscriptionStatus
+      parameters:
+      - description: subscription identifier
+        explode: false
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1SubscriptionStatusResponse'
+          description: A successful response.
+        "403":
+          content:
+            application/json:
+              schema: {}
+          description: user does not have permission to access the resource
+      summary: Get a subscription's status
+      tags:
+      - SubscriptionService
+  /v1/svc-subscription/subscriptions/{subscription_id}/suspend:
+    post:
+      operationId: SuspendSubscription
+      parameters:
+      - description: subscription identifier
+        explode: false
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1SubscriptionStatusResponse'
+          description: A successful response.
+        "403":
+          content:
+            application/json:
+              schema: {}
+          description: user does not have permission to access the resource
+      summary: Suspend a subscription
+      tags:
+      - SubscriptionService
+  /v1/svc-subscription/subscriptions/{subscription_id}/test:
+    post:
+      operationId: TestSubscription
+      parameters:
+      - description: subscription identifier
+        explode: false
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1TestSubscriptionResponse'
+          description: A successful response.
+        "403":
+          content:
+            application/json:
+              schema: {}
+          description: user does not have permission to access the resource
+      summary: Test a subscription
+      tags:
+      - SubscriptionService
+  /v1/svc-subscription/subscriptions/{subscription_id}/unretire:
+    post:
+      operationId: UnretireSubscription
+      parameters:
+      - description: subscription identifier
+        explode: false
+        in: path
+        name: subscription_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1SubscriptionStatusResponse'
+          description: A successful response.
+        "403":
+          content:
+            application/json:
+              schema: {}
+          description: user does not have permission to access the resource
+      summary: Un-retire a subscription
+      tags:
+      - SubscriptionService
+components:
+  requestBodies:
+    v1BatchSubscriptionIdRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/v1BatchSubscriptionIdRequest'
+      required: true
+  schemas:
+    protobufNullValue:
+      default: NULL_VALUE
+      description: |-
+        `NullValue` is a singleton enumeration to represent the null value for the
+        `Value` type union.
+
+         The JSON representation for `NullValue` is JSON `null`.
+
+         - NULL_VALUE: Null value.
+      enum:
+      - NULL_VALUE
+      type: string
+    v1BatchSubscriptionIdRequest:
+      properties:
+        subscription_ids:
+          items:
+            type: string
+          title: list of subscription identifiers
+          type: array
+      required:
+      - subscription_ids
+      type: object
+    v1BatchSubscriptionStatusResponse:
+      example:
+        batch_status:
+        - subscription_id: subscription_id
+        - subscription_id: subscription_id
+      properties:
+        batch_status:
+          items:
+            $ref: '#/components/schemas/v1SubscriptionStatusResponse'
+          type: array
+      type: object
+    v1CheckSubscriptionAccessResponse:
+      properties:
+        valid:
+          format: boolean
+          type: boolean
+      type: object
+    v1CreateSubscriptionRequest:
+      example:
+        account_id: abc
+      properties:
+        account_id:
+          pattern: ^[0-9A-Za-z]{1,4}-..[0-9A-Za-z/+_-]{8}$
+          title: account identifier
+          type: string
+        catalog_id:
+          pattern: ^[0-9A-Za-z]{1,4}-..[0-9A-Za-z/+_-]{8}$
+          title: catalog identifier
+          type: string
+        service_instance_name:
+          pattern: '[^\x00-\x1f\x22#&*<>?\x5b-\x5d`\x7f]{0,64}$'
+          title: service instance name
+          type: string
+        service_type:
+          title: service type
+          type: string
+        configuration:
+          title: Declarative service configuration passed into the service for provisioning
+          type: object
+      required:
+      - account_id
+      - catalog_id
+      - service_type
+      type: object
+    v1ServiceState:
+      default: ALL
+      enum:
+      - ALL
+      - DEPLOYING
+      - DEPLOYED
+      - UNDEPLOYING
+      - UNDEPLOYED
+      - _maxServiceState
+      - INVALID
+      title: |-
+        - DEPLOYING: ACTIVE = 1;
+        SUSPENDED = 2;
+        OFFLINE = 3;
+        RETIRED = 4;
+        DEFUNCT = 5;
+        DEPLOYED = 6;
+         - _maxServiceState: ERROR = 14; // in the future
+      type: string
+    v1Status:
+      default: _allStatusFilter
+      enum:
+      - _allStatusFilter
+      - ACTIVE
+      - DISABLED
+      - RETIRED
+      - ERROR
+      - PENDING
+      - _maxStatus
+      type: string
+    v1Subscription:
+      example:
+        cancel_time: 2000-01-23T04:56:07.000+00:00
+        create_time: 2000-01-23T04:56:07.000+00:00
+        configuration: '{}'
+        end_time: 2000-01-23T04:56:07.000+00:00
+        service_instance_id: service_instance_id
+        subscription_id: subscription_id
+        catalog_id: catalog_id
+        service_type: service_type
+        update_time: 2000-01-23T04:56:07.000+00:00
+        account_id: account_id
+        deleted: true
+        user_id: user_id
+        service_instance_name: service_instance_name
+      properties:
+        subscription_id:
+          title: Unique identifier for the subscription
+          type: string
+        account_id:
+          title: Account (or sub-account) which owns the subscription (organization)
+          type: string
+        user_id:
+          title: User that started the subscription
+          type: string
+        catalog_id:
+          title: Service catalog id to sign up for
+          type: string
+        service_instance_id:
+          type: string
+        status:
+          $ref: '#/components/schemas/v1Status'
+        service_instance_name:
+          type: string
+        deleted:
+          format: boolean
+          type: boolean
+        service_type:
+          type: string
+        configuration:
+          title: Configuration
+          type: object
+        create_time:
+          format: date-time
+          type: string
+        update_time:
+          format: date-time
+          type: string
+        cancel_time:
+          format: date-time
+          type: string
+        end_time:
+          format: date-time
+          type: string
+      type: object
+    v1SubscriptionStatusResponse:
+      example:
+        subscription_id: subscription_id
+      properties:
+        status:
+          $ref: '#/components/schemas/v1Status'
+        service_state:
+          $ref: '#/components/schemas/v1ServiceState'
+        subscription_id:
+          type: string
+      type: object
+    v1Subscriptions:
+      example:
+        subscriptions:
+        - cancel_time: 2000-01-23T04:56:07.000+00:00
+          create_time: 2000-01-23T04:56:07.000+00:00
+          configuration: '{}'
+          end_time: 2000-01-23T04:56:07.000+00:00
+          service_instance_id: service_instance_id
+          subscription_id: subscription_id
+          catalog_id: catalog_id
+          service_type: service_type
+          update_time: 2000-01-23T04:56:07.000+00:00
+          account_id: account_id
+          deleted: true
+          user_id: user_id
+          service_instance_name: service_instance_name
+        - cancel_time: 2000-01-23T04:56:07.000+00:00
+          create_time: 2000-01-23T04:56:07.000+00:00
+          configuration: '{}'
+          end_time: 2000-01-23T04:56:07.000+00:00
+          service_instance_id: service_instance_id
+          subscription_id: subscription_id
+          catalog_id: catalog_id
+          service_type: service_type
+          update_time: 2000-01-23T04:56:07.000+00:00
+          account_id: account_id
+          deleted: true
+          user_id: user_id
+          service_instance_name: service_instance_name
+        page_number: 5
+        total_count: 0
+        page_token: page_token
+        total_pages: 6
+        page_size: 1
+      properties:
+        subscriptions:
+          items:
+            $ref: '#/components/schemas/v1Subscription'
+          title: subscriptions returned with capped size of ListSubscriptionsRequest.page_size
+          type: array
+        total_count:
+          description: Total count of subscriptions available at time of query, and
+            subject to change across queries.
+          format: int32
+          type: integer
+        total_pages:
+          description: Total number of pages available.
+          format: int32
+          type: integer
+        page_size:
+          format: int32
+          title: The size of the page, and the the maximum number of items to return,
+            capped at 500. 0 uses default page_size
+          type: integer
+        page_number:
+          description: One-indexed page number.
+          format: int32
+          type: integer
+        page_token:
+          description: Opaque value passed back alone with the additional calls. All
+            filtering will stay the same.
+          type: string
+      type: object
+    v1TestSubscriptionResponse:
+      example:
+        configuration: '{}'
+      properties:
+        configuration:
+          title: Opaque data, needs to be JSON
+          type: object
+      type: object
+    v1UpdateSubscriptionRequest:
+      properties:
+        subscription_id:
+          title: subscription identifier
+          type: string
+        service_instance_name:
+          title: subscription instance name
+          type: string
+        configuration:
+          type: object
+      required:
+      - subscription_id
+      type: object
+  securitySchemes:
+    OAuth2:
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: /v1/svc-auth/login
+      type: oauth2

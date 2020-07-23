@@ -1,0 +1,961 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Subscription Service",
+        "description": "Manages subscriptions tied to a specific service in F5 Cloud Services.",
+        "version": "0.0.1"
+    },
+    "paths": {
+        "/v1/svc-subscription/subscriptions": {
+            "get": {
+                "summary": "List subscriptions in an account",
+                "operationId": "ListSubscriptions",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1Subscriptions"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "user does not have permission to access the resource",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "status",
+                        "description": "filter by status.",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "_allStatusFilter",
+                                "ACTIVE",
+                                "DISABLED",
+                                "RETIRED",
+                                "ERROR",
+                                "PENDING",
+                                "_maxStatus"
+                            ],
+                            "default": "_allStatusFilter"
+                        }
+                    },
+                    {
+                        "name": "account_id",
+                        "description": "filter by account identifier.",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "service_instance_id",
+                        "description": "filter by service instance identifier.",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "catalog_id",
+                        "description": "filter by catalog identifier.",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "deleted",
+                        "description": "false (default) to filter deleted subscriptions.",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "format": "boolean"
+                        }
+                    },
+                    {
+                        "name": "service_type",
+                        "description": "filter by service_type.",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "omit_config",
+                        "description": "choose whether to include configurations in response.",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "format": "boolean",
+                            "default": "FALSE"
+                        }
+                    },
+                    {
+                        "name": "page_size",
+                        "description": "The maximum number of items to return, capped at 500.",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": "500"
+                        }
+                    },
+                    {
+                        "name": "page_number",
+                        "description": "One-indexed page number, the default of 0 means to follow the page_token page.",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "page_token",
+                        "description": "The page_token to use returned in Subscriptions.page_token.",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "SubscriptionService"
+                ]
+            },
+            "post": {
+                "summary": "Create a subscription",
+                "operationId": "CreateSubscription",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1Subscription"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "user does not have permission to access the resource",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/v1CreateSubscriptionRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "SubscriptionService"
+                ]
+            }
+        },
+        "/v1/svc-subscription/subscriptions/batch-activate": {
+            "post": {
+                "summary": "Activate multiple subscriptions",
+                "operationId": "BatchActivateSubscription",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1BatchSubscriptionStatusResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "user does not have permission to access the resource",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/v1BatchSubscriptionIdRequest"
+                },
+                "tags": [
+                    "SubscriptionService"
+                ]
+            }
+        },
+        "/v1/svc-subscription/subscriptions/batch-retire": {
+            "post": {
+                "summary": "Retire multiple subscriptions",
+                "operationId": "BatchRetireSubscription",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1BatchSubscriptionStatusResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "user does not have permission to access the resource",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/v1BatchSubscriptionIdRequest"
+                },
+                "tags": [
+                    "SubscriptionService"
+                ]
+            }
+        },
+        "/v1/svc-subscription/subscriptions/batch-status": {
+            "post": {
+                "summary": "Get the status of multiple subscriptions",
+                "operationId": "BatchSubscriptionStatus",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1BatchSubscriptionStatusResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "user does not have permission to access the resource",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/v1BatchSubscriptionIdRequest"
+                },
+                "tags": [
+                    "SubscriptionService"
+                ]
+            }
+        },
+        "/v1/svc-subscription/subscriptions/batch-suspend": {
+            "post": {
+                "summary": "Suspend multiple subscriptions",
+                "operationId": "BatchSuspendSubscription",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1BatchSubscriptionStatusResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "user does not have permission to access the resource",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/v1BatchSubscriptionIdRequest"
+                },
+                "tags": [
+                    "SubscriptionService"
+                ]
+            }
+        },
+        "/v1/svc-subscription/subscriptions/batch-unretire": {
+            "post": {
+                "summary": "Un-retire multiple subscriptions",
+                "operationId": "BatchUnretireSubscription",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1BatchSubscriptionStatusResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "user does not have permission to access the resource",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/v1BatchSubscriptionIdRequest"
+                },
+                "tags": [
+                    "SubscriptionService"
+                ]
+            }
+        },
+        "/v1/svc-subscription/subscriptions/{subscription_id}": {
+            "get": {
+                "summary": "Get a subscription",
+                "operationId": "GetSubscription",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1Subscription"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "user does not have permission to access the resource",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "subscription_id",
+                        "description": "subscription identifier",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "omit_config",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "format": "boolean",
+                            "default": "FALSE"
+                        }
+                    }
+                ],
+                "tags": [
+                    "SubscriptionService"
+                ]
+            },
+            "put": {
+                "summary": "Update a subscription",
+                "operationId": "UpdateSubscription",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1Subscription"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "user does not have permission to access the resource",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "subscription_id",
+                        "description": "subscription identifier",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/v1UpdateSubscriptionRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "SubscriptionService"
+                ]
+            }
+        },
+        "/v1/svc-subscription/subscriptions/{subscription_id}/activate": {
+            "post": {
+                "summary": "Activate a subscription",
+                "operationId": "ActivateSubscription",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1SubscriptionStatusResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "user does not have permission to access the resource",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "subscription_id",
+                        "description": "subscription identifier",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "SubscriptionService"
+                ]
+            }
+        },
+        "/v1/svc-subscription/subscriptions/{subscription_id}/retire": {
+            "post": {
+                "summary": "Retire a subscription",
+                "operationId": "RetireSubscription",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1SubscriptionStatusResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "user does not have permission to access the resource",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "subscription_id",
+                        "description": "subscription identifier",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "SubscriptionService"
+                ]
+            }
+        },
+        "/v1/svc-subscription/subscriptions/{subscription_id}/status": {
+            "get": {
+                "summary": "Get a subscription's status",
+                "operationId": "SubscriptionStatus",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1SubscriptionStatusResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "user does not have permission to access the resource",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "subscription_id",
+                        "description": "subscription identifier",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "SubscriptionService"
+                ]
+            }
+        },
+        "/v1/svc-subscription/subscriptions/{subscription_id}/suspend": {
+            "post": {
+                "summary": "Suspend a subscription",
+                "operationId": "SuspendSubscription",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1SubscriptionStatusResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "user does not have permission to access the resource",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "subscription_id",
+                        "description": "subscription identifier",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "SubscriptionService"
+                ]
+            }
+        },
+        "/v1/svc-subscription/subscriptions/{subscription_id}/test": {
+            "post": {
+                "summary": "Test a subscription",
+                "operationId": "TestSubscription",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1TestSubscriptionResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "user does not have permission to access the resource",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "subscription_id",
+                        "description": "subscription identifier",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "SubscriptionService"
+                ]
+            }
+        },
+        "/v1/svc-subscription/subscriptions/{subscription_id}/unretire": {
+            "post": {
+                "summary": "Un-retire a subscription",
+                "operationId": "UnretireSubscription",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1SubscriptionStatusResponse"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "user does not have permission to access the resource",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "subscription_id",
+                        "description": "subscription identifier",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "SubscriptionService"
+                ]
+            }
+        }
+    },
+    "security": [
+        {
+            "OAuth2": []
+        }
+    ],
+    "servers": [
+        {
+            "url": "https://api.cloudservices.f5.com"
+        }
+    ],
+    "components": {
+        "requestBodies": {
+            "v1BatchSubscriptionIdRequest": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/v1BatchSubscriptionIdRequest"
+                        }
+                    }
+                },
+                "required": true
+            }
+        },
+        "securitySchemes": {
+            "OAuth2": {
+                "type": "oauth2",
+                "flows": {
+                    "password": {
+                        "tokenUrl": "/v1/svc-auth/login",
+                        "scopes": {}
+                    }
+                }
+            }
+        },
+        "schemas": {
+            "protobufNullValue": {
+                "type": "string",
+                "enum": [
+                    "NULL_VALUE"
+                ],
+                "default": "NULL_VALUE",
+                "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\n The JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value."
+            },
+            "v1BatchSubscriptionIdRequest": {
+                "type": "object",
+                "properties": {
+                    "subscription_ids": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "title": "list of subscription identifiers"
+                    }
+                },
+                "required": [
+                    "subscription_ids"
+                ]
+            },
+            "v1BatchSubscriptionStatusResponse": {
+                "type": "object",
+                "properties": {
+                    "batch_status": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/v1SubscriptionStatusResponse"
+                        }
+                    }
+                }
+            },
+            "v1CheckSubscriptionAccessResponse": {
+                "type": "object",
+                "properties": {
+                    "valid": {
+                        "type": "boolean",
+                        "format": "boolean"
+                    }
+                }
+            },
+            "v1CreateSubscriptionRequest": {
+                "type": "object",
+                "example": {
+                    "account_id": "abc"
+                },
+                "properties": {
+                    "account_id": {
+                        "type": "string",
+                        "title": "account identifier",
+                        "pattern": "^[0-9A-Za-z]{1,4}-..[0-9A-Za-z/+_-]{8}$"
+                    },
+                    "catalog_id": {
+                        "type": "string",
+                        "title": "catalog identifier",
+                        "pattern": "^[0-9A-Za-z]{1,4}-..[0-9A-Za-z/+_-]{8}$"
+                    },
+                    "service_instance_name": {
+                        "type": "string",
+                        "title": "service instance name",
+                        "pattern": "[^\\x00-\\x1f\\x22#&*<>?\\x5b-\\x5d`\\x7f]{0,64}$"
+                    },
+                    "service_type": {
+                        "type": "string",
+                        "title": "service type"
+                    },
+                    "configuration": {
+                        "type": "object",
+                        "title": "Declarative service configuration passed into the service for provisioning"
+                    }
+                },
+                "required": [
+                    "account_id",
+                    "catalog_id",
+                    "service_type"
+                ]
+            },
+            "v1ServiceState": {
+                "type": "string",
+                "enum": [
+                    "ALL",
+                    "DEPLOYING",
+                    "DEPLOYED",
+                    "UNDEPLOYING",
+                    "UNDEPLOYED",
+                    "_maxServiceState",
+                    "INVALID"
+                ],
+                "default": "ALL",
+                "title": "- DEPLOYING: ACTIVE = 1;\nSUSPENDED = 2;\nOFFLINE = 3;\nRETIRED = 4;\nDEFUNCT = 5;\nDEPLOYED = 6;\n - _maxServiceState: ERROR = 14; // in the future"
+            },
+            "v1Status": {
+                "type": "string",
+                "enum": [
+                    "_allStatusFilter",
+                    "ACTIVE",
+                    "DISABLED",
+                    "RETIRED",
+                    "ERROR",
+                    "PENDING",
+                    "_maxStatus"
+                ],
+                "default": "_allStatusFilter"
+            },
+            "v1Subscription": {
+                "type": "object",
+                "properties": {
+                    "subscription_id": {
+                        "type": "string",
+                        "title": "Unique identifier for the subscription"
+                    },
+                    "account_id": {
+                        "type": "string",
+                        "title": "Account (or sub-account) which owns the subscription (organization)"
+                    },
+                    "user_id": {
+                        "type": "string",
+                        "title": "User that started the subscription"
+                    },
+                    "catalog_id": {
+                        "type": "string",
+                        "title": "Service catalog id to sign up for"
+                    },
+                    "service_instance_id": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/v1Status"
+                    },
+                    "service_instance_name": {
+                        "type": "string"
+                    },
+                    "deleted": {
+                        "type": "boolean",
+                        "format": "boolean"
+                    },
+                    "service_type": {
+                        "type": "string"
+                    },
+                    "configuration": {
+                        "type": "object",
+                        "title": "Configuration"
+                    },
+                    "create_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "update_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "cancel_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "end_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "v1SubscriptionStatusResponse": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "$ref": "#/components/schemas/v1Status"
+                    },
+                    "service_state": {
+                        "$ref": "#/components/schemas/v1ServiceState"
+                    },
+                    "subscription_id": {
+                        "type": "string"
+                    }
+                }
+            },
+            "v1Subscriptions": {
+                "type": "object",
+                "properties": {
+                    "subscriptions": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/v1Subscription"
+                        },
+                        "title": "subscriptions returned with capped size of ListSubscriptionsRequest.page_size"
+                    },
+                    "total_count": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Total count of subscriptions available at time of query, and subject to change across queries."
+                    },
+                    "total_pages": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Total number of pages available."
+                    },
+                    "page_size": {
+                        "type": "integer",
+                        "format": "int32",
+                        "default": "500",
+                        "title": "The size of the page, and the the maximum number of items to return, capped at 500. 0 uses default page_size"
+                    },
+                    "page_number": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "One-indexed page number."
+                    },
+                    "page_token": {
+                        "type": "string",
+                        "description": "Opaque value passed back alone with the additional calls. All filtering will stay the same."
+                    }
+                }
+            },
+            "v1TestSubscriptionResponse": {
+                "type": "object",
+                "properties": {
+                    "configuration": {
+                        "type": "object",
+                        "title": "Opaque data, needs to be JSON"
+                    }
+                }
+            },
+            "v1UpdateSubscriptionRequest": {
+                "type": "object",
+                "properties": {
+                    "subscription_id": {
+                        "type": "string",
+                        "title": "subscription identifier"
+                    },
+                    "service_instance_name": {
+                        "type": "string",
+                        "title": "subscription instance name"
+                    },
+                    "configuration": {
+                        "type": "object"
+                    }
+                },
+                "required": [
+                    "subscription_id"
+                ]
+            }
+        }
+    }
+}

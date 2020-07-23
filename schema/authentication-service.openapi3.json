@@ -1,0 +1,185 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "authentication-service.proto",
+        "version": "version not set"
+    },
+    "paths": {
+        "/v1/svc-auth/login": {
+            "post": {
+                "summary": "Login to F5 Cloud Services",
+                "operationId": "Login",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/authentication_serviceLoginReply"
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/authentication_serviceLoginRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "AuthenticationService"
+                ]
+            }
+        },
+        "/v1/svc-auth/logout": {
+            "post": {
+                "summary": "Logout from F5 Cloud Services",
+                "operationId": "Logout",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/authentication_serviceEmptyMessage"
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/authentication_serviceLogoutRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "AuthenticationService"
+                ]
+            }
+        },
+        "/v1/svc-auth/relogin": {
+            "post": {
+                "summary": "Login again to F5 Cloud Services",
+                "operationId": "ReLogin",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/authentication_serviceReLoginReply"
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/authentication_serviceReLoginRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "AuthenticationService"
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "authentication_serviceCreateUserReply": {
+                "type": "object",
+                "properties": {
+                    "sub": {
+                        "type": "string"
+                    }
+                }
+            },
+            "authentication_serviceEmptyMessage": {
+                "type": "object"
+            },
+            "authentication_serviceGetUserReply": {
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "type": "string"
+                    }
+                }
+            },
+            "authentication_serviceLoginReply": {
+                "type": "object",
+                "properties": {
+                    "access_token": {
+                        "type": "string"
+                    },
+                    "refresh_token": {
+                        "type": "string"
+                    },
+                    "expires_at": {
+                        "type": "string",
+                        "format": "int64"
+                    }
+                }
+            },
+            "authentication_serviceLoginRequest": {
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                }
+            },
+            "authentication_serviceLogoutRequest": {
+                "type": "object",
+                "properties": {
+                    "access_token": {
+                        "type": "string"
+                    }
+                }
+            },
+            "authentication_serviceReLoginReply": {
+                "type": "object",
+                "properties": {
+                    "access_token": {
+                        "type": "string"
+                    },
+                    "expires_at": {
+                        "type": "string",
+                        "format": "int64"
+                    }
+                }
+            },
+            "authentication_serviceReLoginRequest": {
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "type": "string"
+                    },
+                    "refresh_token": {
+                        "type": "string"
+                    }
+                }
+            },
+            "authentication_serviceValidateTokenResponse": {
+                "type": "object"
+            }
+        }
+    }
+}
