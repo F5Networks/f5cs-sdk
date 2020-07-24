@@ -8,10 +8,6 @@ github.com/golang/protobuf/proto
 github.com/pmezard/go-difflib/difflib
 # github.com/stretchr/testify v1.6.1
 github.com/stretchr/testify/assert
-# gitswarm.f5net.com/f5aas/f5cs-sdk/generated/authentication v0.0.0-20200723230234-d7dd26549835
-gitswarm.f5net.com/f5aas/f5cs-sdk/generated/authentication
-# gitswarm.f5net.com/f5aas/f5cs-sdk/generated/subscription v0.0.0-20200723230234-d7dd26549835
-gitswarm.f5net.com/f5aas/f5cs-sdk/generated/subscription
 # golang.org/x/net v0.0.0-20190108225652-1e06a53dbb7e
 golang.org/x/net/context
 golang.org/x/net/context/ctxhttp

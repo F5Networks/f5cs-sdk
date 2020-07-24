@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 .travis.yml
 README.md
 api/openapi.yaml
@@ -20,8 +19,6 @@ docs/V1Subscriptions.md
 docs/V1TestSubscriptionResponse.md
 docs/V1UpdateSubscriptionRequest.md
 git_push.sh
-go.mod
-go.sum
 model_protobuf_null_value.go
 model_v1_batch_subscription_id_request.go
 model_v1_batch_subscription_status_response.go

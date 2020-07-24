@@ -14,8 +14,6 @@ docs/AuthenticationServiceLogoutRequest.md
 docs/AuthenticationServiceReLoginReply.md
 docs/AuthenticationServiceReLoginRequest.md
 git_push.sh
-go.mod
-go.sum
 model_authentication_service_create_user_reply.go
 model_authentication_service_get_user_reply.go
 model_authentication_service_login_reply.go
