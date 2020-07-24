@@ -13,14 +13,14 @@ func TestClient(t *testing.T) {
 	authCfg := authentication.NewConfiguration()
 	authClient := authentication.NewAPIClient(authCfg)
 	login, _, err := authClient.AuthenticationServiceApi.Login(context.Background(), authentication.AuthenticationServiceLoginRequest{
-		Username: "r.panda@f5.com",
+		Username: "f5aas.qe+exploratory_07@gmail.com",
 		Password: "F5aaStest!",
 	})
 	assert.NoError(t, err)
 	cfg := subscription.NewConfiguration()
 	c := subscription.NewAPIClient(cfg)
 	auth := context.WithValue(context.Background(), subscription.ContextAccessToken, login.AccessToken)
-	subs, _, err := c.SubscriptionServiceApi.ListSubscriptions(auth, "a-aavZ5AdvEJ", &subscription.ListSubscriptionsOpts{})
+	subs, _, err := c.SubscriptionServiceApi.ListSubscriptions(auth, "a-aanS3R3GQY", &subscription.ListSubscriptionsOpts{})
 	assert.NoError(t, err)
 	_, err = json.Marshal(subs)
 	assert.NoError(t, err)

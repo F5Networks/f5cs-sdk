@@ -70,14 +70,3 @@ unit_test:
     reports:
       junit: test/report.xml
 
-lint:
-  tags:
-    - f5aas-executor
-  image: $BUILD_IMAGE
-  extends: .set_version_before_script_tmpl
-  stage: test
-  except:
-    - tags
-  script:
-    - make lint
-
