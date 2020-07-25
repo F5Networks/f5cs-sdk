@@ -4,6 +4,8 @@ github.com/antihax/optional
 github.com/davecgh/go-spew/spew
 # github.com/golang/protobuf v1.2.0
 github.com/golang/protobuf/proto
+# github.com/icza/dyno v0.0.0-20200205103839-49cb13720835
+github.com/icza/dyno
 # github.com/pmezard/go-difflib v1.0.0
 github.com/pmezard/go-difflib/difflib
 # github.com/stretchr/testify v1.6.1
