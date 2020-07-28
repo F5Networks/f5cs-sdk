@@ -229,7 +229,7 @@ func (f *Factory) RegionsDefault() *map[string]Region {
 
 func (f *Factory) ProximityRuleDefault() ProximityRule {
 	return ProximityRule{
-		Region: f.NewStringPointer("regionName1"),
+		Region: f.NewStringPointer("global"),
 		Pool:   f.NewStringPointer("p1"),
 		Score:  f.NewIntPointer(1),
 	}

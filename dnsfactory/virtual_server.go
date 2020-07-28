@@ -153,3 +153,8 @@ func (v *VirtualServer) GetAddressOrTranslationAddress() string {
 		return ""
 	}
 }
+
+// SetDisplayName :
+func (v *VirtualServer) SetDisplayName(displayName string) {
+	v.DisplayName = newStringPointer(displayName)
+}
