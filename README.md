@@ -15,22 +15,37 @@ TODO - To directly use the openapi spec files from respective repos instead of c
 ## SDK Usage
 
 Each Generated package has an example of how to use the SDK and Readme corresponding to it. However, here is an example of how to use the SDK to Login to F5CS account and Get Subscriptions for the account.
-```
-func TestClient(t *testing.T) {
+```golang
+import (
+	"log"
+	"context"
+	authentication "gitswarm.f5net.com/f5aas/f5cs-sdk/generated/authentication"
+	subscription "gitswarm.f5net.com/f5aas/f5cs-sdk/generated/subscription"
+)
+
+func main() {
 	authCfg := authentication.NewConfiguration()
+	// Authentication Client
 	authClient := authentication.NewAPIClient(authCfg)
+	// Login
 	login, _, err := authClient.AuthenticationServiceApi.Login(context.Background(), authentication.AuthenticationServiceLoginRequest{
-		Username: "abc@xyz.com",
-		Password: "**********",
+		Username: USERNAME,
+		Password: PASSWORD,
 	})
-	assert.NoError(t, err)
+	if err != nil {
+		log.Print("Login failed")
+		return
+	}
 	cfg := subscription.NewConfiguration()
+	// Subscription Client using the AccessToken from above Login
 	c := subscription.NewAPIClient(cfg)
 	auth := context.WithValue(context.Background(), subscription.ContextAccessToken, login.AccessToken)
-	subs, _, err := c.SubscriptionServiceApi.ListSubscriptions(auth, "a-balhbal", &subscription.ListSubscriptionsOpts{})
-	assert.NoError(t, err)
-	_, err = json.Marshal(subs)
-	assert.NoError(t, err)
+	// Invoke ListSubscriptions API
+	subs, _, err := c.SubscriptionServiceApi.ListSubscriptions(auth, ACCOUNT, &subscription.ListSubscriptionsOpts{})
+	if err != nil {
+		log.Print("ListSubscriptions failed")
+		return
+	}
 }
 ```
 
