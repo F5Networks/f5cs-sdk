@@ -1,0 +1,121 @@
+openapi: 3.0.0
+info:
+  title: authentication-service.proto
+  version: version not set
+servers:
+- url: https://api.cloudservices.f5.com
+paths:
+  /v1/svc-auth/login:
+    post:
+      operationId: Login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/authentication_serviceLoginRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authentication_serviceLoginReply'
+      summary: Login to F5 Cloud Services
+      tags:
+      - AuthenticationService
+  /v1/svc-auth/logout:
+    post:
+      operationId: Logout
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/authentication_serviceLogoutRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authentication_serviceEmptyMessage'
+      summary: Logout from F5 Cloud Services
+      tags:
+      - AuthenticationService
+  /v1/svc-auth/relogin:
+    post:
+      operationId: ReLogin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/authentication_serviceReLoginRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authentication_serviceReLoginReply'
+      summary: Login again to F5 Cloud Services
+      tags:
+      - AuthenticationService
+components:
+  schemas:
+    authentication_serviceCreateUserReply:
+      properties:
+        sub:
+          type: string
+      type: object
+    authentication_serviceEmptyMessage:
+      type: object
+    authentication_serviceGetUserReply:
+      properties:
+        username:
+          type: string
+      type: object
+    authentication_serviceLoginReply:
+      example:
+        access_token: access_token
+        refresh_token: refresh_token
+        expires_at: expires_at
+      properties:
+        access_token:
+          type: string
+        refresh_token:
+          type: string
+        expires_at:
+          format: int64
+          type: string
+      type: object
+    authentication_serviceLoginRequest:
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      type: object
+    authentication_serviceLogoutRequest:
+      properties:
+        access_token:
+          type: string
+      type: object
+    authentication_serviceReLoginReply:
+      example:
+        access_token: access_token
+        expires_at: expires_at
+      properties:
+        access_token:
+          type: string
+        expires_at:
+          format: int64
+          type: string
+      type: object
+    authentication_serviceReLoginRequest:
+      properties:
+        username:
+          type: string
+        refresh_token:
+          type: string
+      type: object
+    authentication_serviceValidateTokenResponse:
+      type: object
