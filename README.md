@@ -12,6 +12,12 @@ The SDK generation needs only 1 input - the opanapi spec file. As of now, the op
 
 TODO - To directly use the openapi spec files from respective repos instead of copying manually.
 
+To generate SDK for new schemas, you can just update the Makefile. To generate the SDK, use the following command.
+
+```
+make gensdk
+```
+
 ## SDK Usage
 
 Each Generated package has an example of how to use the SDK and Readme corresponding to it. However, here is an example of how to use the SDK to Login to F5CS account and Get Subscriptions for the account.
