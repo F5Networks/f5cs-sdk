@@ -12,7 +12,7 @@ The SDK generation needs only 1 input - the opanapi spec file. As of now, the op
 
 TODO - To directly use the openapi spec files from respective repos instead of copying manually.
 
-To generate SDK for new schemas, you can just update the Makefile. To generate the SDK, use the following command.
+To generate Golang SDK for new schemas, you can just update the Makefile. To generate the SDK, use the following command.
 
 ```
 make gensdk
