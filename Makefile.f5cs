@@ -147,7 +147,7 @@ lint:  ## Lint go code
 
 .PHONY: docker
 docker: ## Build docker image
-	$(ECHO) docker build --no-cache \
+	$(ECHO) docker build \
 		--build-arg SEMVER=$(SEMVER) \
 		--build-arg CI_COMMIT_SHORT_SHA=$(CI_COMMIT_SHORT_SHA) \
 		--build-arg CI_COMMIT_SHA=$(CI_COMMIT_SHA) \
@@ -225,3 +225,13 @@ redoc: ## Build the API HTML documentation.
 	cd pkg/proto \
 	&& swagger2openapi --outfile $(CI_PROJECT_NAME).openapi3.final.json $(CI_PROJECT_NAME).swagger.json \
 	&& redoc-cli bundle $(CI_PROJECT_NAME).openapi3.final.json -o $(CI_PROJECT_NAME).html;
+
+changelog:
+	$(ECHO) echo >> CHANGELOG.md && \
+		echo "" >> CHANGELOG.md && \
+		echo "## $$($(SEMVERSION_CLI) inc $(COMPONENT) $$(cat VERSION))" >> CHANGELOG.md && \
+		echo $$(date +"%Y-%m-%d") >> CHANGELOG.md && \
+		echo "" >> CHANGELOG.md && \
+		echo "### Fixes" >> CHANGELOG.md && \
+		git log v$$(cat VERSION)...HEAD --pretty=format:"- %s (%H)" >> CHANGELOG.md
+		echo "" >> CHANGELOG.md
