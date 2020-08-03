@@ -51,9 +51,9 @@ variables:
     - $trigger_cmd
 
 .react_template: &react_template
-  image: node:12.2
   tags:
     - f5aas-executor
+  image: node:12.2
   before_script:
     ##
     ## Install ssh-agent if not already installed, it is required by Docker.
