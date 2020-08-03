@@ -50,27 +50,6 @@ variables:
     - echo $trigger_cmd
     - $trigger_cmd
 
-stages:
-  - test
-  - package
-  - increment_version
-
-unit_test:
-  extends: .set_version_before_script_tmpl
-  tags:
-    - f5aas-executor
-  image: $BUILD_IMAGE
-  stage: test
-  except:
-    - tags
-  script:
-    - make cover
-  artifacts:
-    paths:
-      - test/*
-    reports:
-      junit: test/report.xml
-
 .react_template: &react_template
   image: node:12.2
   tags:
@@ -108,21 +87,42 @@ unit_test:
     ##
     - ssh-keyscan gitswarm.f5net.com >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
-
     - npm install -g conventional-changelog-cli
 
+
+stages:
+  - test
+  - package
+  - increment_version
+
+unit_test:
+  extends: .set_version_before_script_tmpl
+  tags:
+    - f5aas-executor
+  image: $BUILD_IMAGE
+  stage: test
+  except:
+    - tags
+  script:
+    - make cover
+  artifacts:
+    paths:
+      - test/*
+    reports:
+      junit: test/report.xml
+
 increment_version:
-  <<: *react_template
   stage: increment_version
   script:
     - git config user.email ${GITLAB_USER_EMAIL} && git config user.name ${GITLAB_USER_NAME}
     - git checkout develop
     - git remote set-url origin "https://${VERSION_BUMP_USERNAME}:${VERSION_BUMP_JOB_TOKEN}@gitswarm.f5net.com/f5aas/f5cs-sdk/f5cs-sdk.git"
     - conventional-changelog -i CHANGELOG.md -s -p angular -v
-	- git add CHANGELOG.md
-	- cat CHANGELOG.md
-	- git push origin
+    - git add CHANGELOG.md
+    - cat CHANGELOG.md
+    - git push origin
   only:
     refs:
       - develop
+
 
