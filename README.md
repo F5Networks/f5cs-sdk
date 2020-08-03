@@ -18,6 +18,8 @@ To generate Golang SDK for new schemas, you can just update the Makefile. To gen
 make gensdk
 ```
 
+Other language support can be easily added.
+
 ## SDK Usage
 
 Each Generated package has an example of how to use the SDK and Readme corresponding to it. However, here is an example of how to use the SDK to Login to F5CS account and Get Subscriptions for the account.
