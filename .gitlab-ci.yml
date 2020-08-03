@@ -50,7 +50,7 @@ variables:
     - echo $trigger_cmd
     - $trigger_cmd
 
-.react_template:
+.react_template: &react_template
   tags:
     - f5aas-executor
   image: node:12.2
@@ -112,6 +112,7 @@ unit_test:
       junit: test/report.xml
 
 increment_version:
+  <<: *react_template
   stage: increment_version
   script:
     - git config user.email ${GITLAB_USER_EMAIL} && git config user.name ${GITLAB_USER_NAME}
