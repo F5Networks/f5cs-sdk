@@ -53,6 +53,7 @@ variables:
 stages:
   - test
   - package
+  - increment_version
 
 unit_test:
   extends: .set_version_before_script_tmpl
