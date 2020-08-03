@@ -50,7 +50,7 @@ variables:
     - echo $trigger_cmd
     - $trigger_cmd
 
-.react_template: &react_template
+.react_template:
   tags:
     - f5aas-executor
   image: node:12.2
