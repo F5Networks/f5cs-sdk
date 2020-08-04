@@ -93,7 +93,7 @@ variables:
 stages:
   - test
   - package
-  - increment_version
+#  - increment_version
 
 unit_test:
   extends: .set_version_before_script_tmpl
@@ -111,14 +111,14 @@ unit_test:
     reports:
       junit: test/report.xml
 
-increment_version:
-  <<: *react_template
-  stage: increment_version
-  script:
-    - git config user.email ${GITLAB_USER_EMAIL} && git config user.name ${GITLAB_USER_NAME}
-    - git checkout develop
-    - git remote set-url origin "https://${VERSION_BUMP_USERNAME}:${VERSION_BUMP_JOB_TOKEN}@gitswarm.f5net.com/f5aas/f5cs-sdk.git"
-    - make changeandtag
+# increment_version:
+#   <<: *react_template
+#   stage: increment_version
+#   script:
+#     - git config user.email ${GITLAB_USER_EMAIL} && git config user.name ${GITLAB_USER_NAME}
+#     - git checkout develop
+#     - git remote set-url origin "https://${VERSION_BUMP_USERNAME}:${VERSION_BUMP_JOB_TOKEN}@gitswarm.f5net.com/f5aas/f5cs-sdk.git"
+#     - make ccchangelog
     # - conventional-changelog -i CHANGELOG.md -s -p angular -v
     # - git add CHANGELOG.md
     # - cat CHANGELOG.md
