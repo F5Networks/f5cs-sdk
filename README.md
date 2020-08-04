@@ -16,6 +16,7 @@ To generate Golang SDK for new schemas, you can just update the Makefile. To gen
 
 ```
 make gensdk
+
 ```
 
 Other language support can be easily added.
