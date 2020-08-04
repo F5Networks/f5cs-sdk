@@ -1,4 +1,13 @@
-# [](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.15...v) (2020-08-04)
+# [](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.16...v) (2020-08-04)
+
+
+
+## [0.1.16](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.15...v0.1.16) (2020-08-04)
+
+
+### Bug Fixes
+
+* another fix to changelog generation ([f23d8e4](https://gitswarm.f5net.com/f5aas/f5cs-sdk/commits/f23d8e498e438726b18b5f2ea146055b789ad9a2))
 
 
 
