@@ -1,4 +1,13 @@
-# [](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.16...v) (2020-08-04)
+# [](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.17...v) (2020-08-04)
+
+
+
+## [0.1.17](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.16...v0.1.17) (2020-08-04)
+
+
+### Features
+
+* Add changelog support for bump major and minor ([4c0bf90](https://gitswarm.f5net.com/f5aas/f5cs-sdk/commits/4c0bf905832b91e1222ab5e16947dc2deb377cc3))
 
 
 
