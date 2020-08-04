@@ -1,4 +1,13 @@
-# [](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.18...v) (2020-08-04)
+# [](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.19...v) (2020-08-04)
+
+
+
+## [0.1.19](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.18...v0.1.19) (2020-08-04)
+
+
+### Bug Fixes
+
+* Remove test Changelog file ([e91ada6](https://gitswarm.f5net.com/f5aas/f5cs-sdk/commits/e91ada695e91c80085c7ec13e5efeb2d2730b961))
 
 
 
