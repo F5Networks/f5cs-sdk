@@ -241,6 +241,6 @@ changeandtag:
 	$(ECHO) echo "Update changelog"
 	conventional-changelog -i CHANGELOG.md -s -p angular -v
 	git add CHANGELOG.md
-	git commit -m "Update changelog"
+	git commit -m "Update changelog [skip ci]"
 	git tag -m "release of $$(cat VERSION) $$(date)" v$$(cat VERSION)
 	git push && git push --tags

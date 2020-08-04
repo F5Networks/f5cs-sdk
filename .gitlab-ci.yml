@@ -118,7 +118,7 @@ increment_version:
     - git config user.email ${GITLAB_USER_EMAIL} && git config user.name ${GITLAB_USER_NAME}
     - git checkout develop
     - git remote set-url origin "https://${VERSION_BUMP_USERNAME}:${VERSION_BUMP_JOB_TOKEN}@gitswarm.f5net.com/f5aas/f5cs-sdk.git"
-    - make changetag
+    - make changeandtag
     # - conventional-changelog -i CHANGELOG.md -s -p angular -v
     # - git add CHANGELOG.md
     # - cat CHANGELOG.md
