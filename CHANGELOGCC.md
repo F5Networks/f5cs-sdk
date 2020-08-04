@@ -1,3 +1,12 @@
+# [](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.11...v) (2020-08-04)
+
+
+### Bug Fixes
+
+* Fix typo in readme ([5e9809d](https://gitswarm.f5net.com/f5aas/f5cs-sdk/commits/5e9809dd69a4235c659e6f53748d33fd227c8718))
+
+
+
 # [](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.10...v) (2020-08-04)
 
 
