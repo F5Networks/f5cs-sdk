@@ -53,3 +53,12 @@
 
 ### Fixes
 - Update changelog [skip ci] (d77172f9187f0e4a22fe376c96723e9283866716)
+
+
+## 0.1.9
+2020-08-04
+
+### Fixes
+- Resolve merge (79c19d3017171969fe1c65f65a141f8de904313a)
+- Remove auto-increment (1cec4ec5c3806744c76b3950ae190796f2db7d2d)
+- Update changelog [skip ci] (d77172f9187f0e4a22fe376c96723e9283866716)
