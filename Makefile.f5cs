@@ -188,24 +188,22 @@ bump_patch: install_bin ccchangelog ## Bump the patch version
 	#make changeandtag
 	git commit -m "New patch version $$(cat VERSION)" VERSION CHANGELOGCC.md
 	git tag -m "release of $$(cat VERSION) $$(date)" v$$(cat VERSION)
-	git push --tags
 
 .PHONY: bump_minor
-bump_minor: install_bin ccchangelog## Bump the minor version
-	$(ECHO) $(SEMVERSION_CLI) bump minor $$(cat VERSION) > VERSION
+bump_minor: install_bin ccchangelog ## Bump the minor version
+	$(ECHO) $(SEMVERSION_CLI) inc minor $$(cat VERSION) > VERSION
 	git commit -m "New minor version $$(cat VERSION)" VERSION 
 	git tag -m "release of $$(cat VERSION) $$(date)" v$$(cat VERSION)
-	git push --tags
 
 .PHONY: bump_major
-bump_major: install_bin ## Bump the major version
-	$(ECHO) $(SEMVERSION_CLI) bump major $$(cat VERSION) > VERSION
+bump_major: install_bin ccchangelog ## Bump the major version
+	$(ECHO) $(SEMVERSION_CLI) inc major $$(cat VERSION) > VERSION
 	git commit -m "New major version $$(cat VERSION)" VERSION
 	git tag -m "release of $$(cat VERSION) $$(date)" v$$(cat VERSION)
-	git push --tags
 
 .PHONY: release
-release: bump_patch ## Bumps the patch version, commits changes, pushes tags, and pushes changes.
+release: ## Bumps the patch version, commits changes, pushes tags, and pushes changes.
+	git push --tags
 
 .PHONY: rego
 rego:
