@@ -1,4 +1,17 @@
-# [](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.9...v) (2020-08-04)
+# [](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.10...v) (2020-08-04)
+
+
+### Bug Fixes
+
+* more testing ([e7e3a92](https://gitswarm.f5net.com/f5aas/f5cs-sdk/commits/e7e3a927c44698b587fdc7d8f1562b6d6faab89d))
+
+
+
+# [](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.10...v) (2020-08-04)
+
+
+
+## [0.1.10](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.9...v0.1.10) (2020-08-04)
 
 
 ### Bug Fixes
@@ -7,20 +20,12 @@
 
 
 
-# [](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.8...v) (2020-08-04)
+## [0.1.9](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.8...v0.1.9) (2020-08-04)
 
 
 ### Features
 
 * Typo in readme ([f810c8e](https://gitswarm.f5net.com/f5aas/f5cs-sdk/commits/f810c8e8d281e7277898a51f41de97c6d0f72200))
-
-
-
-## [0.1.6](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.5...v0.1.6) (2020-08-04)
-
-
-
-# [](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.8...v) (2020-08-04)
 
 
 
