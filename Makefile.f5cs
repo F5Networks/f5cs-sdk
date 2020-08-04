@@ -183,9 +183,9 @@ install_bin: ## install semver and other golang binaries
     done;
 
 .PHONY: bump_patch
-bump_patch: install_bin ccchangelog ## Bump the patch version
+bump_patch: install_bin ## Bump the patch version
 	$(ECHO) $(SEMVERSION_CLI) inc patch $$(cat VERSION) > VERSION
-	#make changeandtag
+	make ccchangelog
 	git commit -m "New patch version $$(cat VERSION)" VERSION CHANGELOGCC.md
 	git tag -m "release of $$(cat VERSION) $$(date)" v$$(cat VERSION)
 
@@ -237,7 +237,7 @@ changelog:
 
 ccchangelog:
 	$(ECHO) echo "Update changelog"
-	conventional-changelog -i CHANGELOGCC.md -s -p angular -v
+	conventional-changelog -i CHANGELOGCC.md -s -p angular -v -r 0
 	#git add CHANGELOG.md
 	#git commit -m "Update changelog [skip ci]"
 	#git tag -m "release of $$(cat VERSION) $$(date)" v$$(cat VERSION)
