@@ -185,26 +185,26 @@ install_bin: ## install semver and other golang binaries
 .PHONY: bump_patch
 bump_patch: install_bin ## Bump the patch version
 	$(ECHO) $(SEMVERSION_CLI) inc patch $$(cat VERSION) > VERSION
-	git commit -m "New patch version $$(cat VERSION)" VERSION CHANGELOGCC.md
+	git commit -m "New patch version $$(cat VERSION)" VERSION
 	git tag -m "release of $$(cat VERSION) $$(date)" v$$(cat VERSION)
 	git push --tags
-	make ccchangelog
+	make changelog
 
 .PHONY: bump_minor
-bump_minor: install_bin ccchangelog ## Bump the minor version
+bump_minor: install_bin ## Bump the minor version
 	$(ECHO) $(SEMVERSION_CLI) inc minor $$(cat VERSION) > VERSION
 	git commit -m "New minor version $$(cat VERSION)" VERSION 
 	git tag -m "release of $$(cat VERSION) $$(date)" v$$(cat VERSION)
 	git push --tags
-	make ccchangelog
+	make changelog
 
 .PHONY: bump_major
-bump_major: install_bin ccchangelog ## Bump the major version
+bump_major: install_bin ## Bump the major version
 	$(ECHO) $(SEMVERSION_CLI) inc major $$(cat VERSION) > VERSION
 	git commit -m "New major version $$(cat VERSION)" VERSION
 	git tag -m "release of $$(cat VERSION) $$(date)" v$$(cat VERSION)
 	git push --tags
-	make ccchangelog
+	make changelog
 
 .PHONY: release
 release: ## Bumps the patch version, commits changes, pushes tags, and pushes changes.
@@ -231,22 +231,8 @@ redoc: ## Build the API HTML documentation.
 	&& redoc-cli bundle $(CI_PROJECT_NAME).openapi3.final.json -o $(CI_PROJECT_NAME).html;
 
 changelog:
-	$(ECHO) echo >> CHANGELOG.md && \
-		echo "" >> CHANGELOG.md && \
-		echo "## $$($(SEMVERSION_CLI) inc patch $$(cat VERSION))" >> CHANGELOG.md && \
-		echo $$(date +"%Y-%m-%d") >> CHANGELOG.md && \
-		echo "" >> CHANGELOG.md && \
-		echo "### Fixes" >> CHANGELOG.md && \
-		git log v$$(cat VERSION)...HEAD --pretty=format:"- %s (%H)" >> CHANGELOG.md
-		echo "" >> CHANGELOG.md
-
-ccchangelog:
 	$(ECHO) echo "Update changelog"
-	conventional-changelog -i CHANGELOGCC.md -s -p angular -v -r 0
-	git add CHANGELOGCC.md
+	conventional-changelog -i CHANGELOG.md -s -p angular -v -r 0
+	git add CHANGELOG.md
 	git commit -m "$Update Changelog for $(cat VERSION)"
 	git push
-	#git add CHANGELOG.md
-	#git commit -m "Update changelog [skip ci]"
-	#git tag -m "release of $$(cat VERSION) $$(date)" v$$(cat VERSION)
-	#git push && git push --tags
