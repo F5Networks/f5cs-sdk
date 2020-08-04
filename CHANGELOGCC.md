@@ -1,4 +1,13 @@
-# [](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.12...v) (2020-08-04)
+# [](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.13...v) (2020-08-04)
+
+
+### Bug Fixes
+
+* Makefile fix for changelog ([bac2ec8](https://gitswarm.f5net.com/f5aas/f5cs-sdk/commits/bac2ec8f790dab1a491627997084ba30e71d6246))
+
+
+
+## [0.1.13](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.12...v0.1.13) (2020-08-04)
 
 
 ### Bug Fixes
@@ -7,7 +16,7 @@
 
 
 
-# [](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.11...v) (2020-08-04)
+## [0.1.12](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.11...v0.1.12) (2020-08-04)
 
 
 ### Bug Fixes
@@ -16,16 +25,12 @@
 
 
 
-# [](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.10...v) (2020-08-04)
+## [0.1.11](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.10...v0.1.11) (2020-08-04)
 
 
 ### Bug Fixes
 
 * more testing ([e7e3a92](https://gitswarm.f5net.com/f5aas/f5cs-sdk/commits/e7e3a927c44698b587fdc7d8f1562b6d6faab89d))
-
-
-
-# [](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.10...v) (2020-08-04)
 
 
 
