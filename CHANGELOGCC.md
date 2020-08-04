@@ -1,3 +1,12 @@
+# [](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.12...v) (2020-08-04)
+
+
+### Bug Fixes
+
+* update readme ([cb87f3e](https://gitswarm.f5net.com/f5aas/f5cs-sdk/commits/cb87f3e015da96ae41b5239b2dcb6577b11868bc))
+
+
+
 # [](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.11...v) (2020-08-04)
 
 
