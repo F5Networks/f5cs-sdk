@@ -121,7 +121,7 @@ increment_version:
     - conventional-changelog -i CHANGELOG.md -s -p angular -v
     - git add CHANGELOG.md
     - cat CHANGELOG.md
-    - git commit -m "Test commit log"
+    - git commit -m "Test commit log [skip ci]"
     - git push origin HEAD:$CI_COMMIT_REF_NAME
   only:
     refs:
