@@ -1,6 +1,19 @@
 # [](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.8...v) (2020-08-04)
 
 
+### Features
+
+* Typo in readme ([f810c8e](https://gitswarm.f5net.com/f5aas/f5cs-sdk/commits/f810c8e8d281e7277898a51f41de97c6d0f72200))
+
+
+
+## [0.1.6](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.5...v0.1.6) (2020-08-04)
+
+
+
+# [](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.8...v) (2020-08-04)
+
+
 
 ## [0.1.6](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.5...v0.1.6) (2020-08-04)
 
