@@ -185,7 +185,7 @@ install_bin: ## install semver and other golang binaries
 .PHONY: bump_patch
 bump_patch: install_bin ## Bump the patch version
 	$(ECHO) $(SEMVERSION_CLI) inc patch $$(cat VERSION) > VERSION
-	make ccchangelog
+	#make ccchangelog
 	git commit -m "New patch version $$(cat VERSION)" VERSION CHANGELOGCC.md
 	git tag -m "release of $$(cat VERSION) $$(date)" v$$(cat VERSION)
 
