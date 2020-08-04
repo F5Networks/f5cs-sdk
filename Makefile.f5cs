@@ -185,9 +185,10 @@ install_bin: ## install semver and other golang binaries
 .PHONY: bump_patch
 bump_patch: install_bin ## Bump the patch version
 	$(ECHO) $(SEMVERSION_CLI) bump patch $$(cat VERSION) > VERSION
-	git commit -m "New patch version $$(cat VERSION)" VERSION
-	git tag -m "release of $$(cat VERSION) $$(date)" v$$(cat VERSION)
-	git push --tags
+	make changeandtag
+	#git commit -m "New patch version $$(cat VERSION)" VERSION
+	#git tag -m "release of $$(cat VERSION) $$(date)" v$$(cat VERSION)
+	#git push --tags
 
 .PHONY: bump_minor
 bump_minor: install_bin ## Bump the minor version
@@ -235,3 +236,11 @@ changelog:
 		echo "### Fixes" >> CHANGELOG.md && \
 		git log v$$(cat VERSION)...HEAD --pretty=format:"- %s (%H)" >> CHANGELOG.md
 		echo "" >> CHANGELOG.md
+
+changeandtag:
+	$(ECHO) echo "Update changelog"
+	conventional-changelog -i CHANGELOG.md -s -p angular -v
+	git add CHANGELOG.md
+	git commit -m "Update changelog"
+	git tag -m "release of $$(cat VERSION) $$(date)" v$$(cat VERSION)
+	git push && git push --tags
