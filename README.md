@@ -8,7 +8,7 @@ This repository contains the `Go` generated SDK only. SDK for other languages ca
 
 ## SDK Generation and Current Status
 
-The SDK generation needs only 1 input - the opanapi spec file. As of now, the openapi spec files from subscription-service and authentication-service are copied over from the respective repos in the `schema` folder.
+The SDK generation needs only 1 input - the opanapi spec file. As of now, the openapi spec files from subscription-service and authentication-service are copied over from the respective repostories in the `schema` folder.
 
 TODO - To directly use the openapi spec files from respective repos instead of copying manually.
 
