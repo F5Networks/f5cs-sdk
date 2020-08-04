@@ -117,10 +117,11 @@ increment_version:
   script:
     - git config user.email ${GITLAB_USER_EMAIL} && git config user.name ${GITLAB_USER_NAME}
     - git checkout develop
-    - git remote set-url origin "https://${VERSION_BUMP_USERNAME}:${VERSION_BUMP_JOB_TOKEN}@gitswarm.f5net.com/f5aas/f5cs-sdk/f5cs-sdk.git"
+    - git remote set-url origin "https://${VERSION_BUMP_USERNAME}:${VERSION_BUMP_JOB_TOKEN}@gitswarm.f5net.com/f5aas/f5cs-sdk.git"
     - conventional-changelog -i CHANGELOG.md -s -p angular -v
     - git add CHANGELOG.md
     - cat CHANGELOG.md
+    - git commit -m "Test commit log"
     - git push origin
   only:
     refs:
