@@ -1,6 +1,13 @@
-# [](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.19...v) (2020-08-04)
+# Changelog
+
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [0.1.20](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.19...v0.1.20) (2020-08-19)
 
 
+### Bug Fixes
+
+* squashed feature update readme ([e05e5c9](https://gitswarm.f5net.com/f5aas/f5cs-sdk/commit/e05e5c9eb4078e3957b38ef25c698ee8bf78f1d5))
 
 ## [0.1.19](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.18...v0.1.19) (2020-08-04)
 
@@ -142,6 +149,3 @@
 ### Bug Fixes
 
 * Fix the sdk doc ([a0ed297](https://gitswarm.f5net.com/f5aas/f5cs-sdk/commits/a0ed297f06b885564b78940b78bbc965e8d7dd74))
-
-
-
