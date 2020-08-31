@@ -19,7 +19,7 @@ endif
 
 VERSION				 ?= $(shell cat VERSION)
 SEMVER 				 ?= $(VERSION)$(if $(PRERELEASE),-$(PRERELEASE),)$(if $(BUILD_META),+$(BUILD_META),)
-SEMVERSION_CLI		 = scripts/semver
+SEMVERSION_CLI		 = $(GOPATH)/bin/semver-cli
 BIN_DIR				 = bin
 TEST_DIR			 = test
 OUT_DIR				 = $(BIN_DIR)/linux_amd64
@@ -147,7 +147,7 @@ lint:  ## Lint go code
 
 .PHONY: docker
 docker: ## Build docker image
-	$(ECHO) docker build --no-cache \
+	$(ECHO) docker build \
 		--build-arg SEMVER=$(SEMVER) \
 		--build-arg CI_COMMIT_SHORT_SHA=$(CI_COMMIT_SHORT_SHA) \
 		--build-arg CI_COMMIT_SHA=$(CI_COMMIT_SHA) \
