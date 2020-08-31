@@ -19,7 +19,7 @@ endif
 
 VERSION				 ?= $(shell cat VERSION)
 SEMVER 				 ?= $(VERSION)$(if $(PRERELEASE),-$(PRERELEASE),)$(if $(BUILD_META),+$(BUILD_META),)
-SEMVERSION_CLI		 = scripts/semver
+SEMVERSION_CLI		 = $(GOPATH)/bin/semver-cli
 BIN_DIR				 = bin
 TEST_DIR			 = test
 OUT_DIR				 = $(BIN_DIR)/linux_amd64
@@ -147,7 +147,7 @@ lint:  ## Lint go code
 
 .PHONY: docker
 docker: ## Build docker image
-	$(ECHO) docker build --no-cache \
+	$(ECHO) docker build \
 		--build-arg SEMVER=$(SEMVER) \
 		--build-arg CI_COMMIT_SHORT_SHA=$(CI_COMMIT_SHORT_SHA) \
 		--build-arg CI_COMMIT_SHA=$(CI_COMMIT_SHA) \
@@ -184,27 +184,31 @@ install_bin: ## install semver and other golang binaries
 
 .PHONY: bump_patch
 bump_patch: install_bin ## Bump the patch version
-	$(ECHO) $(SEMVERSION_CLI) bump patch $$(cat VERSION) > VERSION
+	$(ECHO) $(SEMVERSION_CLI) inc patch $$(cat VERSION) > VERSION
 	git commit -m "New patch version $$(cat VERSION)" VERSION
 	git tag -m "release of $$(cat VERSION) $$(date)" v$$(cat VERSION)
 	git push --tags
+	make changelog
 
 .PHONY: bump_minor
 bump_minor: install_bin ## Bump the minor version
-	$(ECHO) $(SEMVERSION_CLI) bump minor $$(cat VERSION) > VERSION
-	git commit -m "New minor version $$(cat VERSION)" VERSION
+	$(ECHO) $(SEMVERSION_CLI) inc minor $$(cat VERSION) > VERSION
+	git commit -m "New minor version $$(cat VERSION)" VERSION 
 	git tag -m "release of $$(cat VERSION) $$(date)" v$$(cat VERSION)
 	git push --tags
+	make changelog
 
 .PHONY: bump_major
 bump_major: install_bin ## Bump the major version
-	$(ECHO) $(SEMVERSION_CLI) bump major $$(cat VERSION) > VERSION
+	$(ECHO) $(SEMVERSION_CLI) inc major $$(cat VERSION) > VERSION
 	git commit -m "New major version $$(cat VERSION)" VERSION
 	git tag -m "release of $$(cat VERSION) $$(date)" v$$(cat VERSION)
 	git push --tags
+	make changelog
 
 .PHONY: release
-release: bump_patch ## Bumps the patch version, commits changes, pushes tags, and pushes changes.
+release: ## Bumps the patch version, commits changes, pushes tags, and pushes changes.
+	git push --tags
 
 .PHONY: rego
 rego:
@@ -225,3 +229,10 @@ redoc: ## Build the API HTML documentation.
 	cd pkg/proto \
 	&& swagger2openapi --outfile $(CI_PROJECT_NAME).openapi3.final.json $(CI_PROJECT_NAME).swagger.json \
 	&& redoc-cli bundle $(CI_PROJECT_NAME).openapi3.final.json -o $(CI_PROJECT_NAME).html;
+
+changelog:
+	$(ECHO) echo "Update changelog"
+	conventional-changelog -i CHANGELOG.md -s -p angular -v -r 0
+	git add CHANGELOG.md
+	git commit -m "$Update Changelog for $(cat VERSION)"
+	git push

@@ -1,6 +1,6 @@
 # SDK for F5CS services
 
-## SDK Overview
+## SDK Overview - golang only
 
 This SDK is generated using openapi-generator tool (Link here). openapi-generator supports auto-generation of SDK for numerous languages using openapi specification.
 
@@ -8,20 +8,25 @@ This repository contains the `Go` generated SDK only. SDK for other languages ca
 
 ## SDK Generation and Current Status
 
-The SDK generation needs only 1 input - the opanapi spec file. As of now, the openapi spec files from subscription-service and authentication-service are copied over from the respective repos in the `schema` folder.
+The SDK generation needs only 1 input - the openapi spec file. As of now, the openapi spec files from subscription-service and authentication-service are copied over from the respective repostories in the `schema` folder.
 
 TODO - To directly use the openapi spec files from respective repos instead of copying manually.
 
-To generate Golang SDK for new schemas, you can just update the Makefile. To generate the SDK, use the following command.
+To generate Golang SDK for new schemas, you can just update the Makefile with the new spec files. To generate the SDK, use the following command.
 
 ```
 make gensdk
+
 ```
+
+Other language support can be easily added.
 
 ## SDK Usage
 
 Each Generated package has an example of how to use the SDK and Readme corresponding to it. However, here is an example of how to use the SDK to Login to F5CS account and Get Subscriptions for the account.
+
 ```golang
+
 import (
 	"log"
 	"context"
@@ -53,5 +58,7 @@ func main() {
 		return
 	}
 }
+
+
 ```
 
