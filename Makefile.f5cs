@@ -182,30 +182,6 @@ install_bin: ## install semver and other golang binaries
         fi; \
     done;
 
-.PHONY: bump_patch
-bump_patch: install_bin ## Bump the patch version
-	$(ECHO) $(SEMVERSION_CLI) bump patch $$(cat VERSION) > VERSION
-	git commit -m "New patch version $$(cat VERSION)" VERSION
-	git tag -m "release of $$(cat VERSION) $$(date)" v$$(cat VERSION)
-	git push --tags
-
-.PHONY: bump_minor
-bump_minor: install_bin ## Bump the minor version
-	$(ECHO) $(SEMVERSION_CLI) bump minor $$(cat VERSION) > VERSION
-	git commit -m "New minor version $$(cat VERSION)" VERSION
-	git tag -m "release of $$(cat VERSION) $$(date)" v$$(cat VERSION)
-	git push --tags
-
-.PHONY: bump_major
-bump_major: install_bin ## Bump the major version
-	$(ECHO) $(SEMVERSION_CLI) bump major $$(cat VERSION) > VERSION
-	git commit -m "New major version $$(cat VERSION)" VERSION
-	git tag -m "release of $$(cat VERSION) $$(date)" v$$(cat VERSION)
-	git push --tags
-
-.PHONY: release
-release: bump_patch ## Bumps the patch version, commits changes, pushes tags, and pushes changes.
-
 .PHONY: rego
 rego:
 	## NOTE: Only build Rego if the directory is there.
@@ -225,3 +201,8 @@ redoc: ## Build the API HTML documentation.
 	cd pkg/proto \
 	&& swagger2openapi --outfile $(CI_PROJECT_NAME).openapi3.final.json $(CI_PROJECT_NAME).swagger.json \
 	&& redoc-cli bundle $(CI_PROJECT_NAME).openapi3.final.json -o $(CI_PROJECT_NAME).html;
+
+.PHONY: version
+version:
+	$(ECHO) echo "Update changelog"
+	standard-version
