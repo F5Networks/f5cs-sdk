@@ -1,2 +1,0 @@
-docker run --rm -v "${PWD}/authgen:/authgen" -v "${PWD}/schema:/schema" openapitools/openapi-generator-cli generate -i ./schema/authentication-service.openapi3.json -g go  -o ./authgen/ --package-name=authgen
-docker run --rm -v "${PWD}/subgen:/subgen" -v "${PWD}/schema:/schema" openapitools/openapi-generator-cli generate -i ./schema/subscription-service.openapi3.json -g go     -o ./subgen/ --package-name=subgen
