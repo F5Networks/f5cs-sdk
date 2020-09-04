@@ -1,0 +1,337 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "dashboard-service.proto",
+        "version": "version not set"
+    },
+    "paths": {
+        "/v1/svc-dashboard/dashboard/accounts/{account_id}": {
+            "get": {
+                "operationId": "GetAccountServices",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/dashboard_serviceGetAccountServicesReply"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "account_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "duration",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "DashboardService"
+                ]
+            }
+        },
+        "/v1/svc-dashboard/dashboard/accounts/{account_id}/services/{service_id}": {
+            "get": {
+                "operationId": "GetServiceDetails",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/dashboard_serviceGetServiceDetailsReply"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "account_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "service_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "DashboardService"
+                ]
+            }
+        },
+        "/v1/svc-dashboard/dashboard/accounts/{account_id}/summary": {
+            "get": {
+                "operationId": "GetAccountSummary",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/dashboard_serviceGetAccountSummaryReply"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "account_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "duration",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "DashboardService"
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "dashboard_serviceAccountSummaryStats": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "$ref": "#/components/schemas/dashboard_serviceServiceType"
+                    },
+                    "health": {
+                        "$ref": "#/components/schemas/dashboard_serviceServiceHealth"
+                    },
+                    "count": {
+                        "type": "string",
+                        "format": "uint64"
+                    },
+                    "duration": {
+                        "type": "string"
+                    }
+                }
+            },
+            "dashboard_serviceDNSServiceDetails": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "string",
+                        "format": "uint64"
+                    },
+                    "stat_type": {
+                        "type": "string"
+                    },
+                    "duration": {
+                        "type": "string"
+                    },
+                    "total_records": {
+                        "type": "string",
+                        "format": "uint64"
+                    }
+                }
+            },
+            "dashboard_serviceGSLBServiceDetails": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "string",
+                        "format": "uint64"
+                    },
+                    "stat_type": {
+                        "type": "string"
+                    },
+                    "duration": {
+                        "type": "string"
+                    }
+                }
+            },
+            "dashboard_serviceGetAccountServicesReply": {
+                "type": "object",
+                "properties": {
+                    "stats": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/dashboard_serviceServiceGeneralStats"
+                        }
+                    }
+                }
+            },
+            "dashboard_serviceGetAccountSummaryReply": {
+                "type": "object",
+                "properties": {
+                    "stats": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/dashboard_serviceAccountSummaryStats"
+                        }
+                    }
+                }
+            },
+            "dashboard_serviceGetServiceDetailsReply": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "$ref": "#/components/schemas/dashboard_serviceServiceType"
+                    },
+                    "health": {
+                        "$ref": "#/components/schemas/dashboard_serviceServiceHealth"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "stats": {
+                        "$ref": "#/components/schemas/dashboard_serviceServiceMeteringStats"
+                    }
+                }
+            },
+            "dashboard_serviceServiceGeneralStats": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "$ref": "#/components/schemas/dashboard_serviceServiceType"
+                    },
+                    "health": {
+                        "$ref": "#/components/schemas/dashboard_serviceServiceHealth"
+                    },
+                    "last_queried": {
+                        "type": "string",
+                        "format": "uint64"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "details": {
+                        "$ref": "#/components/schemas/dashboard_serviceDNSServiceDetails"
+                    },
+                    "gslb_details": {
+                        "$ref": "#/components/schemas/dashboard_serviceGSLBServiceDetails"
+                    }
+                }
+            },
+            "dashboard_serviceServiceHealth": {
+                "type": "string",
+                "enum": [
+                    "RED",
+                    "GREEN",
+                    "BLACK",
+                    "YELLOW"
+                ],
+                "default": "RED"
+            },
+            "dashboard_serviceServiceMeteringStat": {
+                "type": "object",
+                "properties": {
+                    "year": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "month": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "day": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "count": {
+                        "type": "string",
+                        "format": "uint64"
+                    }
+                }
+            },
+            "dashboard_serviceServiceMeteringStats": {
+                "type": "object",
+                "properties": {
+                    "granularity": {
+                        "$ref": "#/components/schemas/dashboard_serviceStatTimeGranularity"
+                    },
+                    "stat_type": {
+                        "type": "string"
+                    },
+                    "duration": {
+                        "type": "string"
+                    },
+                    "stats": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/dashboard_serviceServiceMeteringStat"
+                        }
+                    }
+                }
+            },
+            "dashboard_serviceServiceType": {
+                "type": "string",
+                "enum": [
+                    "adns",
+                    "gslb",
+                    "waf",
+                    "bot",
+                    "_max"
+                ],
+                "default": "adns",
+                "description": " - adns: Never change lower ones, add to the end.\n - _max: The max must be at the end and change."
+            },
+            "dashboard_serviceStatTimeGranularity": {
+                "type": "string",
+                "enum": [
+                    "d",
+                    "w",
+                    "m",
+                    "y"
+                ],
+                "default": "d"
+            }
+        }
+    }
+}
