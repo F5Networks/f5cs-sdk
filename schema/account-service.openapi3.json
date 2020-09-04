@@ -1,0 +1,2566 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "account-service.proto",
+        "version": "version not set"
+    },
+    "paths": {
+        "/v1/svc-account/accounts": {
+            "post": {
+                "summary": "Create a new account",
+                "operationId": "CreateAccount",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1Account"
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/v1CreateAccountRequest"
+                },
+                "tags": [
+                    "AccountService"
+                ]
+            }
+        },
+        "/v1/svc-account/accounts/-/members/batch-get": {
+            "post": {
+                "summary": "Batch get members from multiple accounts by account IDs",
+                "operationId": "BatchGetAccountMembers",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1BatchGetAccountMembersResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/v1BatchGetAccountMembersRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "AccountService"
+                ]
+            }
+        },
+        "/v1/svc-account/accounts/batch-get": {
+            "post": {
+                "summary": "Batch get multiple accounts by ids",
+                "operationId": "BatchGetAccounts",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1BatchGetAccountsResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/v1BatchGetAccountsRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "AccountService"
+                ]
+            }
+        },
+        "/v1/svc-account/accounts/{account_id}/catalogs": {
+            "get": {
+                "summary": "List catalog items for an account",
+                "operationId": "ListCatalogItemsForAccount",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1ListCatalogItemsForAccountResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "account_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "AccountService"
+                ]
+            },
+            "post": {
+                "summary": "Enable catalog item for an account",
+                "operationId": "EnableCatalogItemForAccount",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1AccountCatalogItem"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "account_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/v1EnableCatalogItemForAccountRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "AccountService"
+                ]
+            }
+        },
+        "/v1/svc-account/accounts/{account_id}/catalogs/{catalog_id}": {
+            "delete": {
+                "summary": "Disable catalog item for an account",
+                "operationId": "DisableCatalogItemForAccount",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1EmptyMessage"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "account_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "catalog_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "AccountService"
+                ]
+            }
+        },
+        "/v1/svc-account/accounts/{account_id}/members": {
+            "get": {
+                "summary": "List account members",
+                "operationId": "ListAccountMembers",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1ListAccountMembersResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "account_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "AccountService"
+                ]
+            },
+            "post": {
+                "summary": "Add an account member",
+                "operationId": "AddAccountMember",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1AccountMember"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "account_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/v1AddAccountMemberRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "AccountService"
+                ]
+            }
+        },
+        "/v1/svc-account/accounts/{account_id}/members/{user_id}": {
+            "get": {
+                "summary": "Get an account member",
+                "operationId": "GetAccountMember",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1AccountMember"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "account_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "AccountService"
+                ]
+            },
+            "delete": {
+                "summary": "Delete an account member",
+                "description": "Removes a member from an account.",
+                "operationId": "DeleteAccountMember",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1EmptyMessage"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "account_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "AccountService"
+                ]
+            },
+            "put": {
+                "summary": "Update an account member",
+                "operationId": "UpdateAccountMember",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1AccountMember"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "account_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/v1UpdateAccountMemberRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "AccountService"
+                ]
+            }
+        },
+        "/v1/svc-account/accounts/{id}": {
+            "get": {
+                "summary": "Get account",
+                "operationId": "GetAccount",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1Account"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "AccountService"
+                ]
+            },
+            "delete": {
+                "summary": "Delete an account",
+                "operationId": "DeleteAccount",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1EmptyMessage"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cascade",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "format": "boolean"
+                        }
+                    }
+                ],
+                "tags": [
+                    "AccountService"
+                ]
+            },
+            "put": {
+                "summary": "Update an account",
+                "operationId": "UpdateAccount",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1Account"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Account ID",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/v1Account"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "AccountService"
+                ]
+            }
+        },
+        "/v1/svc-account/accounts/{id}/migrate": {
+            "post": {
+                "summary": "Migrate preview account",
+                "operationId": "MigratePreviewAccount",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1EmptyMessage"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/v1AccountIdRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "AccountService"
+                ]
+            }
+        },
+        "/v1/svc-account/accounts/{parent_account_id}/subaccounts": {
+            "get": {
+                "summary": "List sub-accounts",
+                "operationId": "ListSubAccounts",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1ListAccountsResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "parent_account_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "AccountService"
+                ]
+            },
+            "post": {
+                "summary": "Create a sub-account",
+                "description": "Create a new account with a specified parent account.",
+                "operationId": "CreateSubAccount",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1Account"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "parent_account_id",
+                        "description": "Parent account ID\n\nIf parent account ID is specified, this operation will create a sub-account under parent account.",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/v1CreateAccountRequest"
+                },
+                "tags": [
+                    "AccountService"
+                ]
+            }
+        },
+        "/v1/svc-account/invites": {
+            "get": {
+                "summary": "List invites",
+                "operationId": "ListInvites",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1Invites"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "invitee_email",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "AccountService"
+                ]
+            },
+            "post": {
+                "summary": "Create a new invite into an account",
+                "operationId": "CreateInvite",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1Invite"
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/v1CreateInviteRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "AccountService"
+                ]
+            }
+        },
+        "/v1/svc-account/invites/batch-create": {
+            "post": {
+                "summary": "Batch create multiple invites",
+                "operationId": "BatchCreateInvites",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1Invites"
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/v1BatchCreateInviteRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "AccountService"
+                ]
+            }
+        },
+        "/v1/svc-account/invites/{invite_id}": {
+            "delete": {
+                "summary": "Delete an invite",
+                "description": "Rescind an invitation to an account.",
+                "operationId": "DeleteInvite",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1EmptyMessage"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "invite_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "AccountService"
+                ]
+            }
+        },
+        "/v1/svc-account/invites/{invite_token}/accept": {
+            "post": {
+                "summary": "Accept an invite",
+                "operationId": "AcceptInvite",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1AcceptInviteResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "invite_token",
+                        "description": "Invite token",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/v1InviteeRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "AccountService"
+                ]
+            }
+        },
+        "/v1/svc-account/roles": {
+            "get": {
+                "summary": "List roles",
+                "operationId": "ListRoles",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1ListRolesResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "AccountService"
+                ]
+            }
+        },
+        "/v1/svc-account/roles/{id}": {
+            "get": {
+                "summary": "Get role",
+                "operationId": "GetRole",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1Role"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "AccountService"
+                ]
+            }
+        },
+        "/v1/svc-account/signup/accept": {
+            "post": {
+                "summary": "Accept signup",
+                "operationId": "AcceptSignup",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1AcceptSignupResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/v1AcceptSignupRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "AccountService"
+                ]
+            }
+        },
+        "/v1/svc-account/signup/validate": {
+            "post": {
+                "summary": "Validate signup token",
+                "operationId": "ValidateSignupToken",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1ValidateSignupTokenResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/v1ValidateSignupTokenRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "AccountService"
+                ]
+            }
+        },
+        "/v1/svc-account/user": {
+            "get": {
+                "summary": "Get currently authenticated user",
+                "operationId": "GetCurrentUser",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1User"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "AccountService"
+                ]
+            }
+        },
+        "/v1/svc-account/users": {
+            "post": {
+                "summary": "Create a new user",
+                "operationId": "CreateUser",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1User"
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/v1CreateUserRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "AccountService"
+                ]
+            }
+        },
+        "/v1/svc-account/users/confirm-email": {
+            "post": {
+                "summary": "Confirm email",
+                "operationId": "ConfirmEmail",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1EmptyMessage"
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/v1ConfirmEmailRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "AccountService"
+                ]
+            }
+        },
+        "/v1/svc-account/users/confirm-reset-password": {
+            "post": {
+                "summary": "Confirm password reset",
+                "operationId": "ConfirmResetPassword",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1EmptyMessage"
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/v1ConfirmResetPasswordRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "AccountService"
+                ]
+            }
+        },
+        "/v1/svc-account/users/reset-password": {
+            "post": {
+                "summary": "Reset password",
+                "operationId": "ResetPassword",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1ResetPasswordResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/v1ResetPasswordRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "AccountService"
+                ]
+            }
+        },
+        "/v1/svc-account/users/send-confirm-email": {
+            "post": {
+                "summary": "Send confirmation email",
+                "operationId": "SendConfirmEmail",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1SendConfirmEmailResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/v1SendConfirmEmailRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "AccountService"
+                ]
+            }
+        },
+        "/v1/svc-account/users/{id}": {
+            "get": {
+                "summary": "Get a user",
+                "operationId": "GetUser",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1User"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "AccountService"
+                ]
+            },
+            "delete": {
+                "summary": "Delete a user",
+                "operationId": "DeleteUser",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1EmptyMessage"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "AccountService"
+                ]
+            },
+            "put": {
+                "summary": "Update a user",
+                "operationId": "UpdateUser",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1User"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/v1User"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "AccountService"
+                ]
+            }
+        },
+        "/v1/svc-account/users/{id}/history": {
+            "get": {
+                "summary": "Get user history",
+                "operationId": "GetUserHistory",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1User"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "AccountService"
+                ]
+            }
+        },
+        "/v1/svc-account/users/{user_id}/memberships": {
+            "get": {
+                "summary": "List user memberships",
+                "description": "List accounts user has access to.",
+                "operationId": "ListUserMemberships",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1ListUserMembershipsResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "AccountService"
+                ]
+            }
+        },
+        "/v1/svc-account/users/{user_id}/terms": {
+            "get": {
+                "summary": "List terms of service acceptance",
+                "operationId": "ListUserTermsAcceptance",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1TermsAcceptanceList"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "AccountService"
+                ]
+            },
+            "post": {
+                "summary": "Create terms of service acceptance",
+                "operationId": "CreateUserTermsAcceptance",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1TermsAcceptance"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "description": "User ID for terms of service acceptance.",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/v1TermsAcceptanceRequest"
+                },
+                "tags": [
+                    "AccountService"
+                ]
+            }
+        },
+        "/v1/svc-account/users/{user_id}/terms/{name}": {
+            "get": {
+                "summary": "Get terms of service acceptance",
+                "operationId": "GetUserTermsAcceptance",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1TermsAcceptance"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "AccountService"
+                ]
+            },
+            "put": {
+                "summary": "Update terms of service acceptance",
+                "operationId": "UpdateUserTermsAcceptance",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1TermsAcceptance"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "description": "User ID for terms of service acceptance.",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "description": "Terms of service name\n\nCurrent values: `cloud_services`, `business_entity`.",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/v1TermsAcceptanceRequest"
+                },
+                "tags": [
+                    "AccountService"
+                ]
+            }
+        }
+    },
+    "components": {
+        "requestBodies": {
+            "v1TermsAcceptanceRequest": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/v1TermsAcceptanceRequest"
+                        }
+                    }
+                },
+                "required": true
+            },
+            "v1CreateAccountRequest": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/v1CreateAccountRequest"
+                        }
+                    }
+                },
+                "required": true
+            }
+        },
+        "schemas": {
+            "protobufListValue": {
+                "type": "object",
+                "properties": {
+                    "values": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/protobufValue"
+                        },
+                        "description": "Repeated field of dynamically typed values."
+                    }
+                },
+                "description": "`ListValue` is a wrapper around a repeated field of values.\n\nThe JSON representation for `ListValue` is JSON array."
+            },
+            "protobufNullValue": {
+                "type": "string",
+                "enum": [
+                    "NULL_VALUE"
+                ],
+                "default": "NULL_VALUE",
+                "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\n The JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value."
+            },
+            "protobufStruct": {
+                "type": "object",
+                "properties": {
+                    "fields": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/components/schemas/protobufValue"
+                        },
+                        "description": "Unordered map of dynamically typed values."
+                    }
+                },
+                "description": "`Struct` represents a structured data value, consisting of fields\nwhich map to dynamically typed values. In some languages, `Struct`\nmight be supported by a native representation. For example, in\nscripting languages like JS a struct is represented as an\nobject. The details of that representation are described together\nwith the proto support for the language.\n\nThe JSON representation for `Struct` is JSON object."
+            },
+            "protobufValue": {
+                "type": "object",
+                "properties": {
+                    "null_value": {
+                        "$ref": "#/components/schemas/protobufNullValue"
+                    },
+                    "number_value": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Represents a double value."
+                    },
+                    "string_value": {
+                        "type": "string",
+                        "description": "Represents a string value."
+                    },
+                    "bool_value": {
+                        "type": "boolean",
+                        "format": "boolean",
+                        "description": "Represents a boolean value."
+                    },
+                    "struct_value": {
+                        "$ref": "#/components/schemas/protobufStruct"
+                    },
+                    "list_value": {
+                        "$ref": "#/components/schemas/protobufListValue"
+                    }
+                },
+                "description": "`Value` represents a dynamically typed value which can be either\nnull, a number, a string, a boolean, a recursive struct value, or a\nlist of values. A producer of value is expected to set one of that\nvariants, absence of any variant indicates an error.\n\nThe JSON representation for `Value` is JSON value."
+            },
+            "v1AcceptInviteAccount": {
+                "type": "object",
+                "properties": {
+                    "account_id": {
+                        "type": "string",
+                        "title": "Account ID"
+                    },
+                    "catalog_invites": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/v1AcceptInviteCatalog"
+                        },
+                        "title": "Catalog items that are part of the accepted invite"
+                    }
+                }
+            },
+            "v1AcceptInviteCatalog": {
+                "type": "object",
+                "properties": {
+                    "catalog_id": {
+                        "type": "string",
+                        "title": "Catalog ID"
+                    }
+                }
+            },
+            "v1AcceptInviteResponse": {
+                "type": "object",
+                "properties": {
+                    "account_invites": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/v1AcceptInviteAccount"
+                        },
+                        "title": "Accounts that are part of the accepted invite"
+                    }
+                }
+            },
+            "v1AcceptSignupRequest": {
+                "type": "object",
+                "properties": {
+                    "signup_provider": {
+                        "type": "string",
+                        "title": "Required. This should be a valid signup provider, set to 'aws' if using AWS Marketplace"
+                    },
+                    "signup_token": {
+                        "type": "string",
+                        "title": "Required. This should be a valid token, set to value of x-amzn-marketplace-token for AWS Marketplace"
+                    },
+                    "account_name": {
+                        "type": "string",
+                        "title": "Optional. Will be used to create a new account associated to signup_provider, if one does not exist"
+                    }
+                }
+            },
+            "v1AcceptSignupResponse": {
+                "type": "object",
+                "properties": {
+                    "account": {
+                        "$ref": "#/components/schemas/v1Account"
+                    },
+                    "catalog_id": {
+                        "type": "string",
+                        "description": "Catalog ID of the offering user just subscribed to. Can be used to initiate the subscription."
+                    }
+                }
+            },
+            "v1Account": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "Account ID"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Account name"
+                    },
+                    "parent_account_id": {
+                        "type": "string",
+                        "description": "Optional parent account ID. If not empty, this account is a sub-account."
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "level": {
+                        "type": "string",
+                        "format": "uint64"
+                    },
+                    "signup_provider": {
+                        "type": "string",
+                        "title": "Signup provider can be 'standard' or 'aws'"
+                    },
+                    "address": {
+                        "$ref": "#/components/schemas/v1Address"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "title": "Phone of an account"
+                    },
+                    "compliant": {
+                        "type": "boolean",
+                        "format": "boolean",
+                        "title": "Account is compliant"
+                    },
+                    "catalog_items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/v1AccountCatalogItem"
+                        },
+                        "title": "List of catalog items account is allowed to use"
+                    },
+                    "create_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "update_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "delete_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "title": "Account"
+            },
+            "v1AccountCatalogItem": {
+                "type": "object",
+                "properties": {
+                    "catalog_id": {
+                        "type": "string"
+                    },
+                    "account_id": {
+                        "type": "string"
+                    },
+                    "service_type": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/v1AccountCatalogStatus"
+                    },
+                    "billing_provider": {
+                        "type": "string"
+                    },
+                    "trial_end_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "contract_end_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "create_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "update_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "delete_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "v1AccountCatalogStatus": {
+                "type": "string",
+                "enum": [
+                    "UNSUBSCRIBED",
+                    "SUBSCRIBED"
+                ],
+                "default": "UNSUBSCRIBED"
+            },
+            "v1AccountIdRequest": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    }
+                }
+            },
+            "v1AccountMember": {
+                "type": "object",
+                "properties": {
+                    "account_id": {
+                        "type": "string",
+                        "title": "Account ID"
+                    },
+                    "user_id": {
+                        "type": "string",
+                        "title": "User ID"
+                    },
+                    "role_id": {
+                        "type": "string",
+                        "title": "Role ID"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/v1AccountMemberUser"
+                    },
+                    "account_name": {
+                        "type": "string",
+                        "title": "Account name"
+                    },
+                    "role_name": {
+                        "type": "string",
+                        "title": "Role name"
+                    },
+                    "level": {
+                        "type": "string",
+                        "format": "uint64",
+                        "title": "Level in the hierarchy"
+                    },
+                    "signup_provider": {
+                        "type": "string",
+                        "title": "Signup provider can be 'standard' or 'aws'"
+                    },
+                    "create_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "update_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "title": "Account member information"
+            },
+            "v1AccountMemberUser": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "first_name": {
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "type": "string"
+                    },
+                    "phone": {
+                        "type": "string"
+                    },
+                    "create_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "update_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "title": "Contains a subset of user information: id, first_name, last_name, email, phone, create_time, update_time"
+            },
+            "v1AddAccountMemberRequest": {
+                "type": "object",
+                "properties": {
+                    "account_id": {
+                        "type": "string"
+                    },
+                    "user_id": {
+                        "type": "string"
+                    },
+                    "role_id": {
+                        "type": "string"
+                    },
+                    "invite_token": {
+                        "type": "string"
+                    }
+                }
+            },
+            "v1AddUserLoginFailureResponse": {
+                "type": "object"
+            },
+            "v1Address": {
+                "type": "object",
+                "properties": {
+                    "street_1": {
+                        "type": "string",
+                        "title": "Street 1",
+                        "maxLength": 255
+                    },
+                    "street_2": {
+                        "type": "string",
+                        "title": "Street 2",
+                        "maxLength": 255
+                    },
+                    "city": {
+                        "type": "string",
+                        "title": "City",
+                        "maxLength": 40
+                    },
+                    "state": {
+                        "type": "string",
+                        "description": "State, province or region",
+                        "title": "State",
+                        "maxLength": 40
+                    },
+                    "country": {
+                        "type": "string",
+                        "description": "Country in ISO 3166-1-alpha-2 format",
+                        "title": "Country",
+                        "maxLength": 2,
+                        "minLength": 2
+                    },
+                    "postal_code": {
+                        "type": "string",
+                        "title": "Postal code",
+                        "maxLength": 20
+                    }
+                },
+                "title": "Address",
+                "required": [
+                    "street_1",
+                    "city",
+                    "state",
+                    "country",
+                    "postal_code"
+                ]
+            },
+            "v1AuthCatalog": {
+                "type": "object",
+                "properties": {
+                    "account_id": {
+                        "type": "string"
+                    },
+                    "catalog_id": {
+                        "type": "string"
+                    }
+                },
+                "title": "Account catalog mapping"
+            },
+            "v1AuthMember": {
+                "type": "object",
+                "properties": {
+                    "account_id": {
+                        "type": "string"
+                    },
+                    "role_id": {
+                        "type": "string"
+                    },
+                    "role_name": {
+                        "type": "string"
+                    }
+                },
+                "title": "User account membership"
+            },
+            "v1AuthorizationData": {
+                "type": "object",
+                "properties": {
+                    "user_id": {
+                        "type": "string"
+                    },
+                    "memberships": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/v1AuthMember"
+                        }
+                    },
+                    "catalogs": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/v1AuthCatalog"
+                        }
+                    },
+                    "email_confirmed": {
+                        "type": "boolean",
+                        "format": "boolean"
+                    }
+                }
+            },
+            "v1BatchCreateInviteRequest": {
+                "type": "object",
+                "properties": {
+                    "create_invite_requests": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/v1CreateInviteRequest"
+                        }
+                    }
+                },
+                "title": "invites"
+            },
+            "v1BatchGetAccountMembersRequest": {
+                "type": "object",
+                "properties": {
+                    "account_ids": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "title": "Request to batch get members from multiple accounts by account IDs"
+            },
+            "v1BatchGetAccountMembersResponse": {
+                "type": "object",
+                "properties": {
+                    "accounts": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/v1ListAccountMembersResponse"
+                        }
+                    }
+                },
+                "title": "Collection of members by account"
+            },
+            "v1BatchGetAccountsRequest": {
+                "type": "object",
+                "properties": {
+                    "account_ids": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "title": "Request to batch get multiple accounts by IDs"
+            },
+            "v1BatchGetAccountsResponse": {
+                "type": "object",
+                "properties": {
+                    "accounts": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/v1Account"
+                        }
+                    }
+                },
+                "title": "A collection of accounts"
+            },
+            "v1BatchGetUsersResponse": {
+                "type": "object",
+                "properties": {
+                    "users": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/v1User"
+                        }
+                    }
+                },
+                "title": "A collection of Users"
+            },
+            "v1Cascade": {
+                "type": "string",
+                "enum": [
+                    "CASCADE_UPWARD",
+                    "CASCADE_DOWNWARD",
+                    "CASCADE_ALL",
+                    "CASCADE_NONE",
+                    "CASCADE_MAX"
+                ],
+                "default": "CASCADE_UPWARD",
+                "description": "Only max may change, the rest must stay the same."
+            },
+            "v1ChangePasswordResponse": {
+                "type": "object"
+            },
+            "v1ClearUserLoginFailuresResponse": {
+                "type": "object"
+            },
+            "v1ComplianceState": {
+                "type": "string",
+                "enum": [
+                    "UNCHECKED",
+                    "COMPLIANT",
+                    "NONCOMPLIANT"
+                ],
+                "default": "UNCHECKED"
+            },
+            "v1ConfirmEmailRequest": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    },
+                    "email_confirmation_token": {
+                        "type": "string"
+                    }
+                }
+            },
+            "v1ConfirmResetPasswordRequest": {
+                "type": "object",
+                "properties": {
+                    "password_reset_token": {
+                        "type": "string"
+                    },
+                    "new_password": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "hash": {
+                        "type": "string"
+                    }
+                }
+            },
+            "v1CreateAccountRequest": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "Account name"
+                    },
+                    "parent_account_id": {
+                        "type": "string",
+                        "description": "If parent account ID is specified, this operation will create a sub-account under parent account.",
+                        "title": "Parent account ID"
+                    },
+                    "address": {
+                        "$ref": "#/components/schemas/v1Address"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "title": "Phone",
+                        "maxLength": 40
+                    }
+                },
+                "title": "Request to create an account",
+                "required": [
+                    "name",
+                    "address"
+                ]
+            },
+            "v1CreateInviteRequest": {
+                "type": "object",
+                "properties": {
+                    "inviter_account_id": {
+                        "type": "string"
+                    },
+                    "account_ids": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "invitees": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/v1Invitee"
+                        }
+                    },
+                    "role_id": {
+                        "type": "string"
+                    },
+                    "cascade": {
+                        "$ref": "#/components/schemas/v1Cascade"
+                    }
+                }
+            },
+            "v1CreateTermsAcceptanceRequest": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Current values: `cloud_services`, `business_entity`.",
+                        "title": "Terms of service name"
+                    },
+                    "accepted": {
+                        "type": "boolean",
+                        "format": "boolean",
+                        "description": "Accept terms of service. Must be set to 'true'."
+                    }
+                }
+            },
+            "v1CreateUserRequest": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "title": "Email",
+                        "maxLength": 80
+                    },
+                    "first_name": {
+                        "type": "string",
+                        "title": "First name"
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "title": "Last name"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "title": "Phone number",
+                        "maxLength": 40
+                    },
+                    "time_zone": {
+                        "type": "string",
+                        "title": "Time zone"
+                    },
+                    "preferred_language": {
+                        "type": "string",
+                        "title": "Preferred language"
+                    },
+                    "invite_token": {
+                        "type": "string",
+                        "title": "Invite token"
+                    },
+                    "password": {
+                        "type": "string",
+                        "title": "Password"
+                    },
+                    "account": {
+                        "$ref": "#/components/schemas/v1CreateAccountRequest"
+                    },
+                    "signup_passphrase": {
+                        "type": "string",
+                        "description": "Signup passphrase. Not case-sensitive.",
+                        "title": "Signup passphrase"
+                    },
+                    "signup_provider": {
+                        "type": "string",
+                        "description": "This should be a valid signup provider, set to 'aws' if using AWS Marketplace.\nIf signup_provider is specified, signup_token also must be supplied.",
+                        "title": "Signup provider"
+                    },
+                    "signup_token": {
+                        "type": "string",
+                        "description": "This should be a valid token, set to value of x-amzn-marketplace-token for AWS Marketplace.",
+                        "title": "Signup token"
+                    },
+                    "terms": {
+                        "$ref": "#/components/schemas/v1TermsAcceptanceRequest"
+                    },
+                    "terms_of_service": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/v1CreateTermsAcceptanceRequest"
+                        }
+                    }
+                },
+                "title": "Request to create a new user",
+                "required": [
+                    "email",
+                    "first_name",
+                    "last_name",
+                    "password",
+                    "account",
+                    "terms_of_service"
+                ]
+            },
+            "v1EmptyMessage": {
+                "type": "object",
+                "title": "empty"
+            },
+            "v1EnableCatalogItemForAccountRequest": {
+                "type": "object",
+                "properties": {
+                    "catalog_id": {
+                        "type": "string"
+                    },
+                    "account_id": {
+                        "type": "string"
+                    }
+                }
+            },
+            "v1GetAccountProviderDataResponse": {
+                "type": "object",
+                "properties": {
+                    "signup_provider": {
+                        "type": "string"
+                    },
+                    "signup_provider_id": {
+                        "type": "string"
+                    },
+                    "account_id": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    }
+                }
+            },
+            "v1GetUserLoginDataResponse": {
+                "type": "object",
+                "properties": {
+                    "user_id": {
+                        "type": "string"
+                    },
+                    "user_status": {
+                        "type": "string"
+                    },
+                    "user_locked": {
+                        "type": "boolean",
+                        "format": "boolean"
+                    },
+                    "master_account_id": {
+                        "type": "string"
+                    },
+                    "email_confirmed": {
+                        "type": "boolean",
+                        "format": "boolean"
+                    }
+                }
+            },
+            "v1Invite": {
+                "type": "object",
+                "properties": {
+                    "invite_id": {
+                        "type": "string"
+                    },
+                    "inviter_user_id": {
+                        "type": "string"
+                    },
+                    "inviter_account_id": {
+                        "type": "string"
+                    },
+                    "role_id": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "first_name": {
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "type": "string"
+                    },
+                    "invitee_email": {
+                        "type": "string"
+                    },
+                    "invitee_account_ids": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "cascade": {
+                        "$ref": "#/components/schemas/v1Cascade"
+                    },
+                    "metadata": {
+                        "$ref": "#/components/schemas/protobufStruct"
+                    },
+                    "create_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "update_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "delete_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "expire_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "v1Invitee": {
+                "type": "object",
+                "properties": {
+                    "first_name": {
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    }
+                }
+            },
+            "v1InviteeRequest": {
+                "type": "object",
+                "properties": {
+                    "invite_token": {
+                        "type": "string",
+                        "title": "Invite token"
+                    }
+                }
+            },
+            "v1Invites": {
+                "type": "object",
+                "properties": {
+                    "invites": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/v1Invite"
+                        }
+                    }
+                }
+            },
+            "v1ListAccountMembersResponse": {
+                "type": "object",
+                "properties": {
+                    "account_id": {
+                        "type": "string"
+                    },
+                    "account_name": {
+                        "type": "string"
+                    },
+                    "users": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/v1AccountMember"
+                        }
+                    }
+                },
+                "title": "Collection of members in an account"
+            },
+            "v1ListAccountsResponse": {
+                "type": "object",
+                "properties": {
+                    "accounts": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/v1Account"
+                        }
+                    }
+                }
+            },
+            "v1ListCatalogItemsForAccountResponse": {
+                "type": "object",
+                "properties": {
+                    "catalog_items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/v1AccountCatalogItem"
+                        }
+                    },
+                    "account_id": {
+                        "type": "string"
+                    }
+                }
+            },
+            "v1ListRolesResponse": {
+                "type": "object",
+                "properties": {
+                    "roles": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/v1Role"
+                        }
+                    }
+                }
+            },
+            "v1ListUserMembershipsResponse": {
+                "type": "object",
+                "properties": {
+                    "memberships": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/v1AccountMember"
+                        }
+                    }
+                }
+            },
+            "v1ListUsersResponse": {
+                "type": "object",
+                "properties": {
+                    "users": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/v1User"
+                        }
+                    }
+                }
+            },
+            "v1ResetPasswordRequest": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    }
+                },
+                "title": "password reset"
+            },
+            "v1ResetPasswordResponse": {
+                "type": "object"
+            },
+            "v1Role": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                }
+            },
+            "v1SendConfirmEmailRequest": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    }
+                },
+                "title": "confirm email"
+            },
+            "v1SendConfirmEmailResponse": {
+                "type": "object"
+            },
+            "v1StartConfirmPhoneResponse": {
+                "type": "object",
+                "properties": {
+                    "create_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "v1TermsAcceptance": {
+                "type": "object",
+                "properties": {
+                    "user_id": {
+                        "type": "string",
+                        "description": "User ID for terms of service acceptance."
+                    },
+                    "accepted": {
+                        "type": "boolean",
+                        "format": "boolean",
+                        "description": "Accept terms of service. Must be set it to 'true'."
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Terms of service name"
+                    },
+                    "accept_time": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Date and time when terms have been accepted in ISO8601 format."
+                    }
+                },
+                "description": "Terms of service acceptance."
+            },
+            "v1TermsAcceptanceList": {
+                "type": "object",
+                "properties": {
+                    "terms": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/v1TermsAcceptance"
+                        }
+                    }
+                },
+                "description": "List of terms of service acceptance."
+            },
+            "v1TermsAcceptanceRequest": {
+                "type": "object",
+                "properties": {
+                    "user_id": {
+                        "type": "string",
+                        "description": "User ID for terms of service acceptance."
+                    },
+                    "accepted": {
+                        "type": "boolean",
+                        "format": "boolean",
+                        "description": "Accept terms of service. Must be set to 'true'."
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Current values: `cloud_services`, `business_entity`.",
+                        "title": "Terms of service name"
+                    }
+                },
+                "description": "Request to accept the terms of service."
+            },
+            "v1UpdateAccountMemberRequest": {
+                "type": "object",
+                "properties": {
+                    "account_id": {
+                        "type": "string"
+                    },
+                    "user_id": {
+                        "type": "string"
+                    },
+                    "role_id": {
+                        "type": "string"
+                    }
+                }
+            },
+            "v1UpdateComplianceResponse": {
+                "type": "object"
+            },
+            "v1User": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "first_name": {
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "type": "string"
+                    },
+                    "phone": {
+                        "type": "string"
+                    },
+                    "primary_account_id": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "email_confirmed": {
+                        "type": "boolean",
+                        "format": "boolean"
+                    },
+                    "phone_confirmed": {
+                        "type": "boolean",
+                        "format": "boolean"
+                    },
+                    "unconfirmed_email": {
+                        "type": "string"
+                    },
+                    "time_zone": {
+                        "type": "string"
+                    },
+                    "preferred_language": {
+                        "type": "string"
+                    },
+                    "user_email_history": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "current_password": {
+                        "type": "string"
+                    },
+                    "create_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "update_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "activate_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "delete_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "reset_password_sent_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "reset_password_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "email_confirmation_sent_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "email_confirmation_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "phone_confirmation_sent_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "phone_confirmation_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "title": "User contains detailed information for specific user"
+            },
+            "v1ValidateSignupTokenRequest": {
+                "type": "object",
+                "properties": {
+                    "signup_provider": {
+                        "type": "string",
+                        "title": "Required. This should be a valid signup provider, set to 'aws' if using AWS Marketplace"
+                    },
+                    "signup_token": {
+                        "type": "string",
+                        "title": "Required. This should be a valid token, set to value of x-amzn-marketplace-token for AWS Marketplace"
+                    }
+                }
+            },
+            "v1ValidateSignupTokenResponse": {
+                "type": "object"
+            }
+        }
+    }
+}
