@@ -7,7 +7,7 @@ type LoadBalancedRecord struct {
 	// Field 0
 	DisplayName *string `draft_validate:"required,max=64" json:"display_name,omitempty"`
 	// Field 1
-	Remark *string `draft_validate:"omitempty,max=128" json:"remark,omitempty"`
+	Remark *string `draft_validate:"omitempty,max=255" json:"remark,omitempty"`
 	// Field 2
 	Enable *bool `draft_validate:"omitempty" json:"enable,omitempty"`
 
