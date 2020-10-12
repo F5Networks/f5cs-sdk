@@ -3,13 +3,38 @@ package factory
 // Configuration : struct representation of common_service_request.configuration
 type Configuration struct {
 	// Field 0
-	GslbService *GSLBService `draft_validate:"required,dive" activation_validate:"dive" json:"gslb_service,omitempty"`
+	GslbService *GSLBService `draft_validate:"omitempty,dive" activation_validate:"omitempty,dive" json:"gslb_service,omitempty"`
 
 	// Field 1
 	NameServers *[]NameServer `json:"nameservers,omitempty"`
 
 	// Field 2
 	Details *ConfigDetails `json:"details,omitempty"`
+
+	// Field 3
+	DnsService *DNSService `draft_validate:"omitempty,dive" activation_validate:"omitempty,dive" json:"dns_service,omitempty"`
+}
+
+type Service interface {
+	GetZone() string
+	GetServiceType() string
+	GetEmptyService() Service
+}
+
+func (c *Configuration) GetService() Service {
+	if c.GslbService == nil {
+		if c.DnsService == nil {
+			return nil
+		}
+		return c.DnsService
+	}
+
+	if c.DnsService == nil {
+		if c.GslbService == nil {
+			return nil
+		}
+	}
+	return c.GslbService
 }
 
 func (c *Configuration) GetNameServers() []NameServer {
