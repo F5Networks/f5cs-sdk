@@ -1,0 +1,2366 @@
+openapi: 3.0.0
+info:
+  title: account-service.proto
+  version: version not set
+servers:
+- url: /
+paths:
+  /v1/svc-account/accounts:
+    post:
+      operationId: CreateAccount
+      requestBody:
+        $ref: '#/components/requestBodies/v1CreateAccountRequest'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1Account'
+      summary: Create a new account
+      tags:
+      - AccountService
+  /v1/svc-account/accounts/-/members/batch-get:
+    post:
+      operationId: BatchGetAccountMembers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1BatchGetAccountMembersRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1BatchGetAccountMembersResponse'
+      summary: Batch get members from multiple accounts by account IDs
+      tags:
+      - AccountService
+  /v1/svc-account/accounts/batch-get:
+    post:
+      operationId: BatchGetAccounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1BatchGetAccountsRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1BatchGetAccountsResponse'
+      summary: Batch get multiple accounts by ids
+      tags:
+      - AccountService
+  /v1/svc-account/accounts/{account_id}/catalogs:
+    get:
+      operationId: ListCatalogItemsForAccount
+      parameters:
+      - explode: false
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1ListCatalogItemsForAccountResponse'
+      summary: List catalog items for an account
+      tags:
+      - AccountService
+    post:
+      operationId: EnableCatalogItemForAccount
+      parameters:
+      - explode: false
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1EnableCatalogItemForAccountRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1AccountCatalogItem'
+      summary: Enable catalog item for an account
+      tags:
+      - AccountService
+  /v1/svc-account/accounts/{account_id}/catalogs/{catalog_id}:
+    delete:
+      operationId: DisableCatalogItemForAccount
+      parameters:
+      - explode: false
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: catalog_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1EmptyMessage'
+      summary: Disable catalog item for an account
+      tags:
+      - AccountService
+  /v1/svc-account/accounts/{account_id}/members:
+    get:
+      operationId: ListAccountMembers
+      parameters:
+      - explode: false
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1ListAccountMembersResponse'
+      summary: List account members
+      tags:
+      - AccountService
+    post:
+      operationId: AddAccountMember
+      parameters:
+      - explode: false
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1AddAccountMemberRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1AccountMember'
+      summary: Add an account member
+      tags:
+      - AccountService
+  /v1/svc-account/accounts/{account_id}/members/{user_id}:
+    delete:
+      description: Removes a member from an account.
+      operationId: DeleteAccountMember
+      parameters:
+      - explode: false
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: user_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1EmptyMessage'
+      summary: Delete an account member
+      tags:
+      - AccountService
+    get:
+      operationId: GetAccountMember
+      parameters:
+      - explode: false
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: user_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1AccountMember'
+      summary: Get an account member
+      tags:
+      - AccountService
+    put:
+      operationId: UpdateAccountMember
+      parameters:
+      - explode: false
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: user_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1UpdateAccountMemberRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1AccountMember'
+      summary: Update an account member
+      tags:
+      - AccountService
+  /v1/svc-account/accounts/{id}:
+    delete:
+      operationId: DeleteAccount
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: cascade
+        required: false
+        schema:
+          format: boolean
+          type: boolean
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1EmptyMessage'
+      summary: Delete an account
+      tags:
+      - AccountService
+    get:
+      operationId: GetAccount
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1Account'
+      summary: Get account
+      tags:
+      - AccountService
+    put:
+      operationId: UpdateAccount
+      parameters:
+      - description: Account ID
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1Account'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1Account'
+      summary: Update an account
+      tags:
+      - AccountService
+  /v1/svc-account/accounts/{id}/migrate:
+    post:
+      operationId: MigratePreviewAccount
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1AccountIdRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1EmptyMessage'
+      summary: Migrate preview account
+      tags:
+      - AccountService
+  /v1/svc-account/accounts/{parent_account_id}/subaccounts:
+    get:
+      operationId: ListSubAccounts
+      parameters:
+      - explode: false
+        in: path
+        name: parent_account_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: user_id
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1ListAccountsResponse'
+      summary: List sub-accounts
+      tags:
+      - AccountService
+    post:
+      description: Create a new account with a specified parent account.
+      operationId: CreateSubAccount
+      parameters:
+      - description: |-
+          Parent account ID
+
+          If parent account ID is specified, this operation will create a sub-account under parent account.
+        explode: false
+        in: path
+        name: parent_account_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/v1CreateAccountRequest'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1Account'
+      summary: Create a sub-account
+      tags:
+      - AccountService
+  /v1/svc-account/invites:
+    get:
+      operationId: ListInvites
+      parameters:
+      - explode: true
+        in: query
+        name: invitee_email
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1Invites'
+      summary: List invites
+      tags:
+      - AccountService
+    post:
+      operationId: CreateInvite
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1CreateInviteRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1Invite'
+      summary: Create a new invite into an account
+      tags:
+      - AccountService
+  /v1/svc-account/invites/batch-create:
+    post:
+      operationId: BatchCreateInvites
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1BatchCreateInviteRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1Invites'
+      summary: Batch create multiple invites
+      tags:
+      - AccountService
+  /v1/svc-account/invites/{invite_id}:
+    delete:
+      description: Rescind an invitation to an account.
+      operationId: DeleteInvite
+      parameters:
+      - explode: false
+        in: path
+        name: invite_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1EmptyMessage'
+      summary: Delete an invite
+      tags:
+      - AccountService
+  /v1/svc-account/invites/{invite_token}/accept:
+    post:
+      operationId: AcceptInvite
+      parameters:
+      - description: Invite token
+        explode: false
+        in: path
+        name: invite_token
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1InviteeRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1AcceptInviteResponse'
+      summary: Accept an invite
+      tags:
+      - AccountService
+  /v1/svc-account/roles:
+    get:
+      operationId: ListRoles
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1ListRolesResponse'
+      summary: List roles
+      tags:
+      - AccountService
+  /v1/svc-account/roles/{id}:
+    get:
+      operationId: GetRole
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1Role'
+      summary: Get role
+      tags:
+      - AccountService
+  /v1/svc-account/signup/accept:
+    post:
+      operationId: AcceptSignup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1AcceptSignupRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1AcceptSignupResponse'
+      summary: Accept signup
+      tags:
+      - AccountService
+  /v1/svc-account/signup/validate:
+    post:
+      operationId: ValidateSignupToken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1ValidateSignupTokenRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1ValidateSignupTokenResponse'
+      summary: Validate signup token
+      tags:
+      - AccountService
+  /v1/svc-account/user:
+    get:
+      operationId: GetCurrentUser
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1User'
+      summary: Get currently authenticated user
+      tags:
+      - AccountService
+  /v1/svc-account/users:
+    post:
+      operationId: CreateUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1CreateUserRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1User'
+      summary: Create a new user
+      tags:
+      - AccountService
+  /v1/svc-account/users/confirm-email:
+    post:
+      operationId: ConfirmEmail
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1ConfirmEmailRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1EmptyMessage'
+      summary: Confirm email
+      tags:
+      - AccountService
+  /v1/svc-account/users/confirm-reset-password:
+    post:
+      operationId: ConfirmResetPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1ConfirmResetPasswordRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1EmptyMessage'
+      summary: Confirm password reset
+      tags:
+      - AccountService
+  /v1/svc-account/users/reset-password:
+    post:
+      operationId: ResetPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1ResetPasswordRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1ResetPasswordResponse'
+      summary: Reset password
+      tags:
+      - AccountService
+  /v1/svc-account/users/send-confirm-email:
+    post:
+      operationId: SendConfirmEmail
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1SendConfirmEmailRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1SendConfirmEmailResponse'
+      summary: Send confirmation email
+      tags:
+      - AccountService
+  /v1/svc-account/users/{id}:
+    delete:
+      operationId: DeleteUser
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1EmptyMessage'
+      summary: Delete a user
+      tags:
+      - AccountService
+    get:
+      operationId: GetUser
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1User'
+      summary: Get a user
+      tags:
+      - AccountService
+    put:
+      operationId: UpdateUser
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1User'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1User'
+      summary: Update a user
+      tags:
+      - AccountService
+  /v1/svc-account/users/{id}/history:
+    get:
+      operationId: GetUserHistory
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1User'
+      summary: Get user history
+      tags:
+      - AccountService
+  /v1/svc-account/users/{user_id}/memberships:
+    get:
+      description: List accounts user has access to.
+      operationId: ListUserMemberships
+      parameters:
+      - explode: false
+        in: path
+        name: user_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1ListUserMembershipsResponse'
+      summary: List user memberships
+      tags:
+      - AccountService
+  /v1/svc-account/users/{user_id}/terms:
+    get:
+      operationId: ListUserTermsAcceptance
+      parameters:
+      - explode: false
+        in: path
+        name: user_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1TermsAcceptanceList'
+      summary: List terms of service acceptance
+      tags:
+      - AccountService
+    post:
+      operationId: CreateUserTermsAcceptance
+      parameters:
+      - description: User ID for terms of service acceptance.
+        explode: false
+        in: path
+        name: user_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/v1TermsAcceptanceRequest'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1TermsAcceptance'
+      summary: Create terms of service acceptance
+      tags:
+      - AccountService
+  /v1/svc-account/users/{user_id}/terms/{name}:
+    get:
+      operationId: GetUserTermsAcceptance
+      parameters:
+      - explode: false
+        in: path
+        name: user_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1TermsAcceptance'
+      summary: Get terms of service acceptance
+      tags:
+      - AccountService
+    put:
+      operationId: UpdateUserTermsAcceptance
+      parameters:
+      - description: User ID for terms of service acceptance.
+        explode: false
+        in: path
+        name: user_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: |-
+          Terms of service name
+
+          Current values: `cloud_services`, `business_entity`.
+        explode: false
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/v1TermsAcceptanceRequest'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1TermsAcceptance'
+      summary: Update terms of service acceptance
+      tags:
+      - AccountService
+components:
+  requestBodies:
+    v1TermsAcceptanceRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/v1TermsAcceptanceRequest'
+      required: true
+    v1CreateAccountRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/v1CreateAccountRequest'
+      required: true
+  schemas:
+    protobufListValue:
+      description: |-
+        `ListValue` is a wrapper around a repeated field of values.
+
+        The JSON representation for `ListValue` is JSON array.
+      example:
+        values:
+        - null
+        - null
+      properties:
+        values:
+          description: Repeated field of dynamically typed values.
+          items:
+            $ref: '#/components/schemas/protobufValue'
+          type: array
+      type: object
+    protobufNullValue:
+      default: NULL_VALUE
+      description: |-
+        `NullValue` is a singleton enumeration to represent the null value for the
+        `Value` type union.
+
+         The JSON representation for `NullValue` is JSON `null`.
+
+         - NULL_VALUE: Null value.
+      enum:
+      - NULL_VALUE
+      type: string
+    protobufStruct:
+      description: |-
+        `Struct` represents a structured data value, consisting of fields
+        which map to dynamically typed values. In some languages, `Struct`
+        might be supported by a native representation. For example, in
+        scripting languages like JS a struct is represented as an
+        object. The details of that representation are described together
+        with the proto support for the language.
+
+        The JSON representation for `Struct` is JSON object.
+      example:
+        fields:
+          key:
+            list_value:
+              values:
+              - null
+              - null
+            number_value: 0.8008281904610115
+            string_value: string_value
+            bool_value: true
+      properties:
+        fields:
+          additionalProperties:
+            $ref: '#/components/schemas/protobufValue'
+          description: Unordered map of dynamically typed values.
+          type: object
+      type: object
+    protobufValue:
+      description: |-
+        `Value` represents a dynamically typed value which can be either
+        null, a number, a string, a boolean, a recursive struct value, or a
+        list of values. A producer of value is expected to set one of that
+        variants, absence of any variant indicates an error.
+
+        The JSON representation for `Value` is JSON value.
+      example:
+        list_value:
+          values:
+          - null
+          - null
+        number_value: 0.8008281904610115
+        string_value: string_value
+        bool_value: true
+      properties:
+        null_value:
+          $ref: '#/components/schemas/protobufNullValue'
+        number_value:
+          description: Represents a double value.
+          format: double
+          type: number
+        string_value:
+          description: Represents a string value.
+          type: string
+        bool_value:
+          description: Represents a boolean value.
+          format: boolean
+          type: boolean
+        struct_value:
+          $ref: '#/components/schemas/protobufStruct'
+        list_value:
+          $ref: '#/components/schemas/protobufListValue'
+      type: object
+    v1AcceptInviteAccount:
+      example:
+        account_id: account_id
+        catalog_invites:
+        - catalog_id: catalog_id
+        - catalog_id: catalog_id
+      properties:
+        account_id:
+          title: Account ID
+          type: string
+        catalog_invites:
+          items:
+            $ref: '#/components/schemas/v1AcceptInviteCatalog'
+          title: Catalog items that are part of the accepted invite
+          type: array
+      type: object
+    v1AcceptInviteCatalog:
+      example:
+        catalog_id: catalog_id
+      properties:
+        catalog_id:
+          title: Catalog ID
+          type: string
+      type: object
+    v1AcceptInviteResponse:
+      example:
+        account_invites:
+        - account_id: account_id
+          catalog_invites:
+          - catalog_id: catalog_id
+          - catalog_id: catalog_id
+        - account_id: account_id
+          catalog_invites:
+          - catalog_id: catalog_id
+          - catalog_id: catalog_id
+      properties:
+        account_invites:
+          items:
+            $ref: '#/components/schemas/v1AcceptInviteAccount'
+          title: Accounts that are part of the accepted invite
+          type: array
+      type: object
+    v1AcceptSignupRequest:
+      properties:
+        signup_provider:
+          title: Required. This should be a valid signup provider, set to 'aws' if
+            using AWS Marketplace
+          type: string
+        signup_token:
+          title: Required. This should be a valid token, set to value of x-amzn-marketplace-token
+            for AWS Marketplace
+          type: string
+        account_name:
+          title: Optional. Will be used to create a new account associated to signup_provider,
+            if one does not exist
+          type: string
+      type: object
+    v1AcceptSignupResponse:
+      example:
+        catalog_id: catalog_id
+        account:
+          address:
+            country: country
+            street_1: street_1
+            city: city
+            street_2: street_2
+            state: state
+            postal_code: postal_code
+          delete_time: 2000-01-23T04:56:07.000+00:00
+          create_time: 2000-01-23T04:56:07.000+00:00
+          level: level
+          update_time: 2000-01-23T04:56:07.000+00:00
+          phone: phone
+          parent_account_id: parent_account_id
+          catalog_items:
+          - catalog_id: catalog_id
+            billing_provider: billing_provider
+            service_type: service_type
+            update_time: 2000-01-23T04:56:07.000+00:00
+            account_id: account_id
+            delete_time: 2000-01-23T04:56:07.000+00:00
+            create_time: 2000-01-23T04:56:07.000+00:00
+            contract_end_time: 2000-01-23T04:56:07.000+00:00
+            trial_end_time: 2000-01-23T04:56:07.000+00:00
+          - catalog_id: catalog_id
+            billing_provider: billing_provider
+            service_type: service_type
+            update_time: 2000-01-23T04:56:07.000+00:00
+            account_id: account_id
+            delete_time: 2000-01-23T04:56:07.000+00:00
+            create_time: 2000-01-23T04:56:07.000+00:00
+            contract_end_time: 2000-01-23T04:56:07.000+00:00
+            trial_end_time: 2000-01-23T04:56:07.000+00:00
+          name: name
+          compliant: true
+          id: id
+          signup_provider: signup_provider
+          status: status
+      properties:
+        account:
+          $ref: '#/components/schemas/v1Account'
+        catalog_id:
+          description: Catalog ID of the offering user just subscribed to. Can be
+            used to initiate the subscription.
+          type: string
+      type: object
+    v1Account:
+      example:
+        address:
+          country: country
+          street_1: street_1
+          city: city
+          street_2: street_2
+          state: state
+          postal_code: postal_code
+        delete_time: 2000-01-23T04:56:07.000+00:00
+        create_time: 2000-01-23T04:56:07.000+00:00
+        level: level
+        update_time: 2000-01-23T04:56:07.000+00:00
+        phone: phone
+        parent_account_id: parent_account_id
+        catalog_items:
+        - catalog_id: catalog_id
+          billing_provider: billing_provider
+          service_type: service_type
+          update_time: 2000-01-23T04:56:07.000+00:00
+          account_id: account_id
+          delete_time: 2000-01-23T04:56:07.000+00:00
+          create_time: 2000-01-23T04:56:07.000+00:00
+          contract_end_time: 2000-01-23T04:56:07.000+00:00
+          trial_end_time: 2000-01-23T04:56:07.000+00:00
+        - catalog_id: catalog_id
+          billing_provider: billing_provider
+          service_type: service_type
+          update_time: 2000-01-23T04:56:07.000+00:00
+          account_id: account_id
+          delete_time: 2000-01-23T04:56:07.000+00:00
+          create_time: 2000-01-23T04:56:07.000+00:00
+          contract_end_time: 2000-01-23T04:56:07.000+00:00
+          trial_end_time: 2000-01-23T04:56:07.000+00:00
+        name: name
+        compliant: true
+        id: id
+        signup_provider: signup_provider
+        status: status
+      properties:
+        id:
+          title: Account ID
+          type: string
+        name:
+          title: Account name
+          type: string
+        parent_account_id:
+          description: Optional parent account ID. If not empty, this account is a
+            sub-account.
+          type: string
+        status:
+          type: string
+        level:
+          format: uint64
+          type: string
+        signup_provider:
+          title: Signup provider can be 'standard' or 'aws'
+          type: string
+        address:
+          $ref: '#/components/schemas/v1Address'
+        phone:
+          title: Phone of an account
+          type: string
+        compliant:
+          format: boolean
+          title: Account is compliant
+          type: boolean
+        catalog_items:
+          items:
+            $ref: '#/components/schemas/v1AccountCatalogItem'
+          title: List of catalog items account is allowed to use
+          type: array
+        create_time:
+          format: date-time
+          type: string
+        update_time:
+          format: date-time
+          type: string
+        delete_time:
+          format: date-time
+          type: string
+      title: Account
+      type: object
+    v1AccountCatalogItem:
+      example:
+        catalog_id: catalog_id
+        billing_provider: billing_provider
+        service_type: service_type
+        update_time: 2000-01-23T04:56:07.000+00:00
+        account_id: account_id
+        delete_time: 2000-01-23T04:56:07.000+00:00
+        create_time: 2000-01-23T04:56:07.000+00:00
+        contract_end_time: 2000-01-23T04:56:07.000+00:00
+        trial_end_time: 2000-01-23T04:56:07.000+00:00
+      properties:
+        catalog_id:
+          type: string
+        account_id:
+          type: string
+        service_type:
+          type: string
+        status:
+          $ref: '#/components/schemas/v1AccountCatalogStatus'
+        billing_provider:
+          type: string
+        trial_end_time:
+          format: date-time
+          type: string
+        contract_end_time:
+          format: date-time
+          type: string
+        create_time:
+          format: date-time
+          type: string
+        update_time:
+          format: date-time
+          type: string
+        delete_time:
+          format: date-time
+          type: string
+      type: object
+    v1AccountCatalogStatus:
+      default: UNSUBSCRIBED
+      enum:
+      - UNSUBSCRIBED
+      - SUBSCRIBED
+      type: string
+    v1AccountIdRequest:
+      properties:
+        id:
+          type: string
+      type: object
+    v1AccountMember:
+      example:
+        role_name: role_name
+        update_time: 2000-01-23T04:56:07.000+00:00
+        account_id: account_id
+        create_time: 2000-01-23T04:56:07.000+00:00
+        user_id: user_id
+        role_id: role_id
+        level: level
+        account_name: account_name
+        user:
+          update_time: 2000-01-23T04:56:07.000+00:00
+          create_time: 2000-01-23T04:56:07.000+00:00
+          phone: phone
+          last_name: last_name
+          id: id
+          first_name: first_name
+          email: email
+        signup_provider: signup_provider
+      properties:
+        account_id:
+          title: Account ID
+          type: string
+        user_id:
+          title: User ID
+          type: string
+        role_id:
+          title: Role ID
+          type: string
+        user:
+          $ref: '#/components/schemas/v1AccountMemberUser'
+        account_name:
+          title: Account name
+          type: string
+        role_name:
+          title: Role name
+          type: string
+        level:
+          format: uint64
+          title: Level in the hierarchy
+          type: string
+        signup_provider:
+          title: Signup provider can be 'standard' or 'aws'
+          type: string
+        create_time:
+          format: date-time
+          type: string
+        update_time:
+          format: date-time
+          type: string
+      title: Account member information
+      type: object
+    v1AccountMemberUser:
+      example:
+        update_time: 2000-01-23T04:56:07.000+00:00
+        create_time: 2000-01-23T04:56:07.000+00:00
+        phone: phone
+        last_name: last_name
+        id: id
+        first_name: first_name
+        email: email
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        phone:
+          type: string
+        create_time:
+          format: date-time
+          type: string
+        update_time:
+          format: date-time
+          type: string
+      title: 'Contains a subset of user information: id, first_name, last_name, email,
+        phone, create_time, update_time'
+      type: object
+    v1AddAccountMemberRequest:
+      properties:
+        account_id:
+          type: string
+        user_id:
+          type: string
+        role_id:
+          type: string
+        invite_token:
+          type: string
+      type: object
+    v1AddUserLoginFailureResponse:
+      type: object
+    v1Address:
+      example:
+        country: country
+        street_1: street_1
+        city: city
+        street_2: street_2
+        state: state
+        postal_code: postal_code
+      properties:
+        street_1:
+          maxLength: 255
+          title: Street 1
+          type: string
+        street_2:
+          maxLength: 255
+          title: Street 2
+          type: string
+        city:
+          maxLength: 40
+          title: City
+          type: string
+        state:
+          description: State, province or region
+          maxLength: 40
+          title: State
+          type: string
+        country:
+          description: Country in ISO 3166-1-alpha-2 format
+          maxLength: 2
+          minLength: 2
+          title: Country
+          type: string
+        postal_code:
+          maxLength: 20
+          title: Postal code
+          type: string
+      required:
+      - city
+      - country
+      - postal_code
+      - state
+      - street_1
+      title: Address
+      type: object
+    v1AuthCatalog:
+      properties:
+        account_id:
+          type: string
+        catalog_id:
+          type: string
+      title: Account catalog mapping
+      type: object
+    v1AuthMember:
+      properties:
+        account_id:
+          type: string
+        role_id:
+          type: string
+        role_name:
+          type: string
+      title: User account membership
+      type: object
+    v1AuthorizationData:
+      properties:
+        user_id:
+          type: string
+        memberships:
+          items:
+            $ref: '#/components/schemas/v1AuthMember'
+          type: array
+        catalogs:
+          items:
+            $ref: '#/components/schemas/v1AuthCatalog'
+          type: array
+        email_confirmed:
+          format: boolean
+          type: boolean
+      type: object
+    v1BatchCreateInviteRequest:
+      properties:
+        create_invite_requests:
+          items:
+            $ref: '#/components/schemas/v1CreateInviteRequest'
+          type: array
+      title: invites
+      type: object
+    v1BatchGetAccountMembersRequest:
+      properties:
+        account_ids:
+          items:
+            type: string
+          type: array
+      title: Request to batch get members from multiple accounts by account IDs
+      type: object
+    v1BatchGetAccountMembersResponse:
+      example:
+        accounts:
+        - account_id: account_id
+          account_name: account_name
+          users:
+          - role_name: role_name
+            update_time: 2000-01-23T04:56:07.000+00:00
+            account_id: account_id
+            create_time: 2000-01-23T04:56:07.000+00:00
+            user_id: user_id
+            role_id: role_id
+            level: level
+            account_name: account_name
+            user:
+              update_time: 2000-01-23T04:56:07.000+00:00
+              create_time: 2000-01-23T04:56:07.000+00:00
+              phone: phone
+              last_name: last_name
+              id: id
+              first_name: first_name
+              email: email
+            signup_provider: signup_provider
+          - role_name: role_name
+            update_time: 2000-01-23T04:56:07.000+00:00
+            account_id: account_id
+            create_time: 2000-01-23T04:56:07.000+00:00
+            user_id: user_id
+            role_id: role_id
+            level: level
+            account_name: account_name
+            user:
+              update_time: 2000-01-23T04:56:07.000+00:00
+              create_time: 2000-01-23T04:56:07.000+00:00
+              phone: phone
+              last_name: last_name
+              id: id
+              first_name: first_name
+              email: email
+            signup_provider: signup_provider
+        - account_id: account_id
+          account_name: account_name
+          users:
+          - role_name: role_name
+            update_time: 2000-01-23T04:56:07.000+00:00
+            account_id: account_id
+            create_time: 2000-01-23T04:56:07.000+00:00
+            user_id: user_id
+            role_id: role_id
+            level: level
+            account_name: account_name
+            user:
+              update_time: 2000-01-23T04:56:07.000+00:00
+              create_time: 2000-01-23T04:56:07.000+00:00
+              phone: phone
+              last_name: last_name
+              id: id
+              first_name: first_name
+              email: email
+            signup_provider: signup_provider
+          - role_name: role_name
+            update_time: 2000-01-23T04:56:07.000+00:00
+            account_id: account_id
+            create_time: 2000-01-23T04:56:07.000+00:00
+            user_id: user_id
+            role_id: role_id
+            level: level
+            account_name: account_name
+            user:
+              update_time: 2000-01-23T04:56:07.000+00:00
+              create_time: 2000-01-23T04:56:07.000+00:00
+              phone: phone
+              last_name: last_name
+              id: id
+              first_name: first_name
+              email: email
+            signup_provider: signup_provider
+      properties:
+        accounts:
+          items:
+            $ref: '#/components/schemas/v1ListAccountMembersResponse'
+          type: array
+      title: Collection of members by account
+      type: object
+    v1BatchGetAccountsRequest:
+      properties:
+        account_ids:
+          items:
+            type: string
+          type: array
+      title: Request to batch get multiple accounts by IDs
+      type: object
+    v1BatchGetAccountsResponse:
+      example:
+        accounts:
+        - address:
+            country: country
+            street_1: street_1
+            city: city
+            street_2: street_2
+            state: state
+            postal_code: postal_code
+          delete_time: 2000-01-23T04:56:07.000+00:00
+          create_time: 2000-01-23T04:56:07.000+00:00
+          level: level
+          update_time: 2000-01-23T04:56:07.000+00:00
+          phone: phone
+          parent_account_id: parent_account_id
+          catalog_items:
+          - catalog_id: catalog_id
+            billing_provider: billing_provider
+            service_type: service_type
+            update_time: 2000-01-23T04:56:07.000+00:00
+            account_id: account_id
+            delete_time: 2000-01-23T04:56:07.000+00:00
+            create_time: 2000-01-23T04:56:07.000+00:00
+            contract_end_time: 2000-01-23T04:56:07.000+00:00
+            trial_end_time: 2000-01-23T04:56:07.000+00:00
+          - catalog_id: catalog_id
+            billing_provider: billing_provider
+            service_type: service_type
+            update_time: 2000-01-23T04:56:07.000+00:00
+            account_id: account_id
+            delete_time: 2000-01-23T04:56:07.000+00:00
+            create_time: 2000-01-23T04:56:07.000+00:00
+            contract_end_time: 2000-01-23T04:56:07.000+00:00
+            trial_end_time: 2000-01-23T04:56:07.000+00:00
+          name: name
+          compliant: true
+          id: id
+          signup_provider: signup_provider
+          status: status
+        - address:
+            country: country
+            street_1: street_1
+            city: city
+            street_2: street_2
+            state: state
+            postal_code: postal_code
+          delete_time: 2000-01-23T04:56:07.000+00:00
+          create_time: 2000-01-23T04:56:07.000+00:00
+          level: level
+          update_time: 2000-01-23T04:56:07.000+00:00
+          phone: phone
+          parent_account_id: parent_account_id
+          catalog_items:
+          - catalog_id: catalog_id
+            billing_provider: billing_provider
+            service_type: service_type
+            update_time: 2000-01-23T04:56:07.000+00:00
+            account_id: account_id
+            delete_time: 2000-01-23T04:56:07.000+00:00
+            create_time: 2000-01-23T04:56:07.000+00:00
+            contract_end_time: 2000-01-23T04:56:07.000+00:00
+            trial_end_time: 2000-01-23T04:56:07.000+00:00
+          - catalog_id: catalog_id
+            billing_provider: billing_provider
+            service_type: service_type
+            update_time: 2000-01-23T04:56:07.000+00:00
+            account_id: account_id
+            delete_time: 2000-01-23T04:56:07.000+00:00
+            create_time: 2000-01-23T04:56:07.000+00:00
+            contract_end_time: 2000-01-23T04:56:07.000+00:00
+            trial_end_time: 2000-01-23T04:56:07.000+00:00
+          name: name
+          compliant: true
+          id: id
+          signup_provider: signup_provider
+          status: status
+      properties:
+        accounts:
+          items:
+            $ref: '#/components/schemas/v1Account'
+          type: array
+      title: A collection of accounts
+      type: object
+    v1BatchGetUsersResponse:
+      properties:
+        users:
+          items:
+            $ref: '#/components/schemas/v1User'
+          type: array
+      title: A collection of Users
+      type: object
+    v1Cascade:
+      default: CASCADE_UPWARD
+      description: Only max may change, the rest must stay the same.
+      enum:
+      - CASCADE_UPWARD
+      - CASCADE_DOWNWARD
+      - CASCADE_ALL
+      - CASCADE_NONE
+      - CASCADE_MAX
+      type: string
+    v1ChangePasswordResponse:
+      type: object
+    v1ClearUserLoginFailuresResponse:
+      type: object
+    v1ComplianceState:
+      default: UNCHECKED
+      enum:
+      - UNCHECKED
+      - COMPLIANT
+      - NONCOMPLIANT
+      type: string
+    v1ConfirmEmailRequest:
+      properties:
+        email:
+          type: string
+        email_confirmation_token:
+          type: string
+      type: object
+    v1ConfirmResetPasswordRequest:
+      properties:
+        password_reset_token:
+          type: string
+        new_password:
+          type: string
+        email:
+          type: string
+        hash:
+          type: string
+      type: object
+    v1CreateAccountRequest:
+      properties:
+        name:
+          title: Account name
+          type: string
+        parent_account_id:
+          description: If parent account ID is specified, this operation will create
+            a sub-account under parent account.
+          title: Parent account ID
+          type: string
+        address:
+          $ref: '#/components/schemas/v1Address'
+        phone:
+          maxLength: 40
+          title: Phone
+          type: string
+      required:
+      - address
+      - name
+      title: Request to create an account
+      type: object
+    v1CreateInviteRequest:
+      properties:
+        inviter_account_id:
+          type: string
+        account_ids:
+          items:
+            type: string
+          type: array
+        invitees:
+          items:
+            $ref: '#/components/schemas/v1Invitee'
+          type: array
+        role_id:
+          type: string
+        cascade:
+          $ref: '#/components/schemas/v1Cascade'
+      type: object
+    v1CreateTermsAcceptanceRequest:
+      properties:
+        name:
+          description: 'Current values: `cloud_services`, `business_entity`.'
+          title: Terms of service name
+          type: string
+        accepted:
+          description: Accept terms of service. Must be set to 'true'.
+          format: boolean
+          type: boolean
+      type: object
+    v1CreateUserRequest:
+      properties:
+        email:
+          maxLength: 80
+          title: Email
+          type: string
+        first_name:
+          title: First name
+          type: string
+        last_name:
+          title: Last name
+          type: string
+        phone:
+          maxLength: 40
+          title: Phone number
+          type: string
+        time_zone:
+          title: Time zone
+          type: string
+        preferred_language:
+          title: Preferred language
+          type: string
+        invite_token:
+          title: Invite token
+          type: string
+        password:
+          title: Password
+          type: string
+        account:
+          $ref: '#/components/schemas/v1CreateAccountRequest'
+        signup_passphrase:
+          description: Signup passphrase. Not case-sensitive.
+          title: Signup passphrase
+          type: string
+        signup_provider:
+          description: |-
+            This should be a valid signup provider, set to 'aws' if using AWS Marketplace.
+            If signup_provider is specified, signup_token also must be supplied.
+          title: Signup provider
+          type: string
+        signup_token:
+          description: This should be a valid token, set to value of x-amzn-marketplace-token
+            for AWS Marketplace.
+          title: Signup token
+          type: string
+        terms:
+          $ref: '#/components/schemas/v1TermsAcceptanceRequest'
+        terms_of_service:
+          items:
+            $ref: '#/components/schemas/v1CreateTermsAcceptanceRequest'
+          type: array
+      required:
+      - account
+      - email
+      - first_name
+      - last_name
+      - password
+      - terms_of_service
+      title: Request to create a new user
+      type: object
+    v1EmptyMessage:
+      title: empty
+      type: object
+    v1EnableCatalogItemForAccountRequest:
+      properties:
+        catalog_id:
+          type: string
+        account_id:
+          type: string
+      type: object
+    v1GetAccountProviderDataResponse:
+      properties:
+        signup_provider:
+          type: string
+        signup_provider_id:
+          type: string
+        account_id:
+          type: string
+        status:
+          type: string
+      type: object
+    v1GetUserLoginDataResponse:
+      properties:
+        user_id:
+          type: string
+        user_status:
+          type: string
+        user_locked:
+          format: boolean
+          type: boolean
+        master_account_id:
+          type: string
+        email_confirmed:
+          format: boolean
+          type: boolean
+      type: object
+    v1Invite:
+      example:
+        invite_id: invite_id
+        invitee_account_ids:
+        - invitee_account_ids
+        - invitee_account_ids
+        metadata:
+          fields:
+            key:
+              list_value:
+                values:
+                - null
+                - null
+              number_value: 0.8008281904610115
+              string_value: string_value
+              bool_value: true
+        delete_time: 2000-01-23T04:56:07.000+00:00
+        create_time: 2000-01-23T04:56:07.000+00:00
+        last_name: last_name
+        expire_time: 2000-01-23T04:56:07.000+00:00
+        invitee_email: invitee_email
+        inviter_user_id: inviter_user_id
+        update_time: 2000-01-23T04:56:07.000+00:00
+        inviter_account_id: inviter_account_id
+        role_id: role_id
+        first_name: first_name
+        status: status
+      properties:
+        invite_id:
+          type: string
+        inviter_user_id:
+          type: string
+        inviter_account_id:
+          type: string
+        role_id:
+          type: string
+        status:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        invitee_email:
+          type: string
+        invitee_account_ids:
+          items:
+            type: string
+          type: array
+        cascade:
+          $ref: '#/components/schemas/v1Cascade'
+        metadata:
+          $ref: '#/components/schemas/protobufStruct'
+        create_time:
+          format: date-time
+          type: string
+        update_time:
+          format: date-time
+          type: string
+        delete_time:
+          format: date-time
+          type: string
+        expire_time:
+          format: date-time
+          type: string
+      type: object
+    v1Invitee:
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+      type: object
+    v1InviteeRequest:
+      properties:
+        invite_token:
+          title: Invite token
+          type: string
+      type: object
+    v1Invites:
+      example:
+        invites:
+        - invite_id: invite_id
+          invitee_account_ids:
+          - invitee_account_ids
+          - invitee_account_ids
+          metadata:
+            fields:
+              key:
+                list_value:
+                  values:
+                  - null
+                  - null
+                number_value: 0.8008281904610115
+                string_value: string_value
+                bool_value: true
+          delete_time: 2000-01-23T04:56:07.000+00:00
+          create_time: 2000-01-23T04:56:07.000+00:00
+          last_name: last_name
+          expire_time: 2000-01-23T04:56:07.000+00:00
+          invitee_email: invitee_email
+          inviter_user_id: inviter_user_id
+          update_time: 2000-01-23T04:56:07.000+00:00
+          inviter_account_id: inviter_account_id
+          role_id: role_id
+          first_name: first_name
+          status: status
+        - invite_id: invite_id
+          invitee_account_ids:
+          - invitee_account_ids
+          - invitee_account_ids
+          metadata:
+            fields:
+              key:
+                list_value:
+                  values:
+                  - null
+                  - null
+                number_value: 0.8008281904610115
+                string_value: string_value
+                bool_value: true
+          delete_time: 2000-01-23T04:56:07.000+00:00
+          create_time: 2000-01-23T04:56:07.000+00:00
+          last_name: last_name
+          expire_time: 2000-01-23T04:56:07.000+00:00
+          invitee_email: invitee_email
+          inviter_user_id: inviter_user_id
+          update_time: 2000-01-23T04:56:07.000+00:00
+          inviter_account_id: inviter_account_id
+          role_id: role_id
+          first_name: first_name
+          status: status
+      properties:
+        invites:
+          items:
+            $ref: '#/components/schemas/v1Invite'
+          type: array
+      type: object
+    v1ListAccountMembersResponse:
+      example:
+        account_id: account_id
+        account_name: account_name
+        users:
+        - role_name: role_name
+          update_time: 2000-01-23T04:56:07.000+00:00
+          account_id: account_id
+          create_time: 2000-01-23T04:56:07.000+00:00
+          user_id: user_id
+          role_id: role_id
+          level: level
+          account_name: account_name
+          user:
+            update_time: 2000-01-23T04:56:07.000+00:00
+            create_time: 2000-01-23T04:56:07.000+00:00
+            phone: phone
+            last_name: last_name
+            id: id
+            first_name: first_name
+            email: email
+          signup_provider: signup_provider
+        - role_name: role_name
+          update_time: 2000-01-23T04:56:07.000+00:00
+          account_id: account_id
+          create_time: 2000-01-23T04:56:07.000+00:00
+          user_id: user_id
+          role_id: role_id
+          level: level
+          account_name: account_name
+          user:
+            update_time: 2000-01-23T04:56:07.000+00:00
+            create_time: 2000-01-23T04:56:07.000+00:00
+            phone: phone
+            last_name: last_name
+            id: id
+            first_name: first_name
+            email: email
+          signup_provider: signup_provider
+      properties:
+        account_id:
+          type: string
+        account_name:
+          type: string
+        users:
+          items:
+            $ref: '#/components/schemas/v1AccountMember'
+          type: array
+      title: Collection of members in an account
+      type: object
+    v1ListAccountsResponse:
+      example:
+        accounts:
+        - address:
+            country: country
+            street_1: street_1
+            city: city
+            street_2: street_2
+            state: state
+            postal_code: postal_code
+          delete_time: 2000-01-23T04:56:07.000+00:00
+          create_time: 2000-01-23T04:56:07.000+00:00
+          level: level
+          update_time: 2000-01-23T04:56:07.000+00:00
+          phone: phone
+          parent_account_id: parent_account_id
+          catalog_items:
+          - catalog_id: catalog_id
+            billing_provider: billing_provider
+            service_type: service_type
+            update_time: 2000-01-23T04:56:07.000+00:00
+            account_id: account_id
+            delete_time: 2000-01-23T04:56:07.000+00:00
+            create_time: 2000-01-23T04:56:07.000+00:00
+            contract_end_time: 2000-01-23T04:56:07.000+00:00
+            trial_end_time: 2000-01-23T04:56:07.000+00:00
+          - catalog_id: catalog_id
+            billing_provider: billing_provider
+            service_type: service_type
+            update_time: 2000-01-23T04:56:07.000+00:00
+            account_id: account_id
+            delete_time: 2000-01-23T04:56:07.000+00:00
+            create_time: 2000-01-23T04:56:07.000+00:00
+            contract_end_time: 2000-01-23T04:56:07.000+00:00
+            trial_end_time: 2000-01-23T04:56:07.000+00:00
+          name: name
+          compliant: true
+          id: id
+          signup_provider: signup_provider
+          status: status
+        - address:
+            country: country
+            street_1: street_1
+            city: city
+            street_2: street_2
+            state: state
+            postal_code: postal_code
+          delete_time: 2000-01-23T04:56:07.000+00:00
+          create_time: 2000-01-23T04:56:07.000+00:00
+          level: level
+          update_time: 2000-01-23T04:56:07.000+00:00
+          phone: phone
+          parent_account_id: parent_account_id
+          catalog_items:
+          - catalog_id: catalog_id
+            billing_provider: billing_provider
+            service_type: service_type
+            update_time: 2000-01-23T04:56:07.000+00:00
+            account_id: account_id
+            delete_time: 2000-01-23T04:56:07.000+00:00
+            create_time: 2000-01-23T04:56:07.000+00:00
+            contract_end_time: 2000-01-23T04:56:07.000+00:00
+            trial_end_time: 2000-01-23T04:56:07.000+00:00
+          - catalog_id: catalog_id
+            billing_provider: billing_provider
+            service_type: service_type
+            update_time: 2000-01-23T04:56:07.000+00:00
+            account_id: account_id
+            delete_time: 2000-01-23T04:56:07.000+00:00
+            create_time: 2000-01-23T04:56:07.000+00:00
+            contract_end_time: 2000-01-23T04:56:07.000+00:00
+            trial_end_time: 2000-01-23T04:56:07.000+00:00
+          name: name
+          compliant: true
+          id: id
+          signup_provider: signup_provider
+          status: status
+      properties:
+        accounts:
+          items:
+            $ref: '#/components/schemas/v1Account'
+          type: array
+      type: object
+    v1ListCatalogItemsForAccountResponse:
+      example:
+        account_id: account_id
+        catalog_items:
+        - catalog_id: catalog_id
+          billing_provider: billing_provider
+          service_type: service_type
+          update_time: 2000-01-23T04:56:07.000+00:00
+          account_id: account_id
+          delete_time: 2000-01-23T04:56:07.000+00:00
+          create_time: 2000-01-23T04:56:07.000+00:00
+          contract_end_time: 2000-01-23T04:56:07.000+00:00
+          trial_end_time: 2000-01-23T04:56:07.000+00:00
+        - catalog_id: catalog_id
+          billing_provider: billing_provider
+          service_type: service_type
+          update_time: 2000-01-23T04:56:07.000+00:00
+          account_id: account_id
+          delete_time: 2000-01-23T04:56:07.000+00:00
+          create_time: 2000-01-23T04:56:07.000+00:00
+          contract_end_time: 2000-01-23T04:56:07.000+00:00
+          trial_end_time: 2000-01-23T04:56:07.000+00:00
+      properties:
+        catalog_items:
+          items:
+            $ref: '#/components/schemas/v1AccountCatalogItem'
+          type: array
+        account_id:
+          type: string
+      type: object
+    v1ListRolesResponse:
+      example:
+        roles:
+        - name: name
+          description: description
+          id: id
+        - name: name
+          description: description
+          id: id
+      properties:
+        roles:
+          items:
+            $ref: '#/components/schemas/v1Role'
+          type: array
+      type: object
+    v1ListUserMembershipsResponse:
+      example:
+        memberships:
+        - role_name: role_name
+          update_time: 2000-01-23T04:56:07.000+00:00
+          account_id: account_id
+          create_time: 2000-01-23T04:56:07.000+00:00
+          user_id: user_id
+          role_id: role_id
+          level: level
+          account_name: account_name
+          user:
+            update_time: 2000-01-23T04:56:07.000+00:00
+            create_time: 2000-01-23T04:56:07.000+00:00
+            phone: phone
+            last_name: last_name
+            id: id
+            first_name: first_name
+            email: email
+          signup_provider: signup_provider
+        - role_name: role_name
+          update_time: 2000-01-23T04:56:07.000+00:00
+          account_id: account_id
+          create_time: 2000-01-23T04:56:07.000+00:00
+          user_id: user_id
+          role_id: role_id
+          level: level
+          account_name: account_name
+          user:
+            update_time: 2000-01-23T04:56:07.000+00:00
+            create_time: 2000-01-23T04:56:07.000+00:00
+            phone: phone
+            last_name: last_name
+            id: id
+            first_name: first_name
+            email: email
+          signup_provider: signup_provider
+      properties:
+        memberships:
+          items:
+            $ref: '#/components/schemas/v1AccountMember'
+          type: array
+      type: object
+    v1ListUsersResponse:
+      properties:
+        users:
+          items:
+            $ref: '#/components/schemas/v1User'
+          type: array
+      type: object
+    v1ResetPasswordRequest:
+      properties:
+        email:
+          type: string
+      title: password reset
+      type: object
+    v1ResetPasswordResponse:
+      type: object
+    v1Role:
+      example:
+        name: name
+        description: description
+        id: id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+      type: object
+    v1SendConfirmEmailRequest:
+      properties:
+        email:
+          type: string
+      title: confirm email
+      type: object
+    v1SendConfirmEmailResponse:
+      type: object
+    v1StartConfirmPhoneResponse:
+      properties:
+        create_time:
+          format: date-time
+          type: string
+      type: object
+    v1TermsAcceptance:
+      description: Terms of service acceptance.
+      example:
+        user_id: user_id
+        name: name
+        accepted: true
+        accept_time: 2000-01-23T04:56:07.000+00:00
+      properties:
+        user_id:
+          description: User ID for terms of service acceptance.
+          type: string
+        accepted:
+          description: Accept terms of service. Must be set it to 'true'.
+          format: boolean
+          type: boolean
+        name:
+          title: Terms of service name
+          type: string
+        accept_time:
+          description: Date and time when terms have been accepted in ISO8601 format.
+          format: date-time
+          type: string
+      type: object
+    v1TermsAcceptanceList:
+      description: List of terms of service acceptance.
+      example:
+        terms:
+        - user_id: user_id
+          name: name
+          accepted: true
+          accept_time: 2000-01-23T04:56:07.000+00:00
+        - user_id: user_id
+          name: name
+          accepted: true
+          accept_time: 2000-01-23T04:56:07.000+00:00
+      properties:
+        terms:
+          items:
+            $ref: '#/components/schemas/v1TermsAcceptance'
+          type: array
+      type: object
+    v1TermsAcceptanceRequest:
+      description: Request to accept the terms of service.
+      properties:
+        user_id:
+          description: User ID for terms of service acceptance.
+          type: string
+        accepted:
+          description: Accept terms of service. Must be set to 'true'.
+          format: boolean
+          type: boolean
+        name:
+          description: 'Current values: `cloud_services`, `business_entity`.'
+          title: Terms of service name
+          type: string
+      type: object
+    v1UpdateAccountMemberRequest:
+      properties:
+        account_id:
+          type: string
+        user_id:
+          type: string
+        role_id:
+          type: string
+      type: object
+    v1UpdateComplianceResponse:
+      type: object
+    v1User:
+      example:
+        email_confirmation_time: 2000-01-23T04:56:07.000+00:00
+        delete_time: 2000-01-23T04:56:07.000+00:00
+        create_time: 2000-01-23T04:56:07.000+00:00
+        phone_confirmed: true
+        reset_password_sent_time: 2000-01-23T04:56:07.000+00:00
+        primary_account_id: primary_account_id
+        user_email_history:
+        - user_email_history
+        - user_email_history
+        last_name: last_name
+        activate_time: 2000-01-23T04:56:07.000+00:00
+        email_confirmed: true
+        time_zone: time_zone
+        reset_password_time: 2000-01-23T04:56:07.000+00:00
+        unconfirmed_email: unconfirmed_email
+        update_time: 2000-01-23T04:56:07.000+00:00
+        phone: phone
+        phone_confirmation_sent_time: 2000-01-23T04:56:07.000+00:00
+        id: id
+        first_name: first_name
+        email: email
+        preferred_language: preferred_language
+        email_confirmation_sent_time: 2000-01-23T04:56:07.000+00:00
+        status: status
+        current_password: current_password
+        phone_confirmation_time: 2000-01-23T04:56:07.000+00:00
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        phone:
+          type: string
+        primary_account_id:
+          type: string
+        status:
+          type: string
+        email_confirmed:
+          format: boolean
+          type: boolean
+        phone_confirmed:
+          format: boolean
+          type: boolean
+        unconfirmed_email:
+          type: string
+        time_zone:
+          type: string
+        preferred_language:
+          type: string
+        user_email_history:
+          items:
+            type: string
+          type: array
+        current_password:
+          type: string
+        create_time:
+          format: date-time
+          type: string
+        update_time:
+          format: date-time
+          type: string
+        activate_time:
+          format: date-time
+          type: string
+        delete_time:
+          format: date-time
+          type: string
+        reset_password_sent_time:
+          format: date-time
+          type: string
+        reset_password_time:
+          format: date-time
+          type: string
+        email_confirmation_sent_time:
+          format: date-time
+          type: string
+        email_confirmation_time:
+          format: date-time
+          type: string
+        phone_confirmation_sent_time:
+          format: date-time
+          type: string
+        phone_confirmation_time:
+          format: date-time
+          type: string
+      title: User contains detailed information for specific user
+      type: object
+    v1ValidateSignupTokenRequest:
+      properties:
+        signup_provider:
+          title: Required. This should be a valid signup provider, set to 'aws' if
+            using AWS Marketplace
+          type: string
+        signup_token:
+          title: Required. This should be a valid token, set to value of x-amzn-marketplace-token
+            for AWS Marketplace
+          type: string
+      type: object
+    v1ValidateSignupTokenResponse:
+      type: object

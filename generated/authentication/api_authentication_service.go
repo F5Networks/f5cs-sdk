@@ -14,6 +14,7 @@ import (
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
+	_bytes "bytes"
 )
 
 // Linger please
@@ -25,11 +26,12 @@ var (
 type AuthenticationServiceApiService service
 
 /*
-Login Login to F5 Cloud Services
+ * Login Login to F5 Cloud Services
+ *
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param authenticationServiceLoginRequest
-@return AuthenticationServiceLoginReply
-*/
+ * @return AuthenticationServiceLoginReply
+ */
 func (a *AuthenticationServiceApiService) Login(ctx _context.Context, authenticationServiceLoginRequest AuthenticationServiceLoginRequest) (AuthenticationServiceLoginReply, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
@@ -77,6 +79,7 @@ func (a *AuthenticationServiceApiService) Login(ctx _context.Context, authentica
 
 	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(_bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -102,11 +105,12 @@ func (a *AuthenticationServiceApiService) Login(ctx _context.Context, authentica
 }
 
 /*
-Logout Logout from F5 Cloud Services
+ * Logout Logout from F5 Cloud Services
+ *
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param authenticationServiceLogoutRequest
-@return map[string]interface{}
-*/
+ * @return map[string]interface{}
+ */
 func (a *AuthenticationServiceApiService) Logout(ctx _context.Context, authenticationServiceLogoutRequest AuthenticationServiceLogoutRequest) (map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
@@ -154,6 +158,7 @@ func (a *AuthenticationServiceApiService) Logout(ctx _context.Context, authentic
 
 	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(_bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -179,11 +184,12 @@ func (a *AuthenticationServiceApiService) Logout(ctx _context.Context, authentic
 }
 
 /*
-ReLogin Login again to F5 Cloud Services
+ * ReLogin Login again to F5 Cloud Services
+ *
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param authenticationServiceReLoginRequest
-@return AuthenticationServiceReLoginReply
-*/
+ * @return AuthenticationServiceReLoginReply
+ */
 func (a *AuthenticationServiceApiService) ReLogin(ctx _context.Context, authenticationServiceReLoginRequest AuthenticationServiceReLoginRequest) (AuthenticationServiceReLoginReply, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
@@ -231,6 +237,7 @@ func (a *AuthenticationServiceApiService) ReLogin(ctx _context.Context, authenti
 
 	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(_bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
