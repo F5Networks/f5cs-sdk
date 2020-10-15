@@ -1,6 +1,6 @@
 module gitswarm.f5net.com/f5aas/f5cs-sdk
 
-go 1.13
+go 1.15
 
 require (
 	github.com/antihax/optional v1.0.0

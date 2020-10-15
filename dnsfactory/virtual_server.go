@@ -30,7 +30,7 @@ type VirtualServer struct {
 	VipID *string `draft_validate:"omitempty" json:"vip_id,omitempty"`
 
 	// Field 7
-	TranslationAddress *string `draft_validate:"omitempty,ip,IPv6MappedIPv4,RestrictedSubnetVIP" json:"translation_address,omitempty"`
+	TranslationAddress *string `draft_validate:"omitempty,ip" json:"translation_address,omitempty"`
 }
 
 // GetAddress : Return Virtual Server address. Return empty string if address is nil
