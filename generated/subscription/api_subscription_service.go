@@ -14,6 +14,7 @@ import (
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
+	_bytes "bytes"
 	"strings"
 	"github.com/antihax/optional"
 )
@@ -27,11 +28,12 @@ var (
 type SubscriptionServiceApiService service
 
 /*
-ActivateSubscription Activate a subscription
+ * ActivateSubscription Activate a subscription
+ *
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param subscriptionId subscription identifier
-@return V1SubscriptionStatusResponse
-*/
+ * @return V1SubscriptionStatusResponse
+ */
 func (a *SubscriptionServiceApiService) ActivateSubscription(ctx _context.Context, subscriptionId string) (V1SubscriptionStatusResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
@@ -79,6 +81,7 @@ func (a *SubscriptionServiceApiService) ActivateSubscription(ctx _context.Contex
 
 	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(_bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -113,11 +116,12 @@ func (a *SubscriptionServiceApiService) ActivateSubscription(ctx _context.Contex
 }
 
 /*
-BatchActivateSubscription Activate multiple subscriptions
+ * BatchActivateSubscription Activate multiple subscriptions
+ *
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param v1BatchSubscriptionIdRequest
-@return V1BatchSubscriptionStatusResponse
-*/
+ * @return V1BatchSubscriptionStatusResponse
+ */
 func (a *SubscriptionServiceApiService) BatchActivateSubscription(ctx _context.Context, v1BatchSubscriptionIdRequest V1BatchSubscriptionIdRequest) (V1BatchSubscriptionStatusResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
@@ -165,6 +169,7 @@ func (a *SubscriptionServiceApiService) BatchActivateSubscription(ctx _context.C
 
 	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(_bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -199,11 +204,12 @@ func (a *SubscriptionServiceApiService) BatchActivateSubscription(ctx _context.C
 }
 
 /*
-BatchRetireSubscription Retire multiple subscriptions
+ * BatchRetireSubscription Retire multiple subscriptions
+ *
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param v1BatchSubscriptionIdRequest
-@return V1BatchSubscriptionStatusResponse
-*/
+ * @return V1BatchSubscriptionStatusResponse
+ */
 func (a *SubscriptionServiceApiService) BatchRetireSubscription(ctx _context.Context, v1BatchSubscriptionIdRequest V1BatchSubscriptionIdRequest) (V1BatchSubscriptionStatusResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
@@ -251,6 +257,7 @@ func (a *SubscriptionServiceApiService) BatchRetireSubscription(ctx _context.Con
 
 	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(_bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -285,11 +292,12 @@ func (a *SubscriptionServiceApiService) BatchRetireSubscription(ctx _context.Con
 }
 
 /*
-BatchSubscriptionStatus Get the status of multiple subscriptions
+ * BatchSubscriptionStatus Get the status of multiple subscriptions
+ *
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param v1BatchSubscriptionIdRequest
-@return V1BatchSubscriptionStatusResponse
-*/
+ * @return V1BatchSubscriptionStatusResponse
+ */
 func (a *SubscriptionServiceApiService) BatchSubscriptionStatus(ctx _context.Context, v1BatchSubscriptionIdRequest V1BatchSubscriptionIdRequest) (V1BatchSubscriptionStatusResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
@@ -337,6 +345,7 @@ func (a *SubscriptionServiceApiService) BatchSubscriptionStatus(ctx _context.Con
 
 	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(_bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -371,11 +380,12 @@ func (a *SubscriptionServiceApiService) BatchSubscriptionStatus(ctx _context.Con
 }
 
 /*
-BatchSuspendSubscription Suspend multiple subscriptions
+ * BatchSuspendSubscription Suspend multiple subscriptions
+ *
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param v1BatchSubscriptionIdRequest
-@return V1BatchSubscriptionStatusResponse
-*/
+ * @return V1BatchSubscriptionStatusResponse
+ */
 func (a *SubscriptionServiceApiService) BatchSuspendSubscription(ctx _context.Context, v1BatchSubscriptionIdRequest V1BatchSubscriptionIdRequest) (V1BatchSubscriptionStatusResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
@@ -423,6 +433,7 @@ func (a *SubscriptionServiceApiService) BatchSuspendSubscription(ctx _context.Co
 
 	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(_bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -457,11 +468,12 @@ func (a *SubscriptionServiceApiService) BatchSuspendSubscription(ctx _context.Co
 }
 
 /*
-BatchUnretireSubscription Un-retire multiple subscriptions
+ * BatchUnretireSubscription Un-retire multiple subscriptions
+ *
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param v1BatchSubscriptionIdRequest
-@return V1BatchSubscriptionStatusResponse
-*/
+ * @return V1BatchSubscriptionStatusResponse
+ */
 func (a *SubscriptionServiceApiService) BatchUnretireSubscription(ctx _context.Context, v1BatchSubscriptionIdRequest V1BatchSubscriptionIdRequest) (V1BatchSubscriptionStatusResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
@@ -509,6 +521,7 @@ func (a *SubscriptionServiceApiService) BatchUnretireSubscription(ctx _context.C
 
 	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(_bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -543,11 +556,12 @@ func (a *SubscriptionServiceApiService) BatchUnretireSubscription(ctx _context.C
 }
 
 /*
-CreateSubscription Create a subscription
+ * CreateSubscription Create a subscription
+ *
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param v1CreateSubscriptionRequest
-@return V1Subscription
-*/
+ * @return V1Subscription
+ */
 func (a *SubscriptionServiceApiService) CreateSubscription(ctx _context.Context, v1CreateSubscriptionRequest V1CreateSubscriptionRequest) (V1Subscription, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
@@ -595,6 +609,7 @@ func (a *SubscriptionServiceApiService) CreateSubscription(ctx _context.Context,
 
 	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(_bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -634,13 +649,14 @@ type GetSubscriptionOpts struct {
 }
 
 /*
-GetSubscription Get a subscription
+ * GetSubscription Get a subscription
+ *
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param subscriptionId subscription identifier
  * @param optional nil or *GetSubscriptionOpts - Optional Parameters:
  * @param "OmitConfig" (optional.Bool) - 
-@return V1Subscription
-*/
+ * @return V1Subscription
+ */
 func (a *SubscriptionServiceApiService) GetSubscription(ctx _context.Context, subscriptionId string, localVarOptionals *GetSubscriptionOpts) (V1Subscription, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
@@ -691,6 +707,7 @@ func (a *SubscriptionServiceApiService) GetSubscription(ctx _context.Context, su
 
 	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(_bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -738,7 +755,8 @@ type ListSubscriptionsOpts struct {
 }
 
 /*
-ListSubscriptions List subscriptions in an account
+ * ListSubscriptions List subscriptions in an account
+ *
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param accountId filter by account identifier.
  * @param optional nil or *ListSubscriptionsOpts - Optional Parameters:
@@ -751,8 +769,8 @@ ListSubscriptions List subscriptions in an account
  * @param "PageSize" (optional.Int32) -  The maximum number of items to return, capped at 500.
  * @param "PageNumber" (optional.Int32) -  One-indexed page number, the default of 0 means to follow the page_token page.
  * @param "PageToken" (optional.String) -  The page_token to use returned in Subscriptions.page_token.
-@return V1Subscriptions
-*/
+ * @return V1Subscriptions
+ */
 func (a *SubscriptionServiceApiService) ListSubscriptions(ctx _context.Context, accountId string, localVarOptionals *ListSubscriptionsOpts) (V1Subscriptions, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
@@ -826,6 +844,7 @@ func (a *SubscriptionServiceApiService) ListSubscriptions(ctx _context.Context, 
 
 	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(_bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -860,11 +879,12 @@ func (a *SubscriptionServiceApiService) ListSubscriptions(ctx _context.Context, 
 }
 
 /*
-RetireSubscription Retire a subscription
+ * RetireSubscription Retire a subscription
+ *
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param subscriptionId subscription identifier
-@return V1SubscriptionStatusResponse
-*/
+ * @return V1SubscriptionStatusResponse
+ */
 func (a *SubscriptionServiceApiService) RetireSubscription(ctx _context.Context, subscriptionId string) (V1SubscriptionStatusResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
@@ -912,6 +932,7 @@ func (a *SubscriptionServiceApiService) RetireSubscription(ctx _context.Context,
 
 	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(_bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -946,11 +967,12 @@ func (a *SubscriptionServiceApiService) RetireSubscription(ctx _context.Context,
 }
 
 /*
-SubscriptionStatus Get a subscription's status
+ * SubscriptionStatus Get a subscription's status
+ *
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param subscriptionId subscription identifier
-@return V1SubscriptionStatusResponse
-*/
+ * @return V1SubscriptionStatusResponse
+ */
 func (a *SubscriptionServiceApiService) SubscriptionStatus(ctx _context.Context, subscriptionId string) (V1SubscriptionStatusResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
@@ -998,6 +1020,7 @@ func (a *SubscriptionServiceApiService) SubscriptionStatus(ctx _context.Context,
 
 	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(_bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -1032,11 +1055,12 @@ func (a *SubscriptionServiceApiService) SubscriptionStatus(ctx _context.Context,
 }
 
 /*
-SuspendSubscription Suspend a subscription
+ * SuspendSubscription Suspend a subscription
+ *
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param subscriptionId subscription identifier
-@return V1SubscriptionStatusResponse
-*/
+ * @return V1SubscriptionStatusResponse
+ */
 func (a *SubscriptionServiceApiService) SuspendSubscription(ctx _context.Context, subscriptionId string) (V1SubscriptionStatusResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
@@ -1084,6 +1108,7 @@ func (a *SubscriptionServiceApiService) SuspendSubscription(ctx _context.Context
 
 	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(_bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -1118,11 +1143,12 @@ func (a *SubscriptionServiceApiService) SuspendSubscription(ctx _context.Context
 }
 
 /*
-TestSubscription Test a subscription
+ * TestSubscription Test a subscription
+ *
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param subscriptionId subscription identifier
-@return V1TestSubscriptionResponse
-*/
+ * @return V1TestSubscriptionResponse
+ */
 func (a *SubscriptionServiceApiService) TestSubscription(ctx _context.Context, subscriptionId string) (V1TestSubscriptionResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
@@ -1170,6 +1196,7 @@ func (a *SubscriptionServiceApiService) TestSubscription(ctx _context.Context, s
 
 	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(_bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -1204,11 +1231,12 @@ func (a *SubscriptionServiceApiService) TestSubscription(ctx _context.Context, s
 }
 
 /*
-UnretireSubscription Un-retire a subscription
+ * UnretireSubscription Un-retire a subscription
+ *
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param subscriptionId subscription identifier
-@return V1SubscriptionStatusResponse
-*/
+ * @return V1SubscriptionStatusResponse
+ */
 func (a *SubscriptionServiceApiService) UnretireSubscription(ctx _context.Context, subscriptionId string) (V1SubscriptionStatusResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
@@ -1256,6 +1284,7 @@ func (a *SubscriptionServiceApiService) UnretireSubscription(ctx _context.Contex
 
 	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(_bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -1290,12 +1319,13 @@ func (a *SubscriptionServiceApiService) UnretireSubscription(ctx _context.Contex
 }
 
 /*
-UpdateSubscription Update a subscription
+ * UpdateSubscription Update a subscription
+ *
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param subscriptionId subscription identifier
  * @param v1UpdateSubscriptionRequest
-@return V1Subscription
-*/
+ * @return V1Subscription
+ */
 func (a *SubscriptionServiceApiService) UpdateSubscription(ctx _context.Context, subscriptionId string, v1UpdateSubscriptionRequest V1UpdateSubscriptionRequest) (V1Subscription, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPut
@@ -1345,6 +1375,7 @@ func (a *SubscriptionServiceApiService) UpdateSubscription(ctx _context.Context,
 
 	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(_bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}

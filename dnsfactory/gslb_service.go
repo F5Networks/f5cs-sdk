@@ -1,6 +1,8 @@
 package factory
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 var (
 // aliasRegexpFunc func(alias string) bool
@@ -31,6 +33,14 @@ type GSLBService struct {
 
 	// Field 7
 	Monitors *map[string]Monitor `draft_validate:"omitempty,dive" activation_validate:"omitempty,dive" json:"monitors,omitempty"`
+}
+
+func (g *GSLBService) GetServiceType() string {
+	return "gslb"
+}
+
+func (g *GSLBService) GetEmptyService() Service {
+	return &GSLBService{}
 }
 
 // GetMonitors : Return the GSLBService.Monitors map. If nil, return an empty map.
@@ -368,14 +378,4 @@ func (g *GSLBService) MarshalToString() string {
 	}
 	return string(b)
 
-}
-
-func LBRFromJSON(lbr string, alias []string) *LoadBalancedRecord {
-	var lbrObj LoadBalancedRecord
-	err := json.Unmarshal([]byte(lbr), &lbrObj)
-	if err == nil {
-		lbrObj.Aliases = alias
-		return &lbrObj
-	}
-	return nil
 }

@@ -8,8 +8,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/icza/dyno"
 	loglib "log"
+
+	"github.com/icza/dyno"
 )
 
 const (

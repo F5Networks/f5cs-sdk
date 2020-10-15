@@ -1,0 +1,328 @@
+openapi: 3.0.0
+info:
+  title: dashboard-service.proto
+  version: version not set
+servers:
+- url: /
+paths:
+  /v1/svc-dashboard/dashboard/accounts/{account_id}:
+    get:
+      operationId: GetAccountServices
+      parameters:
+      - explode: false
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: duration
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: type
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dashboard_serviceGetAccountServicesReply'
+      tags:
+      - DashboardService
+  /v1/svc-dashboard/dashboard/accounts/{account_id}/services/{service_id}:
+    get:
+      operationId: GetServiceDetails
+      parameters:
+      - explode: false
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: service_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dashboard_serviceGetServiceDetailsReply'
+      tags:
+      - DashboardService
+  /v1/svc-dashboard/dashboard/accounts/{account_id}/summary:
+    get:
+      operationId: GetAccountSummary
+      parameters:
+      - explode: false
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: duration
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: type
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dashboard_serviceGetAccountSummaryReply'
+      tags:
+      - DashboardService
+components:
+  schemas:
+    dashboard_serviceAccountSummaryStats:
+      example:
+        duration: duration
+        count: count
+      properties:
+        type:
+          $ref: '#/components/schemas/dashboard_serviceServiceType'
+        health:
+          $ref: '#/components/schemas/dashboard_serviceServiceHealth'
+        count:
+          format: uint64
+          type: string
+        duration:
+          type: string
+      type: object
+    dashboard_serviceDNSServiceDetails:
+      example:
+        duration: duration
+        stat_type: stat_type
+        total_records: total_records
+        count: count
+      properties:
+        count:
+          format: uint64
+          type: string
+        stat_type:
+          type: string
+        duration:
+          type: string
+        total_records:
+          format: uint64
+          type: string
+      type: object
+    dashboard_serviceGSLBServiceDetails:
+      example:
+        duration: duration
+        stat_type: stat_type
+        count: count
+      properties:
+        count:
+          format: uint64
+          type: string
+        stat_type:
+          type: string
+        duration:
+          type: string
+      type: object
+    dashboard_serviceGetAccountServicesReply:
+      example:
+        stats:
+        - name: name
+          gslb_details:
+            duration: duration
+            stat_type: stat_type
+            count: count
+          details:
+            duration: duration
+            stat_type: stat_type
+            total_records: total_records
+            count: count
+          id: id
+          last_queried: last_queried
+          status: status
+        - name: name
+          gslb_details:
+            duration: duration
+            stat_type: stat_type
+            count: count
+          details:
+            duration: duration
+            stat_type: stat_type
+            total_records: total_records
+            count: count
+          id: id
+          last_queried: last_queried
+          status: status
+      properties:
+        stats:
+          items:
+            $ref: '#/components/schemas/dashboard_serviceServiceGeneralStats'
+          type: array
+      type: object
+    dashboard_serviceGetAccountSummaryReply:
+      example:
+        stats:
+        - duration: duration
+          count: count
+        - duration: duration
+          count: count
+      properties:
+        stats:
+          items:
+            $ref: '#/components/schemas/dashboard_serviceAccountSummaryStats'
+          type: array
+      type: object
+    dashboard_serviceGetServiceDetailsReply:
+      example:
+        stats:
+          duration: duration
+          stat_type: stat_type
+          stats:
+          - month: 6
+            year: 0
+            count: count
+            day: 1
+          - month: 6
+            year: 0
+            count: count
+            day: 1
+        name: name
+      properties:
+        type:
+          $ref: '#/components/schemas/dashboard_serviceServiceType'
+        health:
+          $ref: '#/components/schemas/dashboard_serviceServiceHealth'
+        name:
+          type: string
+        stats:
+          $ref: '#/components/schemas/dashboard_serviceServiceMeteringStats'
+      type: object
+    dashboard_serviceServiceGeneralStats:
+      example:
+        name: name
+        gslb_details:
+          duration: duration
+          stat_type: stat_type
+          count: count
+        details:
+          duration: duration
+          stat_type: stat_type
+          total_records: total_records
+          count: count
+        id: id
+        last_queried: last_queried
+        status: status
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/dashboard_serviceServiceType'
+        health:
+          $ref: '#/components/schemas/dashboard_serviceServiceHealth'
+        last_queried:
+          format: uint64
+          type: string
+        status:
+          type: string
+        details:
+          $ref: '#/components/schemas/dashboard_serviceDNSServiceDetails'
+        gslb_details:
+          $ref: '#/components/schemas/dashboard_serviceGSLBServiceDetails'
+      type: object
+    dashboard_serviceServiceHealth:
+      default: RED
+      enum:
+      - RED
+      - GREEN
+      - BLACK
+      - YELLOW
+      type: string
+    dashboard_serviceServiceMeteringStat:
+      example:
+        month: 6
+        year: 0
+        count: count
+        day: 1
+      properties:
+        year:
+          format: int32
+          type: integer
+        month:
+          format: int32
+          type: integer
+        day:
+          format: int32
+          type: integer
+        count:
+          format: uint64
+          type: string
+      type: object
+    dashboard_serviceServiceMeteringStats:
+      example:
+        duration: duration
+        stat_type: stat_type
+        stats:
+        - month: 6
+          year: 0
+          count: count
+          day: 1
+        - month: 6
+          year: 0
+          count: count
+          day: 1
+      properties:
+        granularity:
+          $ref: '#/components/schemas/dashboard_serviceStatTimeGranularity'
+        stat_type:
+          type: string
+        duration:
+          type: string
+        stats:
+          items:
+            $ref: '#/components/schemas/dashboard_serviceServiceMeteringStat'
+          type: array
+      type: object
+    dashboard_serviceServiceType:
+      default: adns
+      description: |2-
+         - adns: Never change lower ones, add to the end.
+         - _max: The max must be at the end and change.
+      enum:
+      - adns
+      - gslb
+      - waf
+      - bot
+      - _max
+      type: string
+    dashboard_serviceStatTimeGranularity:
+      default: d
+      enum:
+      - d
+      - w
+      - m
+      - "y"
+      type: string
