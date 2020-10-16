@@ -36,7 +36,11 @@ func NewFactory(opts ...Opts) Factory {
 }
 
 type Opts struct {
+	// Json configuration string.
 	JSONServiceConfig string
+
+	// Whether to fill in missing service fields with default values.
+	FillWithDefaults bool
 }
 type Factory struct {
 	sr ServiceRequest
@@ -309,7 +313,7 @@ func (f *Factory) serviceRequestFromJSON(jsonStr string) ServiceRequest {
 		return ServiceRequest{}
 	}
 	// if configuration exists -> unmarshal into service request
-	// if gslb_service exists -> unmarshal into configuration
+	// if gslb_service or dns_service exists -> unmarshal into configuration
 	// if lbr, pools, monitors, virtual_servers, regions, zone exist -> unmarshal into GSLBService
 	_, err = dyno.Get(v, "configuration")
 	if err == nil {
@@ -320,8 +324,9 @@ func (f *Factory) serviceRequestFromJSON(jsonStr string) ServiceRequest {
 		}
 		return serviceRequest
 	}
-	_, err = dyno.Get(v, "gslb_service")
-	if err == nil {
+	_, gslbErr := dyno.Get(v, "gslb_service")
+	_, dnsErr := dyno.Get(v, "dns_service")
+	if gslbErr == nil || dnsErr == nil {
 		serviceRequest := f.ServiceRequestDefault()
 		configuration := Configuration{}
 		err := json.Unmarshal([]byte(jsonStr), &configuration)

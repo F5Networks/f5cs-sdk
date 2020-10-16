@@ -34,32 +34,51 @@ type RRSet struct {
 }
 
 type RRSetValue interface {
-	GetRRType() string
 }
 
 type NSRRSetValue struct {
-	NameServer *string `draft_validate:"omitempty,hostname" json:",omitempty"`
+	NameServer *string `draft_validate:"omitempty,hostname"`
 }
 
-func (ns NSRRSetValue) GetRRType() string {
-	return RRTypeNS
+func (rrsetValue NSRRSetValue) MarshalJSON() ([]byte, error) {
+	return json.Marshal(rrsetValue.NameServer)
 }
 
 type CNAMERRSetValue struct {
-	Domain *string `draft_validate:"omitempty,hostname" json:",omitempty" conform:"trim,lower,rtrimdot"`
+	Domain *string `draft_validate:"omitempty,hostname" conform:"trim,lower,rtrimdot"`
 }
+
+func (rrsetValue CNAMERRSetValue) MarshalJSON() ([]byte, error) {
+	return json.Marshal(rrsetValue.Domain)
+}
+
 type MXRRSetValue struct {
 	Domain   *string `draft_validate:"omitempty,hostname" json:"domain,omitempty" conform:"trim,lower,rtrimdot"`
 	Priority *int    `draft_validate:"omitempty" json:"priority,omitempty"` // 0-255
 }
 
-// A or AAAA record
-type AorAAAARRSetValue struct {
-	Address *string `draft_validate:"omitempty,ip,IPv6MappedIPv4" activation_validate:"omitempty,IPv6MappedIPv4" json:",omitempty"`
+type ARRSetValue struct {
+	Address *string `draft_validate:"omitempty,ipv4"`
+}
+
+func (rrsetValue ARRSetValue) MarshalJSON() ([]byte, error) {
+	return json.Marshal(rrsetValue.Address)
+}
+
+type AAAARRSetValue struct {
+	Address *string `draft_validate:"omitempty,ipv6"`
+}
+
+func (rrsetValue AAAARRSetValue) MarshalJSON() ([]byte, error) {
+	return json.Marshal(rrsetValue.Address)
 }
 
 type TXTRRSetValue struct {
-	Text *string `draft_validate:"omitempty,min=1,max=255" json:",omitempty"`
+	Text *string `draft_validate:"omitempty,min=0,max=512"`
+}
+
+func (rrsetValue TXTRRSetValue) MarshalJSON() ([]byte, error) {
+	return json.Marshal(rrsetValue.Text)
 }
 
 func (r *RRSet) MarshalToString() string {
@@ -68,7 +87,6 @@ func (r *RRSet) MarshalToString() string {
 		return ""
 	}
 	return string(b)
-
 }
 
 func (rrset *RRSet) UnmarshalJSON(data []byte) error {
@@ -76,8 +94,7 @@ func (rrset *RRSet) UnmarshalJSON(data []byte) error {
 	var objMap map[string]*json.RawMessage
 	err := json.Unmarshal(data, &objMap)
 
-	// map them all out to their corresponging struct keys
-
+	// map them all out to their corresponding struct keys
 	if objMap["type"] != nil {
 		err = json.Unmarshal(*objMap["type"], &rrset.Type)
 		if err != nil {
@@ -91,59 +108,124 @@ func (rrset *RRSet) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	} else {
-		rrset.TTL = newIntPointer(86400)
+		rrset.TTL = newIntPointer(3600)
+	}
+
+	setValue := func(callback func(*string) RRSetValue) error {
+		if objMap["value"] == nil {
+			return nil
+		}
+		var value string
+		err := json.Unmarshal(*objMap["value"], &value)
+		if err != nil {
+			return err
+		}
+		rrset.Value = callback(&value)
+		return nil
+	}
+
+	setValues := func(callback func(*string) RRSetValue) error {
+		if objMap["values"] == nil {
+			return nil
+		}
+		var values []string
+		err := json.Unmarshal(*objMap["values"], &values)
+		if err != nil {
+			return err
+		}
+		for _, value := range values {
+			val := value
+			rrset.Values = append(rrset.Values, callback(&val))
+		}
+		return nil
+	}
+
+	setValueAndValues := func(callback func(*string) RRSetValue) error {
+		err := setValue(callback)
+		if err != nil {
+			return err
+		}
+		err = setValues(callback)
+		if err != nil {
+			return err
+		}
+		return nil
 	}
 
 	switch strings.ToUpper(ssp(rrset.Type)) {
 	case RRTypeNS:
-		var NS []string
-		var NSRRSet []RRSetValue
-		if objMap["values"] != nil {
-			err = json.Unmarshal(*objMap["values"], &NS)
+		err = setValueAndValues(func(value *string) RRSetValue {
+			return NSRRSetValue{NameServer: value}
+		})
+	case RRTypeA:
+		err = setValueAndValues(func(value *string) RRSetValue {
+			return ARRSetValue{Address: value}
+		})
+	case RRTypeAAAA:
+		err = setValueAndValues(func(value *string) RRSetValue {
+			return AAAARRSetValue{Address: value}
+		})
+	case RRTypeCNAME:
+		err = setValue(func(value *string) RRSetValue {
+			return CNAMERRSetValue{Domain: value}
+		})
+	case RRTypeMX:
+		if objMap["value"] != nil {
+			var mxStruct MXRRSetValue
+			err = json.Unmarshal(*objMap["value"], &mxStruct)
 			if err != nil {
 				return err
 			}
-			for i := 0; i < len(NS); i++ {
-				nsVal := NSRRSetValue{NameServer: newStringPointer(NS[i])}
-				NSRRSet = append(NSRRSet, nsVal)
-			}
-			rrset.Values = NSRRSet
+			rrset.Value = mxStruct
 		}
+
+		if objMap["values"] != nil {
+			var mxArray []MXRRSetValue
+			var MXRRSet []RRSetValue
+			err = json.Unmarshal(*objMap["values"], &mxArray)
+			if err != nil {
+				return err
+			}
+			for i := 0; i < len(mxArray); i++ {
+				MXRRSet = append(MXRRSet, mxArray[i])
+			}
+			rrset.Values = MXRRSet
+		}
+	case RRTypeTXT:
+		err = setValueAndValues(func(value *string) RRSetValue {
+			return TXTRRSetValue{Text: value}
+		})
 	}
 	return err
 }
 
-func (rrset *RRSet) MarshalJSON() ([]byte, error) {
-	type AliasRRSet RRSet
-	switch strings.ToUpper(ssp(rrset.Type)) {
-	case RRTypeNS:
-		var nsArray []string
-		castingOK := true
-		for _, values := range rrset.Values {
-			if nsVal, ok := values.(NSRRSetValue); ok {
-				nsArray = append(nsArray, ssp(nsVal.NameServer))
-			} else {
-				castingOK = false
-				break
+func (rrset RRSet) MarshalJSON() ([]byte, error) {
+	var value RRSetValue
+	var values []RRSetValue
+
+	// if not CNAME, marshal value inside the values field
+	if rrset.Type != nil {
+		if *rrset.Type == RRTypeCNAME {
+			value = rrset.Value
+			values = nil
+		} else {
+			values = rrset.Values
+			if rrset.Value != nil {
+				values = append(values, rrset.Value)
 			}
+			value = nil
 		}
-		// if there was casting problem, fall back to json.Marshaler
-		if !castingOK {
-			break
-		}
-		tempStr := &struct {
-			*AliasRRSet
-			Values []string `json:"values,omitempty"`
-		}{
-			AliasRRSet: (*AliasRRSet)(rrset),
-			Values:     nsArray,
-		}
-		return json.Marshal(tempStr)
 	}
 
 	return json.Marshal(&struct {
-		*AliasRRSet
+		Type   *string      `json:"type,omitempty"`
+		TTL    *int         `json:"ttl,omitempty"`
+		Value  RRSetValue   `json:"value,omitempty"`
+		Values []RRSetValue `json:"values,omitempty"`
 	}{
-		AliasRRSet: (*AliasRRSet)(rrset),
+		Type:   rrset.Type,
+		TTL:    rrset.TTL,
+		Value:  value,
+		Values: values,
 	})
 }
