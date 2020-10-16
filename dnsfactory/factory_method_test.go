@@ -17,6 +17,13 @@ func TestNewFactory(t *testing.T) {
 	assert.NotEmpty(t, f.sr.ServiceInstanceName)
 	assert.NotEmpty(t, f.sr.AccountId)
 
+	f = NewFactory(Opts{JSONServiceConfig: configurationDnsServiceJSON})
+	// println(f.sr.ToJSON())
+	assert.NotEmpty(t, f.sr.SubscriptionId)
+	assert.NotEmpty(t, f.sr.ServiceInstanceId)
+	assert.NotEmpty(t, f.sr.ServiceInstanceName)
+	assert.NotEmpty(t, f.sr.AccountId)
+
 	f = NewFactory(Opts{JSONServiceConfig: gslbServiceJSON})
 	// println(f.sr.ToJSON())
 	assert.NotEmpty(t, f.sr.SubscriptionId)
@@ -266,6 +273,26 @@ var configurationJSON = `{
 		"name": "ns2.dns.dev.f5aas.com"
 	}]
 }`
+var configurationDnsServiceJSON = `{
+	"dns_service": { 
+		"zone": "default.useastexample.com",
+		"ttl": 3000,
+		"refresh": 6666,
+		"retry": 7777,
+		"expire": 88888,
+		"negative_ttl": 3333,
+		"primary_nameserver": "ns1.f5cloudservices.com",
+		"records":{
+			"":[
+				{
+					"ttl": 1123,
+					"type": "NS",
+					"values":["ns1","ns2"]
+				}
+			]
+		}
+	}
+}`
 var gslbServiceJSON = `{
 	"load_balanced_records": {
 		"lbr1": {
@@ -355,3 +382,55 @@ var partialGslbServiceJSON = `{
 	},
 	"zone": "goclient.gslb1572042084443333000.example.com"
 }`
+
+func TestDnsAddRecord(t *testing.T) {
+	recordName := "www"
+	d := &DNSService{}
+	d.AddRecord(recordName, "A", "1.2.2.2", "2.3.4.5").
+		AddRecord(recordName, "AAAA", "1234::")
+
+	assert.Len(t, d.GetRecord(recordName).RRSets, 2)
+
+	d.AddRecord(recordName, "AAAA", "2345::", "3456::")
+	assert.Len(t, d.GetRecord(recordName).RRSets, 3)
+
+	d.AddRecord(recordName, "CNAME", "my.cname")
+	assert.Len(t, d.GetRecord(recordName).RRSets, 4)
+
+	d.AddMXRecord(recordName, []MXRRSetValue{
+		{Domain: newStringPointer("my.domain"), Priority: newIntPointer(1)},
+		{Domain: newStringPointer("my.domain2"), Priority: newIntPointer(1)},
+	}...)
+	assert.Len(t, d.GetRecord(recordName).RRSets, 5)
+
+	d.AddTXTRecord(recordName, "my txt 1", "my txt 2")
+	assert.Len(t, d.GetRecord(recordName).RRSets, 6)
+
+	println(d.MarshalToString())
+}
+
+func TestDnsRemoveRecord(t *testing.T) {
+	recordName := "www"
+	d := &DNSService{}
+	d.AddRecord(recordName, "A", "1.2.2.2", "2.3.4.5").
+		AddRecord(recordName, "AAAA", "1234::").
+		AddRecord(recordName, "AAAA", "2345::", "3456::")
+	assert.Len(t, d.GetRecord(recordName).RRSets, 3)
+
+	// remove all record types
+	d.RemoveRecord(recordName)
+	assert.Len(t, d.GetRecord(recordName).RRSets, 0)
+
+	// repopulate
+	d.AddRecord(recordName, "A", "1.2.2.2", "2.3.4.5").
+		AddRecord(recordName, "AAAA", "1234::").
+		AddRecord(recordName, "AAAA", "2345::", "3456::")
+
+	// remove A record type
+	d.RemoveRecord(recordName, RRTypeA)
+	assert.Len(t, d.GetRecord(recordName).RRSets, 2)
+
+	// remove unused record type
+	d.RemoveRecord(recordName, RRTypeNS)
+	assert.Len(t, d.GetRecord(recordName).RRSets, 2)
+}
