@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.7](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.6...v0.1.7) (2020-10-19)
+
+
+### Bug Fixes
+
+* fix Makefile to remove f5cs Makefile ([2a17c36](https://gitswarm.f5net.com/f5aas/f5cs-sdk/commit/2a17c36080b19fe45a4f41b67d5a19fbcef74550))
+
 ### [0.1.6](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.5...v0.1.6) (2020-10-19)
 
 ### [0.1.5](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.2...v0.1.5) (2020-10-19)
