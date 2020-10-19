@@ -1,5 +1,3 @@
-include Makefile.f5cs
-
 ### Customized Makefile
 .PHONY: gensdk
 gensdk:
