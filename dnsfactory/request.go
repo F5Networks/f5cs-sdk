@@ -36,6 +36,8 @@ type ServiceRequest struct {
 
 	ServiceType string `json:"service_type,omitempty"`
 
+	Status string `json:"status,omitempty"`
+
 	CreateTime string `json:"create_time,omitempty"`
 	UpdateTime string `json:"update_time,omitempty"`
 	CancelTime string `json:"cancel_time,omitempty"`

@@ -22,3 +22,7 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+test/code.cov
+test/report.xml
+test/test.out
