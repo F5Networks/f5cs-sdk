@@ -4,3 +4,4 @@ vendor/* -diff
 pkg/proto/*.pb.go -diff
 pkg/proto/*.pb.gw.go -diff
 pkg/proto/*.swagger.json -diff
+Makefile.f5cs -diff
