@@ -1,4 +1,4 @@
-module gitswarm.f5net.com/f5aas/f5cs-sdk
+module github.com/F5Networks/f5cs-sdk
 
 go 1.13
 
