@@ -1,4 +1,4 @@
-module github.com/F5Networks/f5cs-sdk
+module github.com/F5Networks/f5cs-sdk // change the path for github
 
 go 1.15
 
