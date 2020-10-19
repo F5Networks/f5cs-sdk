@@ -201,8 +201,3 @@ redoc: ## Build the API HTML documentation.
 	cd pkg/proto \
 	&& swagger2openapi --outfile $(CI_PROJECT_NAME).openapi3.final.json $(CI_PROJECT_NAME).swagger.json \
 	&& redoc-cli bundle $(CI_PROJECT_NAME).openapi3.final.json -o $(CI_PROJECT_NAME).html;
-
-.PHONY: version
-version:
-	$(ECHO) echo "Update changelog"
-	standard-version
