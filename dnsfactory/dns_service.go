@@ -150,14 +150,9 @@ func (d *DNSService) AddARecord(recordName string, address ...string) *DNSServic
 	if d.Records == nil {
 		d.Records = &map[string]RRSetsWrapper{}
 	}
-	rrSetsWrapper := RRSetsWrapper{}
-	if currentRRSets, ok := (*d.Records)[recordName]; ok {
-		rrSetsWrapper.RRSets = append(currentRRSets.RRSets, rrSet)
-	} else {
-		rrSetsWrapper.RRSets = []RRSet{rrSet}
-	}
-
-	(*d.Records)[recordName] = rrSetsWrapper
+	currentSet := d.GetARecordSet(recordName)
+	currentSet.Values = append(currentSet.Values, rrSet.Values...)
+	d.SetARecordSet(recordName, currentSet)
 	return d
 }
 
@@ -169,14 +164,9 @@ func (d *DNSService) AddAAAARecord(recordName string, address ...string) *DNSSer
 	if d.Records == nil {
 		d.Records = &map[string]RRSetsWrapper{}
 	}
-	rrSetsWrapper := RRSetsWrapper{}
-	if currentRRSets, ok := (*d.Records)[recordName]; ok {
-		rrSetsWrapper.RRSets = append(currentRRSets.RRSets, rrSet)
-	} else {
-		rrSetsWrapper.RRSets = []RRSet{rrSet}
-	}
-
-	(*d.Records)[recordName] = rrSetsWrapper
+	currentSet := d.GetAAAARecordSet(recordName)
+	currentSet.Values = append(currentSet.Values, rrSet.Values...)
+	d.SetAAAARecordSet(recordName, currentSet)
 	return d
 }
 
@@ -188,34 +178,24 @@ func (d *DNSService) AddNSRecord(recordName string, nameserver ...string) *DNSSe
 	if d.Records == nil {
 		d.Records = &map[string]RRSetsWrapper{}
 	}
-	rrSetsWrapper := RRSetsWrapper{}
-	if currentRRSets, ok := (*d.Records)[recordName]; ok {
-		rrSetsWrapper.RRSets = append(currentRRSets.RRSets, rrSet)
-	} else {
-		rrSetsWrapper.RRSets = []RRSet{rrSet}
-	}
-
-	(*d.Records)[recordName] = rrSetsWrapper
+	currentSet := d.GetNSRecordSet(recordName)
+	currentSet.Values = append(currentSet.Values, rrSet.Values...)
+	d.SetNSRecordSet(recordName, currentSet)
 	return d
 }
 
-func (d *DNSService) AddCNAMERecord(recordName, domain string) *DNSService {
-	rrSet := RRSet{
-		Type:  newStringPointer(RRTypeCNAME),
-		Value: CNAMERRSetValue{Domain: newStringPointer(domain)},
+func (d *DNSService) AddCNAMERecord(recordName string, domain ...string) *DNSService {
+	rrSet := RRSet{Type: newStringPointer(RRTypeCNAME)}
+	for i := 0; i < len(domain); i++ {
+		rrSet.Values = append(rrSet.Values, CNAMERRSetValue{Domain: newStringPointer(domain[i])})
 	}
 
 	if d.Records == nil {
 		d.Records = &map[string]RRSetsWrapper{}
 	}
-	rrSetsWrapper := RRSetsWrapper{}
-	if currentRRSets, ok := (*d.Records)[recordName]; ok {
-		rrSetsWrapper.RRSets = append(currentRRSets.RRSets, rrSet)
-	} else {
-		rrSetsWrapper.RRSets = []RRSet{rrSet}
-	}
-
-	(*d.Records)[recordName] = rrSetsWrapper
+	currentSet := d.GetCNAMERecordSet(recordName)
+	currentSet.Values = append(currentSet.Values, rrSet.Values...)
+	d.SetCNAMERecordSet(recordName, currentSet)
 	return d
 }
 
@@ -231,14 +211,9 @@ func (d *DNSService) AddMXRecord(recordName string, mxSetValues ...MXRRSetValue)
 	if d.Records == nil {
 		d.Records = &map[string]RRSetsWrapper{}
 	}
-	rrSetsWrapper := RRSetsWrapper{}
-	if currentRRSets, ok := (*d.Records)[recordName]; ok {
-		rrSetsWrapper.RRSets = append(currentRRSets.RRSets, rrSet)
-	} else {
-		rrSetsWrapper.RRSets = []RRSet{rrSet}
-	}
-
-	(*d.Records)[recordName] = rrSetsWrapper
+	currentSet := d.GetMXRecordSet(recordName)
+	currentSet.Values = append(currentSet.Values, rrSet.Values...)
+	d.SetMXRecordSet(recordName, currentSet)
 	return d
 }
 
@@ -252,14 +227,9 @@ func (d *DNSService) AddTXTRecord(recordName string, text ...string) *DNSService
 	if d.Records == nil {
 		d.Records = &map[string]RRSetsWrapper{}
 	}
-	rrSetsWrapper := RRSetsWrapper{}
-	if currentRRSets, ok := (*d.Records)[recordName]; ok {
-		rrSetsWrapper.RRSets = append(currentRRSets.RRSets, rrSet)
-	} else {
-		rrSetsWrapper.RRSets = []RRSet{rrSet}
-	}
-
-	(*d.Records)[recordName] = rrSetsWrapper
+	currentSet := d.GetTXTRecordSet(recordName)
+	currentSet.Values = append(currentSet.Values, rrSet.Values...)
+	d.SetTXTRecordSet(recordName, currentSet)
 	return d
 }
 
@@ -292,5 +262,179 @@ func (d *DNSService) RemoveRecord(recordName string, recordType ...string) *DNSS
 		(*d.Records)[recordName] = RRSetsWrapper{newRRSets}
 	}
 
+	return d
+}
+
+func (d *DNSService) GetARecordSet(recordName string) RRSet {
+	if record, ok := (*d.Records)[recordName]; ok {
+		for _, rrset := range record.RRSets {
+			if ssp(rrset.Type) == RRTypeA {
+				return rrset
+			}
+		}
+	}
+	return RRSet{Type: newStringPointer(RRTypeA)}
+}
+
+func (d *DNSService) SetARecordSet(recordName string, newRrSet RRSet) *DNSService {
+	if d.Records == nil {
+		d.Records = &map[string]RRSetsWrapper{}
+	}
+	if record, ok := (*d.Records)[recordName]; ok {
+		for n, rrset := range record.RRSets {
+			if ssp(rrset.Type) == RRTypeA {
+				(*d.Records)[recordName].RRSets[n] = newRrSet
+				return d
+			}
+		}
+	}
+	rrSetsWrapper := (*d.Records)[recordName]
+	rrSetsWrapper.RRSets = append(rrSetsWrapper.RRSets, newRrSet)
+	(*d.Records)[recordName] = rrSetsWrapper
+	return d
+}
+
+func (d *DNSService) GetAAAARecordSet(recordName string) RRSet {
+	if record, ok := (*d.Records)[recordName]; ok {
+		for _, rrset := range record.RRSets {
+			if ssp(rrset.Type) == RRTypeAAAA {
+				return rrset
+			}
+		}
+	}
+	return RRSet{Type: newStringPointer(RRTypeAAAA)}
+}
+
+func (d *DNSService) SetAAAARecordSet(recordName string, newRrSet RRSet) *DNSService {
+	if d.Records == nil {
+		d.Records = &map[string]RRSetsWrapper{}
+	}
+	if record, ok := (*d.Records)[recordName]; ok {
+		for n, rrset := range record.RRSets {
+			if ssp(rrset.Type) == RRTypeAAAA {
+				(*d.Records)[recordName].RRSets[n] = newRrSet
+				return d
+			}
+		}
+	}
+	rrSetsWrapper := (*d.Records)[recordName]
+	rrSetsWrapper.RRSets = append(rrSetsWrapper.RRSets, newRrSet)
+	(*d.Records)[recordName] = rrSetsWrapper
+	return d
+}
+
+func (d *DNSService) GetMXRecordSet(recordName string) RRSet {
+	if record, ok := (*d.Records)[recordName]; ok {
+		for _, rrset := range record.RRSets {
+			if ssp(rrset.Type) == RRTypeMX {
+				return rrset
+			}
+		}
+	}
+	return RRSet{Type: newStringPointer(RRTypeMX)}
+}
+
+func (d *DNSService) SetMXRecordSet(recordName string, newRrSet RRSet) *DNSService {
+	if d.Records == nil {
+		d.Records = &map[string]RRSetsWrapper{}
+	}
+	if record, ok := (*d.Records)[recordName]; ok {
+		for n, rrset := range record.RRSets {
+			if ssp(rrset.Type) == RRTypeMX {
+				(*d.Records)[recordName].RRSets[n] = newRrSet
+				return d
+			}
+		}
+	}
+	rrSetsWrapper := (*d.Records)[recordName]
+	rrSetsWrapper.RRSets = append(rrSetsWrapper.RRSets, newRrSet)
+	(*d.Records)[recordName] = rrSetsWrapper
+	return d
+}
+
+func (d *DNSService) GetNSRecordSet(recordName string) RRSet {
+	if record, ok := (*d.Records)[recordName]; ok {
+		for _, rrset := range record.RRSets {
+			if ssp(rrset.Type) == RRTypeNS {
+				return rrset
+			}
+		}
+	}
+	return RRSet{Type: newStringPointer(RRTypeNS)}
+}
+
+func (d *DNSService) SetNSRecordSet(recordName string, rrSet RRSet) *DNSService {
+	if d.Records == nil {
+		d.Records = &map[string]RRSetsWrapper{}
+	}
+	if record, ok := (*d.Records)[recordName]; ok {
+		for n, rrset := range record.RRSets {
+			if ssp(rrset.Type) == RRTypeNS {
+				(*d.Records)[recordName].RRSets[n] = rrSet
+				return d
+			}
+		}
+	}
+	rrSetsWrapper := (*d.Records)[recordName]
+	rrSetsWrapper.RRSets = append(rrSetsWrapper.RRSets, rrSet)
+	(*d.Records)[recordName] = rrSetsWrapper
+	return d
+}
+
+func (d *DNSService) GetCNAMERecordSet(recordName string) RRSet {
+	if record, ok := (*d.Records)[recordName]; ok {
+		for _, rrset := range record.RRSets {
+			if ssp(rrset.Type) == RRTypeCNAME {
+				return rrset
+			}
+		}
+	}
+	return RRSet{Type: newStringPointer(RRTypeCNAME)}
+}
+
+func (d *DNSService) SetCNAMERecordSet(recordName string, newRrSet RRSet) *DNSService {
+	if d.Records == nil {
+		d.Records = &map[string]RRSetsWrapper{}
+	}
+	if record, ok := (*d.Records)[recordName]; ok {
+		for n, rrset := range record.RRSets {
+			if ssp(rrset.Type) == RRTypeCNAME {
+				(*d.Records)[recordName].RRSets[n] = newRrSet
+				return d
+			}
+		}
+	}
+	rrSetsWrapper := (*d.Records)[recordName]
+	rrSetsWrapper.RRSets = append(rrSetsWrapper.RRSets, newRrSet)
+	(*d.Records)[recordName] = rrSetsWrapper
+	return d
+}
+
+func (d *DNSService) GetTXTRecordSet(recordName string) RRSet {
+	if record, ok := (*d.Records)[recordName]; ok {
+		for _, rrset := range record.RRSets {
+			if ssp(rrset.Type) == RRTypeTXT {
+				return rrset
+			}
+		}
+	}
+	return RRSet{Type: newStringPointer(RRTypeTXT)}
+}
+
+func (d *DNSService) SetTXTRecordSet(recordName string, newRrSet RRSet) *DNSService {
+	if d.Records == nil {
+		d.Records = &map[string]RRSetsWrapper{}
+	}
+	if record, ok := (*d.Records)[recordName]; ok {
+		for n, rrset := range record.RRSets {
+			if ssp(rrset.Type) == RRTypeTXT {
+				(*d.Records)[recordName].RRSets[n] = newRrSet
+				return d
+			}
+		}
+	}
+	rrSetsWrapper := (*d.Records)[recordName]
+	rrSetsWrapper.RRSets = append(rrSetsWrapper.RRSets, newRrSet)
+	(*d.Records)[recordName] = rrSetsWrapper
 	return d
 }
