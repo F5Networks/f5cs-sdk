@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.9](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.6...v0.1.9) (2020-10-22)
+
+
+### Features
+
+* fix add, get, set dns methods ([b1e2496](https://gitswarm.f5net.com/f5aas/f5cs-sdk/commit/b1e2496514a56b0926f74af393fa62cf44ea80ae))
+
 ### [0.1.8](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.6...v0.1.8) (2020-10-22)
 
 
