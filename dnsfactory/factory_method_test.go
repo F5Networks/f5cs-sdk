@@ -383,28 +383,65 @@ var partialGslbServiceJSON = `{
 	"zone": "goclient.gslb1572042084443333000.example.com"
 }`
 
+func TestDnsAddARecord(t *testing.T) {
+	recordName := "www"
+	d := &DNSService{}
+	d.AddARecord(recordName, "1.2.2.2", "2.3.4.5")
+	assert.Len(t, d.GetARecordSet(recordName).Values, 2)
+}
+
+func TestDnsAddAAAARecord(t *testing.T) {
+	recordName := "www"
+	d := &DNSService{}
+	d.AddAAAARecord(recordName, "1234::")
+	assert.Len(t, d.GetAAAARecordSet(recordName).Values, 1)
+
+	d.AddAAAARecord(recordName, "2345::", "3456::")
+	assert.Len(t, d.GetAAAARecordSet(recordName).Values, 3)
+}
+
 func TestDnsAddRecord(t *testing.T) {
 	recordName := "www"
 	d := &DNSService{}
-	d.AddRecord(recordName, "A", "1.2.2.2", "2.3.4.5").
-		AddRecord(recordName, "AAAA", "1234::")
+	d.AddARecord(recordName, "1.2.2.2", "2.3.4.5").
+		AddAAAARecord(recordName, "1234::")
 
-	assert.Len(t, d.GetRecord(recordName).RRSets, 2)
+	assert.Len(t, d.GetAAAARecordSet(recordName).Values, 1)
+	assert.Len(t, d.GetARecordSet(recordName).Values, 2)
+	assert.Len(t, d.GetCNAMERecordSet(recordName).Values, 0)
+	assert.Len(t, d.GetMXRecordSet(recordName).Values, 0)
+	assert.Len(t, d.GetTXTRecordSet(recordName).Values, 0)
 
-	d.AddRecord(recordName, "AAAA", "2345::", "3456::")
-	assert.Len(t, d.GetRecord(recordName).RRSets, 3)
+	d.AddAAAARecord(recordName, "2345::", "3456::")
+	assert.Len(t, d.GetAAAARecordSet(recordName).Values, 3)
+	assert.Len(t, d.GetARecordSet(recordName).Values, 2)
+	assert.Len(t, d.GetCNAMERecordSet(recordName).Values, 0)
+	assert.Len(t, d.GetMXRecordSet(recordName).Values, 0)
+	assert.Len(t, d.GetTXTRecordSet(recordName).Values, 0)
 
-	d.AddRecord(recordName, "CNAME", "my.cname")
-	assert.Len(t, d.GetRecord(recordName).RRSets, 4)
+	d.AddCNAMERecord(recordName, "my.cname")
+	assert.Len(t, d.GetAAAARecordSet(recordName).Values, 3)
+	assert.Len(t, d.GetARecordSet(recordName).Values, 2)
+	assert.Len(t, d.GetCNAMERecordSet(recordName).Values, 1)
+	assert.Len(t, d.GetMXRecordSet(recordName).Values, 0)
+	assert.Len(t, d.GetTXTRecordSet(recordName).Values, 0)
 
 	d.AddMXRecord(recordName, []MXRRSetValue{
 		{Domain: newStringPointer("my.domain"), Priority: newIntPointer(1)},
 		{Domain: newStringPointer("my.domain2"), Priority: newIntPointer(1)},
 	}...)
-	assert.Len(t, d.GetRecord(recordName).RRSets, 5)
+	assert.Len(t, d.GetAAAARecordSet(recordName).Values, 3)
+	assert.Len(t, d.GetARecordSet(recordName).Values, 2)
+	assert.Len(t, d.GetCNAMERecordSet(recordName).Values, 1)
+	assert.Len(t, d.GetMXRecordSet(recordName).Values, 2)
+	assert.Len(t, d.GetTXTRecordSet(recordName).Values, 0)
 
 	d.AddTXTRecord(recordName, "my txt 1", "my txt 2")
-	assert.Len(t, d.GetRecord(recordName).RRSets, 6)
+	assert.Len(t, d.GetAAAARecordSet(recordName).Values, 3)
+	assert.Len(t, d.GetARecordSet(recordName).Values, 2)
+	assert.Len(t, d.GetCNAMERecordSet(recordName).Values, 1)
+	assert.Len(t, d.GetMXRecordSet(recordName).Values, 2)
+	assert.Len(t, d.GetTXTRecordSet(recordName).Values, 2)
 
 	println(d.MarshalToString())
 }
