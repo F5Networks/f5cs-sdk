@@ -199,33 +199,3 @@ func (rrset *RRSet) UnmarshalJSON(data []byte) error {
 	return err
 }
 
-func (rrset RRSet) MarshalJSON() ([]byte, error) {
-	var value RRSetValue
-	var values []RRSetValue
-
-	// if not CNAME, marshal value inside the values field
-	if rrset.Type != nil {
-		if *rrset.Type == RRTypeCNAME {
-			value = rrset.Value
-			values = nil
-		} else {
-			values = rrset.Values
-			if rrset.Value != nil {
-				values = append(values, rrset.Value)
-			}
-			value = nil
-		}
-	}
-
-	return json.Marshal(&struct {
-		Type   *string      `json:"type,omitempty"`
-		TTL    *int         `json:"ttl,omitempty"`
-		Value  RRSetValue   `json:"value,omitempty"`
-		Values []RRSetValue `json:"values,omitempty"`
-	}{
-		Type:   rrset.Type,
-		TTL:    rrset.TTL,
-		Value:  value,
-		Values: values,
-	})
-}
