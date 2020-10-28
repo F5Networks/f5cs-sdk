@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.10](https://gitswarm.f5net.com///compare/v0.1.6...v0.1.10) (2020-10-28)
+
+
+### Bug Fixes
+
+* remove special RRSet MarshalJSON logic ([f775312](https://gitswarm.f5net.com///commit/f775312038c200dc037ddf3ef351d95e541fa1f7))
+
 ### [0.1.9](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.6...v0.1.9) (2020-10-22)
 
 ### Features
