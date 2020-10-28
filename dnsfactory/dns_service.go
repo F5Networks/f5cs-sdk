@@ -5,6 +5,10 @@ import (
 	"strings"
 )
 
+const (
+	APEXRecordName = ""
+)
+
 // DNSService is a struct representation of primaryDNS
 type DNSService struct {
 	// Field 0: For Primary DNS
@@ -42,7 +46,7 @@ type DNSService struct {
 }
 
 type RRSetsWrapper struct {
-	RRSets []RRSet `draft_validate:"omitempty,dive" activation_validate:"omitempty,dive" json:"-"`
+	RRSets []RRSet `draft_validate:"omitempty,dive" activation_validate:"omitempty,dive"`
 }
 
 func (d *DNSService) GetZone() string {
@@ -60,18 +64,38 @@ func (d *DNSService) GetEmptyService() Service {
 	return &DNSService{}
 }
 
-func (rrWrapper *RRSetsWrapper) UnmarshalJSON(data []byte) error {
+func (d *DNSService) GetRecordsCount() int {
+	totalCount := 0
+
+	if d.Records != nil {
+		for name, rrwrapper := range *d.Records {
+			for _, rrset := range rrwrapper.RRSets {
+				if name == APEXRecordName && ssp(rrset.Type) == RRTypeNS {
+					// don't count APEX NS record
+					continue
+				}
+				if rrset.Value != nil {
+					totalCount++
+				}
+				totalCount = totalCount + len(rrset.Values)
+			}
+		}
+	}
+	return totalCount
+}
+
+func (rrsetsWrapper *RRSetsWrapper) UnmarshalJSON(data []byte) error {
 	if data[0] == '{' {
 		rrset := RRSet{}
 		err := json.Unmarshal(data, &rrset)
 		if err != nil {
 			return err
 		}
-		rrWrapper.RRSets = []RRSet{rrset}
+		rrsetsWrapper.RRSets = []RRSet{rrset}
 		return err
 
 	} else {
-		return json.Unmarshal(data, &rrWrapper.RRSets)
+		return json.Unmarshal(data, &rrsetsWrapper.RRSets)
 	}
 }
 

@@ -37,7 +37,7 @@ type RRSetValue interface {
 }
 
 type NSRRSetValue struct {
-	NameServer *string `draft_validate:"omitempty,hostname"`
+	NameServer *string `draft_validate:"omitempty,hostname" conform:"trim,lower,rtrimdot"`
 }
 
 func (rrsetValue NSRRSetValue) MarshalJSON() ([]byte, error) {
@@ -54,7 +54,7 @@ func (rrsetValue CNAMERRSetValue) MarshalJSON() ([]byte, error) {
 
 type MXRRSetValue struct {
 	Domain   *string `draft_validate:"omitempty,hostname" json:"domain,omitempty" conform:"trim,lower,rtrimdot"`
-	Priority *int    `draft_validate:"omitempty" json:"priority,omitempty"` // 0-255
+	Priority *int    `draft_validate:"omitempty,min=0,max=65535" json:"priority,omitempty"` // 0-255
 }
 
 type ARRSetValue struct {
@@ -198,4 +198,3 @@ func (rrset *RRSet) UnmarshalJSON(data []byte) error {
 	}
 	return err
 }
-
