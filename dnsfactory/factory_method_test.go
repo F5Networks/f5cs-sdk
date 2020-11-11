@@ -408,21 +408,21 @@ func TestDnsAddRecord(t *testing.T) {
 
 	assert.Len(t, d.GetAAAARecordSet(recordName).Values, 1)
 	assert.Len(t, d.GetARecordSet(recordName).Values, 2)
-	assert.Len(t, d.GetCNAMERecordSet(recordName).Values, 0)
+	assert.Nil(t, d.GetCNAMERecordSet(recordName).Value)
 	assert.Len(t, d.GetMXRecordSet(recordName).Values, 0)
 	assert.Len(t, d.GetTXTRecordSet(recordName).Values, 0)
 
 	d.AddAAAARecord(recordName, "2345::", "3456::")
 	assert.Len(t, d.GetAAAARecordSet(recordName).Values, 3)
 	assert.Len(t, d.GetARecordSet(recordName).Values, 2)
-	assert.Len(t, d.GetCNAMERecordSet(recordName).Values, 0)
+	assert.Nil(t, d.GetCNAMERecordSet(recordName).Value)
 	assert.Len(t, d.GetMXRecordSet(recordName).Values, 0)
 	assert.Len(t, d.GetTXTRecordSet(recordName).Values, 0)
 
 	d.AddCNAMERecord(recordName, "my.cname")
 	assert.Len(t, d.GetAAAARecordSet(recordName).Values, 3)
 	assert.Len(t, d.GetARecordSet(recordName).Values, 2)
-	assert.Len(t, d.GetCNAMERecordSet(recordName).Values, 1)
+	assert.NotNil(t, d.GetCNAMERecordSet(recordName).Value)
 	assert.Len(t, d.GetMXRecordSet(recordName).Values, 0)
 	assert.Len(t, d.GetTXTRecordSet(recordName).Values, 0)
 
@@ -432,14 +432,14 @@ func TestDnsAddRecord(t *testing.T) {
 	}...)
 	assert.Len(t, d.GetAAAARecordSet(recordName).Values, 3)
 	assert.Len(t, d.GetARecordSet(recordName).Values, 2)
-	assert.Len(t, d.GetCNAMERecordSet(recordName).Values, 1)
+	assert.NotNil(t, d.GetCNAMERecordSet(recordName).Value)
 	assert.Len(t, d.GetMXRecordSet(recordName).Values, 2)
 	assert.Len(t, d.GetTXTRecordSet(recordName).Values, 0)
 
 	d.AddTXTRecord(recordName, "my txt 1", "my txt 2")
 	assert.Len(t, d.GetAAAARecordSet(recordName).Values, 3)
 	assert.Len(t, d.GetARecordSet(recordName).Values, 2)
-	assert.Len(t, d.GetCNAMERecordSet(recordName).Values, 1)
+	assert.NotNil(t, d.GetCNAMERecordSet(recordName).Value)
 	assert.Len(t, d.GetMXRecordSet(recordName).Values, 2)
 	assert.Len(t, d.GetTXTRecordSet(recordName).Values, 2)
 
