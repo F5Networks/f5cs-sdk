@@ -2,6 +2,7 @@ package factory
 
 import (
 	"encoding/json"
+	"fmt"
 	"strings"
 )
 
@@ -49,11 +50,139 @@ type RRSetsWrapper struct {
 	RRSets []RRSet `draft_validate:"omitempty,dive" activation_validate:"omitempty,dive"`
 }
 
+// GetTypes returns the set of rrtypes contained in the record.
+func (rrw *RRSetsWrapper) GetTypes() []string {
+	rrtypes := []string{}
+	rrtypesmap := map[string]bool{}
+	for _, rrset := range rrw.RRSets {
+		if rrsettype := ssp(rrset.Type); rrsettype != "" {
+			rrtypesmap[rrsettype] = true
+		}
+	}
+	for rrsettype := range rrtypesmap {
+		rrtypes = append(rrtypes, rrsettype)
+	}
+	return rrtypes
+}
+
+func (d *DNSService) GetRemark() string {
+	if d.Remark == nil {
+		return ""
+	}
+	return *d.Remark
+}
+
+func (d *DNSService) SetRemark(remark string) *DNSService {
+	d.Remark = &remark
+	return d
+}
+
 func (d *DNSService) GetZone() string {
 	if d.Zone == nil {
 		return ""
 	}
 	return *d.Zone
+}
+
+func (d *DNSService) SetZone(zone string) *DNSService {
+	d.Zone = &zone
+	return d
+}
+
+func (d *DNSService) GetNameserver() string {
+	if d.NameServer == nil {
+		return ""
+	}
+	return *d.NameServer
+}
+
+func (d *DNSService) SetNameserver(nameserver string) *DNSService {
+	d.NameServer = &nameserver
+	return d
+}
+
+func (d *DNSService) GetAdmin() string {
+	if d.Admin == nil {
+		return ""
+	}
+	return *d.Admin
+}
+
+func (d *DNSService) SetAdmin(admin string) *DNSService {
+	d.Admin = &admin
+	return d
+}
+
+func (d *DNSService) GetSerial() int {
+	if d.Serial == nil {
+		return 0
+	}
+	return *d.Serial
+}
+
+func (d *DNSService) SetSerial(serial int) *DNSService {
+	d.Serial = &serial
+	return d
+}
+
+func (d *DNSService) GetRefresh() int {
+	if d.Refresh == nil {
+		return 0
+	}
+	return *d.Refresh
+}
+
+func (d *DNSService) SetRefresh(refresh int) *DNSService {
+	d.Refresh = &refresh
+	return d
+}
+
+func (d *DNSService) GetRetry() int {
+	if d.Retry == nil {
+		return 0
+	}
+	return *d.Retry
+}
+
+func (d *DNSService) SetRetry(retry int) *DNSService {
+	d.Retry = &retry
+	return d
+}
+
+func (d *DNSService) GetExpire() int {
+	if d.Expire == nil {
+		return 0
+	}
+	return *d.Expire
+}
+
+func (d *DNSService) SetExpire(expire int) *DNSService {
+	d.Expire = &expire
+	return d
+}
+
+func (d *DNSService) GetTTL() int {
+	if d.Zone == nil {
+		return 0
+	}
+	return *d.TTL
+}
+
+func (d *DNSService) SetTTL(ttl int) *DNSService {
+	d.TTL = &ttl
+	return d
+}
+
+func (d *DNSService) GetNegativeTTL() int {
+	if d.Zone == nil {
+		return 0
+	}
+	return *d.TTL
+}
+
+func (d *DNSService) SetNegativeTTL(negativeTTL int) *DNSService {
+	d.TTL = &negativeTTL
+	return d
 }
 
 func (d *DNSService) GetServiceType() string {
@@ -109,6 +238,90 @@ func (d *DNSService) MarshalToString() string {
 		return ""
 	}
 	return string(b)
+}
+
+func (d *DNSService) GetCnameRecords() map[string]RRSetsWrapper {
+	records := map[string]RRSetsWrapper{}
+	if d.Records == nil {
+		return records
+	}
+	for recordName, record := range *d.Records {
+		cnameRRsets := []RRSet{}
+		for _, rrset := range record.RRSets {
+			if ssp(rrset.Type) == RRTypeCNAME {
+				cnameRRsets = append(cnameRRsets,
+					RRSet{
+						Type:  rrset.Type,
+						TTL:   rrset.TTL,
+						Value: rrset.Value,
+					})
+			}
+		}
+		if len(cnameRRsets) > 0 {
+			records[recordName] = RRSetsWrapper{cnameRRsets}
+		}
+	}
+	return records
+}
+
+type Matches struct {
+	exactMatches    map[string]bool
+	wildcardMatches map[string]bool
+}
+
+func (m Matches) IsCnameExactMatch() bool {
+	return m.exactMatches[RRTypeCNAME]
+}
+
+func (m Matches) IsCnameMatch() bool {
+	return m.IsCnameExactMatch() || m.IsCnameWildcardMatch()
+}
+
+func (m Matches) IsCnameWildcardMatch() bool {
+	return m.wildcardMatches[RRTypeCNAME]
+}
+
+func (m Matches) IsNonCnameExactMatch() bool {
+	for rrtype := range m.exactMatches {
+		if rrtype != RRTypeCNAME {
+			return true
+		}
+	}
+	return false
+}
+
+func (d *DNSService) MatchRecord(domain string) Matches {
+	matches := Matches{
+		exactMatches:    map[string]bool{},
+		wildcardMatches: map[string]bool{},
+	}
+	if d.Records == nil {
+		return matches
+	}
+	zone := d.GetZone()
+	if zone == "" {
+		return matches
+	}
+	lowerDomain := strings.ToLower(domain)
+	domainPhrase := newPhrase(lowerDomain)
+	for recordName, record := range *d.Records {
+		if recordName == APEXRecordName {
+			continue
+		}
+		checkDomain := fmt.Sprintf("%s.%s", recordName, zone)
+		if mustWildcardIntersect(newPhrase(checkDomain), domainPhrase) {
+			exactMatch := checkDomain == lowerDomain
+			recordTypes := record.GetTypes()
+			for _, rtype := range recordTypes {
+				if exactMatch {
+					matches.exactMatches[rtype] = true
+				} else {
+					matches.wildcardMatches[rtype] = true
+				}
+			}
+		}
+	}
+	return matches
 }
 
 func (d *DNSService) AddRecord(recordName, recordType string, values ...string) *DNSService {
@@ -208,17 +421,15 @@ func (d *DNSService) AddNSRecord(recordName string, nameserver ...string) *DNSSe
 	return d
 }
 
-func (d *DNSService) AddCNAMERecord(recordName string, domain ...string) *DNSService {
+func (d *DNSService) AddCNAMERecord(recordName string, domain string) *DNSService {
 	rrSet := RRSet{Type: newStringPointer(RRTypeCNAME)}
-	for i := 0; i < len(domain); i++ {
-		rrSet.Values = append(rrSet.Values, CNAMERRSetValue{Domain: newStringPointer(domain[i])})
-	}
+	rrSet.Value = CNAMERRSetValue{Domain: newStringPointer(domain)}
 
 	if d.Records == nil {
 		d.Records = &map[string]RRSetsWrapper{}
 	}
 	currentSet := d.GetCNAMERecordSet(recordName)
-	currentSet.Values = append(currentSet.Values, rrSet.Values...)
+	currentSet.Value = rrSet.Value
 	d.SetCNAMERecordSet(recordName, currentSet)
 	return d
 }

@@ -22,13 +22,31 @@ const (
 	resourceIDTemplate = "%s-%s%s"
 )
 
+type ServiceType string
+
+const (
+	DnsType  ServiceType = "dns"
+	GslbType ServiceType = "gslb"
+)
+
 // NewFactory : Generate a new factory. Calling without Opts will generate default service configuration.
 // Use Opts.JSONServiceConfig to initialize factory to a json config at the ServiceRequest, Configuration, or GslbService level. Partial configs supported.
 // If there is an error unmarshalling the Opts.JSONServiceConfig, NewFactory will return an empty ServiceRequest struct.
 func NewFactory(opts ...Opts) Factory {
 	f := Factory{}
-	if len(opts) > 0 && opts[0].JSONServiceConfig != "" {
-		f.sr = f.serviceRequestFromJSON(opts[0].JSONServiceConfig)
+	if len(opts) > 0 {
+		if opts[0].JSONServiceConfig != "" {
+			f.sr = f.serviceRequestFromJSON(opts[0].JSONServiceConfig)
+		} else {
+			switch opts[0].ServiceType {
+			case DnsType:
+				f.sr = f.ServiceRequestDefaultDNS()
+			case GslbType:
+				f.sr = f.ServiceRequestDefault()
+			default:
+				f.sr = f.ServiceRequestDefault()
+			}
+		}
 	} else {
 		f.sr = f.ServiceRequestDefault()
 	}
@@ -38,6 +56,9 @@ func NewFactory(opts ...Opts) Factory {
 type Opts struct {
 	// Json configuration string.
 	JSONServiceConfig string
+
+	// ServiceType: dns, gslb
+	ServiceType ServiceType
 
 	// Whether to fill in missing service fields with default values.
 	FillWithDefaults bool
@@ -240,6 +261,13 @@ func (f *Factory) ProximityRuleDefault() ProximityRule {
 	}
 }
 
+func (f *Factory) DnsServiceDefault() *DNSService {
+	return &DNSService{
+		Remark: f.NewStringPointer("this remark"),
+		Zone:   f.NewStringPointer(f.GenerateZoneName("")),
+	}
+}
+
 func (f *Factory) GslbServiceDefault() *GSLBService {
 	return &GSLBService{
 		Remark:              f.NewStringPointer("this remark"),
@@ -258,6 +286,13 @@ func (f *Factory) ConfigurationDefault() Configuration {
 	}
 }
 
+func (f *Factory) ConfigurationDefaultDNS() Configuration {
+	return Configuration{
+		DnsService:  f.DnsServiceDefault(),
+		GslbService: nil,
+	}
+}
+
 func (f *Factory) ServiceRequestDefault() ServiceRequest {
 	sid, err := NewResourceID("gslb")
 	if err != nil {
@@ -273,6 +308,21 @@ func (f *Factory) ServiceRequestDefault() ServiceRequest {
 	}
 	sname := f.RandStringRunes(15)
 	c := f.ConfigurationDefault()
+	return ServiceRequest{
+		ServiceInstanceId:   sid,
+		SubscriptionId:      subid,
+		ServiceInstanceName: sname,
+		Configuration:       &c,
+		AccountId:           acctid,
+	}
+}
+
+func (f *Factory) ServiceRequestDefaultDNS() ServiceRequest {
+	sid := MustNewResourceID("dns")
+	subid := MustNewResourceID("s")
+	acctid := MustNewResourceID("acct")
+	sname := f.RandStringRunes(15)
+	c := f.ConfigurationDefaultDNS()
 	return ServiceRequest{
 		ServiceInstanceId:   sid,
 		SubscriptionId:      subid,
@@ -377,6 +427,14 @@ func NewResourceID(prefix string) (string, error) {
 	id := fmt.Sprintf(resourceIDTemplate, lowerPrefix, resourceIDDomain, s)
 
 	return id, nil
+}
+
+func MustNewResourceID(prefix string) string {
+	id, err := NewResourceID(prefix)
+	if err != nil {
+		loglib.Fatal(`MustNewResourceID("`+prefix+`")`, err)
+	}
+	return id
 }
 
 func RandomString(bytesLen uint32) (string, error) {
