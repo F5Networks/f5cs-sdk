@@ -213,6 +213,16 @@ func (d *DNSService) GetRecordsCount() int {
 	return totalCount
 }
 
+func (d *DNSService) GetRecordsNames() map[string]bool {
+	recordNames := make(map[string]bool, 0)
+	if d.Records != nil {
+		for name := range *d.Records {
+			recordNames[name] = true
+		}
+	}
+	return recordNames
+}
+
 func (rrsetsWrapper *RRSetsWrapper) UnmarshalJSON(data []byte) error {
 	if data[0] == '{' {
 		rrset := RRSet{}
@@ -238,6 +248,63 @@ func (d *DNSService) MarshalToString() string {
 		return ""
 	}
 	return string(b)
+}
+
+func (d *DNSService) AddRecord(recordName, recordType string, values ...string) *DNSService {
+
+	rrSet := RRSet{Type: newStringPointer(recordType)}
+	if len(values) > 0 {
+		switch recordType {
+		case RRTypeA:
+			for i := 0; i < len(values); i++ {
+				rrSet.Values = append(rrSet.Values, ARRSetValue{Address: newStringPointer(values[i])})
+			}
+		case RRTypeAAAA:
+			for i := 0; i < len(values); i++ {
+				rrSet.Values = append(rrSet.Values, AAAARRSetValue{Address: newStringPointer(values[i])})
+			}
+		case RRTypeNS:
+			for i := 0; i < len(values); i++ {
+				rrSet.Values = append(rrSet.Values, NSRRSetValue{NameServer: newStringPointer(values[i])})
+			}
+		case RRTypeMX:
+			for i := 0; i < len(values); i++ {
+				rrSet.Values = append(rrSet.Values, MXRRSetValue{Domain: newStringPointer(values[0])})
+			}
+		case RRTypeCNAME:
+			rrSet.Value = CNAMERRSetValue{Domain: newStringPointer(values[0])}
+		case RRTypeTXT:
+			for i := 0; i < len(values); i++ {
+				rrSet.Values = append(rrSet.Values, TXTRRSetValue{Text: newStringPointer(values[0])})
+			}
+		case RRTypeSRV:
+			for i := 0; i < len(values); i++ {
+				rrSet.Values = append(rrSet.Values, SRVRRSetValue{Target: newStringPointer(values[0])})
+			}
+		default:
+			rrSet = RRSet{}
+		}
+	}
+
+	if d.Records == nil {
+		d.Records = &map[string]RRSetsWrapper{}
+	}
+	rrSetsWrapper := RRSetsWrapper{}
+	if currentRRSets, ok := (*d.Records)[recordName]; ok {
+		rrSetsWrapper.RRSets = append(currentRRSets.RRSets, rrSet)
+	} else {
+		rrSetsWrapper.RRSets = []RRSet{rrSet}
+	}
+
+	(*d.Records)[recordName] = rrSetsWrapper
+	return d
+}
+
+func (d *DNSService) GetRecord(recordName string) RRSetsWrapper {
+	if d.Records == nil {
+		return RRSetsWrapper{}
+	}
+	return (*d.Records)[recordName]
 }
 
 func (d *DNSService) GetCnameRecords() map[string]RRSetsWrapper {
@@ -290,26 +357,35 @@ func (m Matches) IsNonCnameExactMatch() bool {
 	return false
 }
 
-func (d *DNSService) MatchRecord(domain string) Matches {
+func (d *DNSService) MatchRecord(domain string) (Matches, error) {
 	matches := Matches{
 		exactMatches:    map[string]bool{},
 		wildcardMatches: map[string]bool{},
 	}
 	if d.Records == nil {
-		return matches
+		return Matches{}, nil
 	}
 	zone := d.GetZone()
 	if zone == "" {
-		return matches
+		return Matches{}, nil
 	}
 	lowerDomain := strings.ToLower(domain)
-	domainPhrase := newPhrase(lowerDomain)
+	domainPhrase, err := newPhrase(lowerDomain)
+	if err != nil {
+		return Matches{}, err
+	}
 	for recordName, record := range *d.Records {
 		if recordName == APEXRecordName {
 			continue
 		}
 		checkDomain := fmt.Sprintf("%s.%s", recordName, zone)
-		if mustWildcardIntersect(newPhrase(checkDomain), domainPhrase) {
+		checkDomainPhrase, err := newPhrase(checkDomain)
+		if err != nil {
+			return Matches{}, err
+		}
+		if intersect, err := wildcardIntersect(checkDomainPhrase, domainPhrase); err != nil {
+			return Matches{}, err
+		} else if intersect {
 			exactMatch := checkDomain == lowerDomain
 			recordTypes := record.GetTypes()
 			for _, rtype := range recordTypes {
@@ -321,60 +397,7 @@ func (d *DNSService) MatchRecord(domain string) Matches {
 			}
 		}
 	}
-	return matches
-}
-
-func (d *DNSService) AddRecord(recordName, recordType string, values ...string) *DNSService {
-
-	rrSet := RRSet{Type: newStringPointer(recordType)}
-	if len(values) > 0 {
-		switch recordType {
-		case RRTypeA:
-			for i := 0; i < len(values); i++ {
-				rrSet.Values = append(rrSet.Values, ARRSetValue{Address: newStringPointer(values[i])})
-			}
-		case RRTypeAAAA:
-			for i := 0; i < len(values); i++ {
-				rrSet.Values = append(rrSet.Values, AAAARRSetValue{Address: newStringPointer(values[i])})
-			}
-		case RRTypeNS:
-			for i := 0; i < len(values); i++ {
-				rrSet.Values = append(rrSet.Values, NSRRSetValue{NameServer: newStringPointer(values[i])})
-			}
-		case RRTypeMX:
-			for i := 0; i < len(values); i++ {
-				rrSet.Values = append(rrSet.Values, MXRRSetValue{Domain: newStringPointer(values[0])})
-			}
-		case RRTypeCNAME:
-			rrSet.Value = CNAMERRSetValue{Domain: newStringPointer(values[0])}
-		case RRTypeTXT:
-			for i := 0; i < len(values); i++ {
-				rrSet.Values = append(rrSet.Values, TXTRRSetValue{Text: newStringPointer(values[0])})
-			}
-		default:
-			rrSet = RRSet{}
-		}
-	}
-
-	if d.Records == nil {
-		d.Records = &map[string]RRSetsWrapper{}
-	}
-	rrSetsWrapper := RRSetsWrapper{}
-	if currentRRSets, ok := (*d.Records)[recordName]; ok {
-		rrSetsWrapper.RRSets = append(currentRRSets.RRSets, rrSet)
-	} else {
-		rrSetsWrapper.RRSets = []RRSet{rrSet}
-	}
-
-	(*d.Records)[recordName] = rrSetsWrapper
-	return d
-}
-
-func (d *DNSService) GetRecord(recordName string) RRSetsWrapper {
-	if d.Records == nil {
-		return RRSetsWrapper{}
-	}
-	return (*d.Records)[recordName]
+	return matches, nil
 }
 
 func (d *DNSService) AddARecord(recordName string, address ...string) *DNSService {

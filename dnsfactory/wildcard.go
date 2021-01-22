@@ -14,17 +14,27 @@ type phrase struct {
 	regexp   *regexp.Regexp
 }
 
-func newPhrase(a1 string) *phrase {
+func mustNewPhrase(a1 string) *phrase {
 	a := &phrase{
 		wildcard: a1,
 	}
 	a.regexp = regexp.MustCompile(a.convertPhraseToRegexp())
 	return a
 }
+
+func newPhrase(a1 string) (*phrase, error) {
+	a := &phrase{
+		wildcard: a1,
+	}
+	var err error
+	a.regexp, err = regexp.Compile(a.convertPhraseToRegexp())
+	return a, err
+}
+
 func newPhraseSlice(l []string) []*phrase {
 	al := []*phrase{}
 	for _, a := range l {
-		al = append(al, newPhrase(a))
+		al = append(al, mustNewPhrase(a))
 	}
 	return al
 }
@@ -40,11 +50,11 @@ func mustWildcardIntersect(a1, a2 *phrase) bool {
 func wildcardIntersect(a1, a2 *phrase) (bool, error) {
 	intersect, err := gintersect.NonEmpty(a2.regexp.String(), a1.regexp.String())
 	if err != nil {
-		loglib.Print("error determining wildcard intersection",
-			"Phrase1.wildcard", a1.wildcard,
-			"Phrase1.regexp", a1.regexp,
-			"Phrase2.wildcard", a2.wildcard,
-			"Phrase2.regexp", a2.regexp)
+		// loglib.Warn("error determining wildcard intersection",
+		// 	"Phrase1.wildcard", a1.wildcard,
+		// 	"Phrase1.regexp", a1.regexp,
+		// 	"Phrase2.wildcard", a2.wildcard,
+		// 	"Phrase2.regexp", a2.regexp)
 		return true, err
 	}
 	return intersect, nil
