@@ -16,11 +16,12 @@ const (
 	// RRTypeSOA => SOA Record will be on its own under DNSService
 	RRTypeNS  = "NS"
 	RRTypeTXT = "TXT"
+	RRTypeSRV = "SRV"
 )
 
 type RRSet struct {
 	// Field 0
-	Type *string `draft_validate:"required,oneof=AAAA A MX CNAME NS TXT" json:"type,omitempty"`
+	Type *string `draft_validate:"required,oneof=AAAA A MX CNAME NS TXT SRV" json:"type,omitempty"`
 
 	// Field 1
 	TTL *int `draft_validate:"omitempty,min=0" json:"ttl,omitempty"`
@@ -79,6 +80,13 @@ type TXTRRSetValue struct {
 
 func (rrsetValue TXTRRSetValue) MarshalJSON() ([]byte, error) {
 	return json.Marshal(rrsetValue.Text)
+}
+
+type SRVRRSetValue struct {
+	Port     *int    `draft_validate:"omitempty,min=0,max=65535" json:"port,omitempty"`     // default: 0
+	Priority *int    `draft_validate:"omitempty,min=0,max=65535" json:"priority,omitempty"` // default: 10
+	Target   *string `draft_validate:"omitempty,SRVTarget" json:"target,omitempty" conform:"trim,lower"`
+	Weight   *int    `draft_validate:"omitempty,min=0,max=65535" json:"weight,omitempty"` // default: 10
 }
 
 func (r *RRSet) MarshalToString() string {
@@ -195,6 +203,28 @@ func (rrset *RRSet) UnmarshalJSON(data []byte) error {
 		err = setValueAndValues(func(value *string) RRSetValue {
 			return TXTRRSetValue{Text: value}
 		})
+	case RRTypeSRV:
+		if objMap["value"] != nil {
+			var srvStruct SRVRRSetValue
+			err = json.Unmarshal(*objMap["value"], &srvStruct)
+			if err != nil {
+				return err
+			}
+			rrset.Value = srvStruct
+		}
+
+		if objMap["values"] != nil {
+			var srvArray []SRVRRSetValue
+			var SRVRRSet []RRSetValue
+			err = json.Unmarshal(*objMap["values"], &srvArray)
+			if err != nil {
+				return err
+			}
+			for i := 0; i < len(srvArray); i++ {
+				SRVRRSet = append(SRVRRSet, srvArray[i])
+			}
+			rrset.Values = SRVRRSet
+		}
 	}
 	return err
 }
