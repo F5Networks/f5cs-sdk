@@ -17,11 +17,12 @@ const (
 	RRTypeNS  = "NS"
 	RRTypeTXT = "TXT"
 	RRTypeSRV = "SRV"
+	RRTypeCAA = "CAA"
 )
 
 type RRSet struct {
 	// Field 0
-	Type *string `draft_validate:"required,oneof=AAAA A MX CNAME NS TXT SRV" json:"type,omitempty"`
+	Type *string `draft_validate:"required,oneof=AAAA A MX CNAME NS TXT SRV CAA" json:"type,omitempty"`
 
 	// Field 1
 	TTL *int `draft_validate:"omitempty,min=0" json:"ttl,omitempty"`
@@ -87,6 +88,12 @@ type SRVRRSetValue struct {
 	Priority *int    `draft_validate:"omitempty,min=0,max=65535" json:"priority,omitempty"` // default: 10
 	Target   *string `draft_validate:"omitempty,SRVTarget" json:"target,omitempty" conform:"trim,lower"`
 	Weight   *int    `draft_validate:"omitempty,min=0,max=65535" json:"weight,omitempty"` // default: 10
+}
+
+type CAARRSetValue struct {
+	Flags *int    `draft_validate:"omitempty,min=0,max=255" json:"flags,omitempty"`             // default: 0
+	Tag   *string `draft_validate:"omitempty,oneof=issue issuewild iodef" json:"tag,omitempty"` // default: issue
+	Value *string `draft_validate:"omitempty,min=1,max=1024" json:"value,omitempty"`
 }
 
 func (r *RRSet) MarshalToString() string {
@@ -224,6 +231,28 @@ func (rrset *RRSet) UnmarshalJSON(data []byte) error {
 				SRVRRSet = append(SRVRRSet, srvArray[i])
 			}
 			rrset.Values = SRVRRSet
+		}
+	case RRTypeCAA:
+		if objMap["value"] != nil {
+			var caaStruct CAARRSetValue
+			err = json.Unmarshal(*objMap["value"], &caaStruct)
+			if err != nil {
+				return err
+			}
+			rrset.Value = caaStruct
+		}
+
+		if objMap["values"] != nil {
+			var caaArray []CAARRSetValue
+			var CAARRSet []RRSetValue
+			err = json.Unmarshal(*objMap["values"], &caaArray)
+			if err != nil {
+				return err
+			}
+			for i := 0; i < len(caaArray); i++ {
+				CAARRSet = append(CAARRSet, caaArray[i])
+			}
+			rrset.Values = CAARRSet
 		}
 	}
 	return err

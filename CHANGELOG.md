@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.14](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.13...v0.1.14) (2021-01-29)
+
 ### [0.1.13](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.12...v0.1.13) (2021-01-22)
 
 ### [0.1.12](https://gitswarm.f5net.com/f5aas/f5cs-sdk/compare/v0.1.11...v0.1.12) (2021-01-22)

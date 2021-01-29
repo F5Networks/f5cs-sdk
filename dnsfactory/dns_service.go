@@ -509,6 +509,24 @@ func (d *DNSService) AddSRVRecord(recordName string, srvSetValues ...SRVRRSetVal
 	return d
 }
 
+func (d *DNSService) AddCAARecord(recordName string, caaSetValues ...CAARRSetValue) *DNSService {
+	rrSet := RRSet{
+		Type: newStringPointer(RRTypeCAA),
+	}
+
+	for _, setValue := range caaSetValues {
+		rrSet.Values = append(rrSet.Values, setValue)
+	}
+
+	if d.Records == nil {
+		d.Records = &map[string]RRSetsWrapper{}
+	}
+	currentSet := d.GetCAARecordSet(recordName)
+	currentSet.Values = append(currentSet.Values, rrSet.Values...)
+	d.SetCAARecordSet(recordName, currentSet)
+	return d
+}
+
 func (d *DNSService) RemoveRecord(recordName string, recordType ...string) *DNSService {
 	if d.Records == nil {
 		return d
@@ -733,6 +751,35 @@ func (d *DNSService) SetSRVRecordSet(recordName string, newRrSet RRSet) *DNSServ
 	if record, ok := (*d.Records)[recordName]; ok {
 		for n, rrset := range record.RRSets {
 			if ssp(rrset.Type) == RRTypeSRV {
+				(*d.Records)[recordName].RRSets[n] = newRrSet
+				return d
+			}
+		}
+	}
+	rrSetsWrapper := (*d.Records)[recordName]
+	rrSetsWrapper.RRSets = append(rrSetsWrapper.RRSets, newRrSet)
+	(*d.Records)[recordName] = rrSetsWrapper
+	return d
+}
+
+func (d *DNSService) GetCAARecordSet(recordName string) RRSet {
+	if record, ok := (*d.Records)[recordName]; ok {
+		for _, rrset := range record.RRSets {
+			if ssp(rrset.Type) == RRTypeCAA {
+				return rrset
+			}
+		}
+	}
+	return RRSet{Type: newStringPointer(RRTypeCAA)}
+}
+
+func (d *DNSService) SetCAARecordSet(recordName string, newRrSet RRSet) *DNSService {
+	if d.Records == nil {
+		d.Records = &map[string]RRSetsWrapper{}
+	}
+	if record, ok := (*d.Records)[recordName]; ok {
+		for n, rrset := range record.RRSets {
+			if ssp(rrset.Type) == RRTypeCAA {
 				(*d.Records)[recordName].RRSets[n] = newRrSet
 				return d
 			}
