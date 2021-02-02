@@ -14,15 +14,16 @@ const (
 	// RRTypeCNAME = "CNAME"
 
 	// RRTypeSOA => SOA Record will be on its own under DNSService
-	RRTypeNS  = "NS"
-	RRTypeTXT = "TXT"
-	RRTypeSRV = "SRV"
-	RRTypeCAA = "CAA"
+	RRTypeNS    = "NS"
+	RRTypeTXT   = "TXT"
+	RRTypeSRV   = "SRV"
+	RRTypeCAA   = "CAA"
+	RRTypeALIAS = "ALIAS"
 )
 
 type RRSet struct {
 	// Field 0
-	Type *string `draft_validate:"required,oneof=AAAA A MX CNAME NS TXT SRV CAA" json:"type,omitempty"`
+	Type *string `draft_validate:"required,oneof=AAAA A MX CNAME NS TXT SRV CAA ALIAS" json:"type,omitempty"`
 
 	// Field 1
 	TTL *int `draft_validate:"omitempty,min=0" json:"ttl,omitempty"`
@@ -94,6 +95,14 @@ type CAARRSetValue struct {
 	Flags *int    `draft_validate:"omitempty,min=0,max=255" json:"flags,omitempty"`             // default: 0
 	Tag   *string `draft_validate:"omitempty,oneof=issue issuewild iodef" json:"tag,omitempty"` // default: issue
 	Value *string `draft_validate:"omitempty,min=1,max=1024" json:"value,omitempty"`
+}
+
+type ALIASRRSetValue struct {
+	Domain *string `draft_validate:"omitempty,hostname" conform:"trim,lower,rtrimdot"`
+}
+
+func (rrsetValue ALIASRRSetValue) MarshalJSON() ([]byte, error) {
+	return json.Marshal(rrsetValue.Domain)
 }
 
 func (r *RRSet) MarshalToString() string {
@@ -183,6 +192,10 @@ func (rrset *RRSet) UnmarshalJSON(data []byte) error {
 	case RRTypeCNAME:
 		err = setValue(func(value *string) RRSetValue {
 			return CNAMERRSetValue{Domain: value}
+		})
+	case RRTypeALIAS:
+		err = setValue(func(value *string) RRSetValue {
+			return ALIASRRSetValue{Domain: value}
 		})
 	case RRTypeMX:
 		if objMap["value"] != nil {
