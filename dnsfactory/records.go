@@ -19,11 +19,12 @@ const (
 	RRTypeSRV   = "SRV"
 	RRTypeCAA   = "CAA"
 	RRTypeALIAS = "ALIAS"
+	RRTypePTR   = "PTR"
 )
 
 type RRSet struct {
 	// Field 0
-	Type *string `draft_validate:"required,oneof=AAAA A MX CNAME NS TXT SRV CAA ALIAS" json:"type,omitempty"`
+	Type *string `draft_validate:"required,oneof=AAAA A MX CNAME NS TXT SRV CAA ALIAS PTR" json:"type,omitempty"`
 
 	// Field 1
 	TTL *int `draft_validate:"omitempty,min=0" json:"ttl,omitempty"`
@@ -102,6 +103,14 @@ type ALIASRRSetValue struct {
 }
 
 func (rrsetValue ALIASRRSetValue) MarshalJSON() ([]byte, error) {
+	return json.Marshal(rrsetValue.Domain)
+}
+
+type PTRRRSetValue struct {
+	Domain *string `draft_validate:"omitempty,hostname" conform:"trim,lower,rtrimdot"`
+}
+
+func (rrsetValue PTRRRSetValue) MarshalJSON() ([]byte, error) {
 	return json.Marshal(rrsetValue.Domain)
 }
 
@@ -267,6 +276,11 @@ func (rrset *RRSet) UnmarshalJSON(data []byte) error {
 			}
 			rrset.Values = CAARRSet
 		}
+
+	case RRTypePTR:
+		err = setValueAndValues(func(value *string) RRSetValue {
+			return PTRRRSetValue{Domain: value}
+		})
 	}
 	return err
 }

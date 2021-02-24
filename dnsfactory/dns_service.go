@@ -281,8 +281,13 @@ func (d *DNSService) AddRecord(recordName, recordType string, values ...string) 
 			for i := 0; i < len(values); i++ {
 				rrSet.Values = append(rrSet.Values, SRVRRSetValue{Target: newStringPointer(values[0])})
 			}
+			// case RRTypeCAA:
 		case RRTypeALIAS:
 			rrSet.Value = ALIASRRSetValue{Domain: newStringPointer(values[0])}
+		case RRTypePTR:
+			for i := 0; i < len(values); i++ {
+				rrSet.Values = append(rrSet.Values, PTRRRSetValue{Domain: newStringPointer(values[0])})
+			}
 		default:
 			rrSet = RRSet{}
 		}
@@ -539,6 +544,22 @@ func (d *DNSService) AddALIASRecord(recordName string, domain string) *DNSServic
 	currentSet := d.GetALIASRecordSet(recordName)
 	currentSet.Value = rrSet.Value
 	d.SetALIASRecordSet(recordName, currentSet)
+	return d
+}
+
+func (d *DNSService) AddPTRRecord(recordName string, domain ...string) *DNSService {
+	rrSet := RRSet{Type: newStringPointer(RRTypePTR)}
+
+	for i := 0; i < len(domain); i++ {
+		rrSet.Values = append(rrSet.Values, PTRRRSetValue{Domain: newStringPointer(domain[i])})
+	}
+
+	if d.Records == nil {
+		d.Records = &map[string]RRSetsWrapper{}
+	}
+	currentSet := d.GetPTRRecordSet(recordName)
+	currentSet.Values = append(currentSet.Values, rrSet.Values...)
+	d.SetPTRRecordSet(recordName, currentSet)
 	return d
 }
 
@@ -824,6 +845,35 @@ func (d *DNSService) SetALIASRecordSet(recordName string, newRrSet RRSet) *DNSSe
 	if record, ok := (*d.Records)[recordName]; ok {
 		for n, rrset := range record.RRSets {
 			if ssp(rrset.Type) == RRTypeALIAS {
+				(*d.Records)[recordName].RRSets[n] = newRrSet
+				return d
+			}
+		}
+	}
+	rrSetsWrapper := (*d.Records)[recordName]
+	rrSetsWrapper.RRSets = append(rrSetsWrapper.RRSets, newRrSet)
+	(*d.Records)[recordName] = rrSetsWrapper
+	return d
+}
+
+func (d *DNSService) GetPTRRecordSet(recordName string) RRSet {
+	if record, ok := (*d.Records)[recordName]; ok {
+		for _, rrset := range record.RRSets {
+			if ssp(rrset.Type) == RRTypePTR {
+				return rrset
+			}
+		}
+	}
+	return RRSet{Type: newStringPointer(RRTypePTR)}
+}
+
+func (d *DNSService) SetPTRRecordSet(recordName string, newRrSet RRSet) *DNSService {
+	if d.Records == nil {
+		d.Records = &map[string]RRSetsWrapper{}
+	}
+	if record, ok := (*d.Records)[recordName]; ok {
+		for n, rrset := range record.RRSets {
+			if ssp(rrset.Type) == RRTypePTR {
 				(*d.Records)[recordName].RRSets[n] = newRrSet
 				return d
 			}
